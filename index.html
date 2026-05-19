@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoBienestar MTN v3</title>
+    <title>CronoBienestar Total v4</title>
     <style>
         :root {
             --bg-color: #f0f4f8;
@@ -12,38 +12,37 @@
             --primary: #2b6cb0;
             --accent: #dd6b20;
             --kettlebell: #2c5282;
-            --vitd: #b7791f;
-            --glucose: #9b2c2c;
             --border: #e2e8f0;
+            --success: #38a169;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             justify-content: center;
         }
         .container {
-            max-width: 460px;
+            max-width: 480px;
             width: 100%;
             background: var(--card-bg);
-            padding: 20px;
+            padding: 15px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
-        h1 { text-align: center; font-size: 21px; margin-bottom: 5px; color: #1a202c; }
-        h2 { text-align: center; font-size: 13px; color: #718096; font-weight: normal; margin-top: 0; margin-bottom: 20px; }
+        h1 { text-align: center; font-size: 20px; margin-bottom: 5px; color: #1a202c; }
+        h2 { text-align: center; font-size: 12px; color: #718096; font-weight: normal; margin-top: 0; margin-bottom: 15px; }
         
-        .lang-selector {
+        .lang-selector, .nav-tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
-        .lang-btn {
+        .lang-btn, .tab-btn {
             padding: 6px 12px;
             border: 1px solid var(--border);
             border-radius: 20px;
@@ -52,29 +51,28 @@
             font-size: 13px;
             font-weight: bold;
         }
-        .lang-btn.active {
+        .lang-btn.active, .tab-btn.active {
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
         }
+        .home-btn { background: #718096; color: white; border: none; }
 
         .box-question {
             background: #edf2f7;
             border: 1px solid var(--border);
-            padding: 14px;
+            padding: 12px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        label { font-weight: bold; display: block; margin-bottom: 6px; font-size: 14px; }
+        label { font-weight: bold; display: block; margin-bottom: 6px; font-size: 13px; }
         select {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #cbd5e1;
-            font-size: 15px;
-            box-sizing: border-box;
+            font-size: 14px;
             background-color: #fff;
-            margin-bottom: 5px;
         }
         .calc-button {
             width: 100%;
@@ -83,127 +81,198 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-            transition: background 0.2s;
-        }
-        .calc-button:hover { background-color: #234e7a; }
-        
-        .output-box {
-            margin-top: 20px;
-            display: none;
-        }
-        .section-title {
             font-size: 15px;
             font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 2px solid var(--border);
-            color: var(--primary);
+            cursor: pointer;
         }
-        .kb-section { color: var(--kettlebell); border-bottom: 2px solid #bee3f8; }
-        .vitd-section { color: var(--vitd); border-bottom: 2px solid #feebc8; }
-        .glucose-section { color: var(--glucose); border-bottom: 2px solid #fed7d7; }
+        
+        .app-section { display: none; margin-top: 15px; }
+        .app-section.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        .phase-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            padding: 4px 8px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            color: #2d3748;
+        }
         ul { padding-left: 18px; margin: 0; }
-        li { margin-bottom: 10px; line-height: 1.4; font-size: 14px; }
+        li { margin-bottom: 8px; line-height: 1.4; font-size: 13.5px; }
+
+        /* CHECKBOXES CUMPLIMIENTO */
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f7fafc;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid var(--border);
+        }
+        .check-item input { width: 18px; height: 18px; }
+
+        /* TEMPORIZADOR */
+        .timer-box {
+            text-align: center;
+            background: #1a202c;
+            color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .timer-display { font-size: 36px; font-weight: bold; font-family: monospace; color: #63b3ed; }
+        .timer-btn {
+            padding: 6px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-start { background: var(--success); color: white; }
+        .btn-stop { background: #e53e3e; color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- SELECTOR IDIOMA -->
     <div class="lang-selector">
-        <button class="lang-btn active" id="btn-es" onclick="cambiarIdioma('es')">🇪🇸 Español</button>
-        <button class="lang-btn" id="btn-pt" onclick="cambiarIdioma('pt')">🇵🇹 Português</button>
+        <button class="lang-btn active" id="btn-es" onclick="cambiarIdioma('es')">🇪🇸 ES</button>
+        <button class="lang-btn" id="btn-pt" onclick="cambiarIdioma('pt')">🇵🇹 PT</button>
     </div>
 
-    <h1 id="app-title">⏱️ Planificador Metabólico MTN</h1>
+    <!-- PESTAÑAS PRINCIPALES -->
+    <div class="nav-tabs">
+        <button class="tab-btn home-btn" onclick="volverHome()">🏠 Home</button>
+        <button class="tab-btn active" id="tab-diario" onclick="cambiarPestana('diario')">📅 Diario</button>
+        <button class="tab-btn" id="tab-kb" onclick="cambiarPestana('kb')">🏋️ Kettlebell</button>
+        <button class="tab-btn" id="tab-stats" onclick="cambiarPestana('stats')">📊 Historial</button>
+    </div>
+
+    <h1 id="app-title">⏱️ Planificador MTN</h1>
     <h2 id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</h2>
 
-    <div class="box-question">
-        <label id="lbl-turno" for="turnoSelect">💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?</label>
-        <select id="turnoSelect">
-            <!-- Dinámico -->
-        </select>
+    <!-- PESTAÑA 1: DIARIO -->
+    <div id="sec-diario" class="app-section active">
+        <div class="box-question">
+            <label id="lbl-turno" for="turnoSelect">💼 ¿Qué jornada tienes hoy?</label>
+            <select id="turnoSelect"><!-- Dinámico --></select>
+        </div>
+        <div class="box-question">
+            <label id="lbl-familia" for="familiaSelect">🧒 ¿Situación familiar hoy?</label>
+            <select id="familiaSelect"><!-- Dinámico --></select>
+        </div>
+        <button class="calc-button" id="btn-calc" onclick="generarPlanFases()">⚡ Ver Mi Día por Fases</button>
+
+        <div id="planOutput" style="display:none; margin-top:15px;">
+            <div id="fasesContenido"></div>
+            
+            <!-- Checklist Diario Integrado -->
+            <div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success);" id="lbl-check-title">✅ Marcado de Cumplimiento de Hoy</div>
+            <div id="checklist-zona"></div>
+            <button class="calc-button" style="background:var(--success); margin-top:10px;" id="btn-save-check" onclick="guardarCumplimiento()">💾 Guardar Progreso de Hoy</button>
+        </div>
     </div>
 
-    <div class="box-question">
-        <label id="lbl-familia" for="familiaSelect">🧒 ¿Cuál es la situación con tus hijos hoy?</label>
-        <select id="familiaSelect">
-            <!-- Dinámico -->
-        </select>
+    <!-- PESTAÑA 2: KETTLEBELL & TIMER -->
+    <div id="sec-kb" class="app-section">
+        <div class="timer-box">
+            <div id="timer-label" style="font-size:12px; color:#a0aec0;">EMOM 20 MINUTOS (Cuerpo Completo)</div>
+            <div class="timer-display" id="display">20:00</div>
+            <div id="timer-routine" style="font-size:13px; font-weight:bold; margin: 8px 0; color:#ecc94b;">Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats</div>
+            <button class="timer-btn btn-start" id="btn-timer-start" onclick="toggleTimer()">Play</button>
+            <button class="timer-btn btn-stop" onclick="resetTimer()">Reset</button>
+        </div>
+        <div class="box-question" style="background:#fff; border:1px solid var(--border);">
+            <h3 style="font-size:14px; margin-top:0;" id="kb-guide-title">📖 Guía de Hipertrofia y Longevidad (12kg)</h3>
+            <ul style="font-size:12.5px;" id="kb-guide-list">
+                <!-- Traducido por JS -->
+            </ul>
+        </div>
     </div>
 
-    <button class="calc-button" id="btn-calc" onclick="generarPlanCompleto()">⚡ Calcular mi Plan de Hoy</button>
-
-    <div id="output" class="output-box">
-        <div id="dinamicoContenido"></div>
+    <!-- PESTAÑA 3: HISTORIAL -->
+    <div id="sec-stats" class="app-section">
+        <div class="box-question" style="text-align:center;">
+            <h3 id="hist-title">📈 Tu Consistencia Semanal</h3>
+            <div id="stats-display" style="font-size:24px; font-weight:bold; color:var(--primary); margin:10px 0;">0%</div>
+            <p style="font-size:12px; color:#718096;" id="hist-desc">Porcentaje de hábitos completados guardados en este dispositivo.</p>
+            <button class="timer-btn btn-stop" style="font-size:11px; padding:4px 10px;" id="btn-clear-hist" onclick="borrarHistorial()">Borrar Datos</button>
+        </div>
     </div>
 </div>
 
 <script>
     let idiomaActual = 'es';
+    let timerInterval = null;
+    let timerSeconds = 1200; // 20 minutos
+    let timerRunning = false;
 
-    const traducciones = {
+    const diccionario = {
         es: {
-            title: "⏱️ Planificador Metabólico MTN",
-            subtitle: "Control de Glucemia, Estrés e Hipertrofia | Perfil Familiar",
+            title: "⏱️ Planificador MTN", subtitle: "Control de Glucemia, Estrés e Hipertrofia",
             lblTurno: "💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?",
             lblFamilia: "🧒 ¿Cuál es la situación con tus hijos hoy?",
-            btnCalc: "⚡ Calcular mi Plan de Hoy",
-            resTitulo: "📋 Tu Estrategia Personalizada de Hoy",
+            btnCalc: "⚡ Calcular mi Plan de Hoy", checkTitle: "✅ Marcado de Cumplimiento de Hoy",
+            btnSaveCheck: "💾 Guardar Progreso de Hoy", kbTitle: "EMOM 20 MINUTOS (Cuerpo Completo)",
+            kbRoutine: "Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",
+            kbGuideT: "📖 Guía de Hipertrofia y Longevidad (12kg)",
+            histT: "📈 Tu Consistencia Semanal", histD: "Porcentaje de hábitos completados guardados.",
+            btnClear: "Borrar Datos",
+            fases: { m: "🌅 FASE MAÑANA", t: "☀️ FASE TARDE", n: "🌑 FASE NOCHE / MADRUGADA", s: "🔄 FASE SALIENTE / POST-TURNO" },
+            habs: ["Creatina Base (5g)", "Vitamina D3 (Con grasa)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glucemia", "Powernap (20 min) / Sueño"],
             turnos: [
-                {v: "M", t: "Turno M (Mañana)"},
-                {v: "T", t: "Turno T (Tarde)"},
-                {v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"},
-                {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},
-                {v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"},
-                {v: "MT", t: "Doblando Turno (M + T)"},
-                {v: "TN", t: "Doblando Turno (T + N)"},
-                {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},
+                {v: "M", t: "Turno M (Mañana)"}, {v: "T", t: "Turno T (Tarde)"},
+                {v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"}, {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},
+                {v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"}, {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},
                 {v: "LIBRE", t: "Día Libre / Descanso Puro"}
             ],
             familia: [
                 {v: "APOYO", t: "Tengo apoyo (Cónyuge en casa / Niños en escuela)"},
-                {v: "SOLO_COLE", t: "Solo con peques, pero van a la escuela/extraescolares"},
-                {v: "SOLO_CASA", t: "Solo con peques atrapados en casa (No duermo / Logística total)"}
+                {v: "SOLO_COLE", t: "Solo con peques (Van a escuela/extraescolares)"},
+                {v: "SOLO_CASA", t: "Solo con peques atrapados en casa (Logística total)"}
             ],
-            secGlucosa: "🩸 Escudo Anti-Atracones y Nutrición",
-            secVitD: "☀️ Protocolo Vitamina D (Masa Muscular)",
-            secCreatina: "🧠 Suplementación (Creatina Monohidrato)",
-            secKettlebell: "🏋️ Tu Estímulo Kettlebell en Casa (12kg)",
-            secSueno: "🌿 Siestas, Logística y Descanso Realista"
+            kbLista: [
+                "<strong>EMOM (Cada minuto en el minuto):</strong> Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats. Alterna hasta llegar a 20 minutos.",
+                "<strong>Tensión Mecánica:</strong> A los 46 años, controla la bajada (3 segundos) en las sentadillas para romper fibras musculares sin dañar articulaciones.",
+                "<strong>Frecuencia diaria:</strong> Si solo tienes 10 minutos, haz solo 10 minutos de EMOM. Mover el músculo vacía el azúcar en sangre inmediatamente."
+            ]
         },
         pt: {
-            title: "⏱️ Planeador Metabólico MTN",
-            subtitle: "Controlo de Glicémia, Stress e Hipertrofia | Perfil Familiar",
-            lblTurno: "💼 Que jornada de trabalho tens hoje ou acabaste de fazer?",
+            title: "⏱️ Planeador MTN", subtitle: "Controlo de Glicémia, Stress e Hipertrofia",
+            lblTurno: "💼 Que jornada de trabalho tens hoje ou acasbaste de fazer?",
             lblFamilia: "🧒 Qual é a situação com os miúdos hoje?",
-            btnCalc: "⚡ Calcular o meu Plano de Hoje",
-            resTitulo: "📋 Tua Estratégia Personalizada de Hoje",
+            btnCalc: "⚡ Calcular o meu Plano de Hoje", checkTitle: "✅ Marcar Cumprimento de Hoje",
+            btnSaveCheck: "💾 Guardar Progresso de Hoje", kbTitle: "EMOM 20 MINUTOS (Corpo Inteiro)",
+            kbRoutine: "Minuto Ímpar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",
+            kbGuideT: "📖 Guia de Hipertrofia e Longevidade (12kg)",
+            histT: "📈 Tua Consistência Semanal", histD: "Percentagem de hábitos concluídos guardados.",
+            btnClear: "Apagar Dados",
+            fases: { m: "🌅 FASE MANHÃ", t: "☀️ FASE TARDE", n: "🌑 FASE NOITE / MADRUGADA", s: "🔄 FASE DE SAÍDA / PÓS-TURNO" },
+            habs: ["Creatina Base (5g)", "Vitamina D3 (Com gordura)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glicémia", "Powernap (20 min) / Sono"],
             turnos: [
-                {v: "M", t: "Turno M (Manhã)"},
-                {v: "T", t: "Turno T (Tarde)"},
-                {v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"},
-                {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites consecutivas)"},
-                {v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"},
-                {v: "MT", t: "Turno Duplo (M + T)"},
-                {v: "TN", t: "Turno Duplo (T + N)"},
-                {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24 Horas"},
+                {v: "M", t: "Turno M (Manhã)"}, {v: "T", t: "Turno T (Tarde)"},
+                {v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"}, {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites seguidas)"},
+                {v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"}, {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24h"},
                 {v: "LIBRE", t: "Dia de Folga / Descanso Puro"}
             ],
             familia: [
                 {v: "APOYO", t: "Tenho apoio (Cônjuge em casa / Miúdos na escola)"},
-                {v: "SOLO_COLE", t: "Sozinho com os miúdos, mas vão à escola/atividades"},
-                {v: "SOLO_CASA", t: "Sozinho com os miúdos em casa (Sem dormir / Logística total)"}
+                {v: "SOLO_COLE", t: "Sozinho com miúdos (Vão à escola/atividades)"},
+                {v: "SOLO_CASA", t: "Sozinho com miúdos em casa (Logística total)"}
             ],
-            secGlucosa: "🩸 Escudo Anti-Compulsão e Nutrição",
-            secVitD: "☀️ Protocolo Vitamina D (Massa Muscular)",
-            secCreatina: "🧠 Suplementação (Creatina Monohidrato)",
-            secKettlebell: "🏋️ Teu Estímulo Kettlebell en Casa (12kg)",
-            secSueno: "🌿 Sestas, Logística e Descanso Realista"
+            kbLista: [
+                "<strong>EMOM (Cada minuto no minuto):</strong> Inicia o cronómetro acima. No Minuto 1 faz 15 Swings e descansa o resto do minuto. No Minuto 2 faz 10 Goblet Squats. Alterna até aos 20 minutos.",
+                "<strong>Tensão Mecânica:</strong> Aos 46 anos, controla a descida (3 segundos) nos agachamentos para ganhar massa muscular sem lesionar articulações.",
+                "<strong>Frequência diária:</strong> Se só tens 10 minutos livres, faz apenas 10 minutos de EMOM. Mover o músculo queima o açúcar no sangue imediatamente."
+            ]
         }
     };
 
@@ -212,101 +281,169 @@
         document.getElementById('btn-es').classList.toggle('active', lang === 'es');
         document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
         
-        document.getElementById('app-title').innerText = traducciones[lang].title;
-        document.getElementById('app-subtitle').innerText = traducciones[lang].subtitle;
-        document.getElementById('lbl-turno').innerText = traducciones[lang].lblTurno;
-        document.getElementById('lbl-familia').innerText = traducciones[lang].lblFamilia;
-        document.getElementById('btn-calc').innerText = traducciones[lang].btnCalc;
-        
-        const tSel = document.getElementById('turnoSelect');
-        const tVal = tSel.value;
-        tSel.innerHTML = traducciones[lang].turnos.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
+        document.getElementById('app-title').innerText = diccionario[lang].title;
+        document.getElementById('app-subtitle').innerText = diccionario[lang].subtitle;
+        document.getElementById('lbl-turno').innerText = diccionario[lang].lblTurno;
+        document.getElementById('lbl-familia').innerText = diccionario[lang].lblFamilia;
+        document.getElementById('btn-calc').innerText = diccionario[lang].btnCalc;
+        document.getElementById('lbl-check-title').innerText = diccionario[lang].checkTitle;
+        document.getElementById('btn-save-check').innerText = diccionario[lang].btnSaveCheck;
+        document.getElementById('timer-label').innerText = diccionario[lang].kbTitle;
+        document.getElementById('timer-routine').innerText = diccionario[lang].kbRoutine;
+        document.getElementById('kb-guide-title').innerText = diccionario[lang].kbGuideT;
+        document.getElementById('hist-title').innerText = diccionario[lang].histT;
+        document.getElementById('hist-desc').innerText = diccionario[lang].histD;
+        document.getElementById('btn-clear-hist').innerText = diccionario[lang].btnClear;
+
+        const tSel = document.getElementById('turnoSelect'); const tVal = tSel.value;
+        tSel.innerHTML = diccionario[lang].turnos.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
         if(tVal) tSel.value = tVal;
 
-        const fSel = document.getElementById('familiaSelect');
-        const fVal = fSel.value;
-        fSel.innerHTML = traducciones[lang].familia.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
+        const fSel = document.getElementById('familiaSelect'); const fVal = fSel.value;
+        fSel.innerHTML = diccionario[lang].familia.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
         if(fVal) fSel.value = fVal;
 
-        document.getElementById('output').style.display = "none";
+        document.getElementById('kb-guide-list').innerHTML = diccionario[lang].kbLista.map(li => `<li>${li}</li>`).join('');
+        volverHome();
+        cargarHistorial();
     }
 
-    function generarPlanCompleto() {
+    function cambiarPestana(tab) {
+        document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => { if(!b.classList.contains('home-btn')) b.classList.remove('active'); });
+        document.getElementById(`sec-${tab}`).classList.add('active');
+        document.getElementById(`tab-${tab}`).classList.add('active');
+    }
+
+    function volverHome() {
+        document.getElementById('planOutput').style.display = "none";
+        document.getElementById('turnoSelect').value = "";
+        document.getElementById('familiaSelect').value = "";
+        cambiarPestana('diario');
+    }
+
+    function generarPlanFases() {
         const turno = document.getElementById('turnoSelect').value;
         const familia = document.getElementById('familiaSelect').value;
-        const output = document.getElementById('output');
-        const contenedor = document.getElementById('dinamicoContenido');
-        const t = traducciones[idiomaActual];
-        
-        let html = `<h2>${t.resTitulo}</h2>`;
-        
-        // ---- 1. NUTRICIÓN Y GLUCEMIA ----
-        html += `<div class="section-title glucose-section">${t.secGlucosa}</div><ul>`;
-        if (["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
-            if(idiomaActual === 'es') {
-                html += `<li>🥪 <strong>Bocadillo de Rescate (Pan 40-50g + Tortilla/Caballa/Sardinas):</strong> Excelente opción. Da siempre el primer bocado a la proteína/pescado antes de morder el pan. Así el estómago asimila las grasas y reduce el impacto de la insulina del pan blanco.</li>`;
-                html += `<li>🥛 <strong>Bebida vegetal alternativa:</strong> Evita la bebida de avena líquida pura antes de dormir. Usa soja o almendras sin azúcar con tu clara de huevo en polvo para mantener estable la hormona del crecimiento mientras duermes.</li>`;
-            } else {
-                html += `<li>🥪 <strong>Sandes de Resgate (Pão 40-50g + Omelete/Cavala/Sardinhas):</strong> Excelente opção. Dá sempre a primeira trinca na proteína/peixe antes de morder o pão. Assim achatas o pico de insulina.</li>`;
-                html += `<li>🥛 <strong>Bebida vegetal alternativa:</strong> Evita a bebida de aveia líquida pura antes de dormir. Usa soja ou amêndoa sem açúcar com a tua clara de ovo para proteger a massa muscular.</li>`;
-            }
+        if(!turno || !familia) return;
+
+        const f = diccionario[idiomaActual].fases;
+        let html = "";
+
+        // MAÑANA
+        html += `<div class="phase-title">${f.m}</div><ul>`;
+        html += `<li>🥛 <strong>06:00h/08:30h - Creatina (5g):</strong> Toma fija matutina diaria para saturar depósitos.</li>`;
+        if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
+            html += `<li>🩸 <strong>Desayuno Control de Insulina:</strong> Pescados azules en conserva (sardinas/caballa) o tortilla. Reduce el pan a 40g y dale el primer bocado a la proteína para aplanar la glucemia. Reemplaza la bebida de avena por soja o almendras sin azúcar para proteger el abdomen.</li>`;
+            html += `<li>💊 <strong>Vitamina D3:</strong> Tómala aquí con las grasas saludables del pescado para maximizar su absorción celular.</li>`;
+        }
+        if(turno === "M" && familia === "SOLO_CASA") html += `<li>☀️ <strong>Paseo Lumínico:</strong> Lleva a los niños a pie al colegio para frenar la melatonina.</li>`;
+        html += `</ul>`;
+
+        // TARDE
+        html += `<div class="phase-title">${f.t}</div><ul>`;
+        html += `<li>💤 <strong>Powernap Universal (20 min):</strong> Haz una micro-siesta en el sofá a primera hora de la tarde para resetear el sistema nervioso central y reducir el cortisol.</li>`;
+        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 <strong>Siesta Profiláctica Extendida:</strong> Duerme un ciclo de 90 minutos para vaciar la presión de sueño antes de la noche.</li>`;
+        html += `<li>🏋️ <strong>Bloque Kettlebell (10-15 min libres):</strong> Ejecuta tu rutina corta o inicia el EMOM de la pestaña superior. Si estás muy cansado, haz balanceos suaves para absorber el azúcar en sangre.</li>`;
+        html += `</ul>`;
+
+        // NOCHE
+        html += `<div class="section-title phase-title" style="background:#2d3748; color:#fff;">${f.n}</div><ul>`;
+        if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
+            html += `<li>🧠 <strong>Cena (20:00h) + Escudo de Creatina:</strong> Añade de 3g a 5g de creatina en la cena previa. Actúa como energía limpia para las neuronas de madrugada.</li>`;
+            html += `<li>💧 <strong>Hidratación de Rescate:</strong> Bebe agua fría durante la madrugada para combatir la confusión mental y la falsa alarma de hambre de azúcar.</li>`;
+        } else if(turno === "M") {
+            html += `<li>🛌 <strong>Higiene del Sueño Nocturno:</strong> Habitación a oscuras, fría (18°C) y pantallas apagadas a las 21:30h para reducir la barriga de estrés cronificada.</li>`;
         } else {
-            html += `<li>${idiomaActual === 'es' ? '🥗 <strong>Orden metabólico:</strong> Come primero las verduras, luego las proteínas y deja los carbohidratos para el final.' : '🥗 <strong>Ordem metabólica:</strong> Come primeiro os vegetais, depois as proteínas e deixa os hidratos para o fim.'}</li>`;
+            html += `<li>🌿 Descanso regular continuo.</li>`;
         }
         html += `</ul>`;
 
-        // ---- 2. VITAMINA D ----
-        html += `<div class="section-title vitd-section">${t.secVitD}</div><ul>`;
-        html += `<li>💊 ${idiomaActual === 'es' ? '<strong>Con comida grasa:</strong> Tómala junto a las sardinas o caballa para optimizar su absorción y combatir la barriga de estrés.' : '<strong>Com comida gorda:</strong> Toma com as sardinhas ou cavala para otimizar a absorção e reduzir a gordura abdominal.'}</li>`;
-        html += `</ul>`;
-
-        // ---- 3. CREATINA ----
-        html += `<div class="section-title">${t.secCreatina}</div><ul>`;
-        html += `<li>🥛 ${idiomaActual === 'es' ? '<strong>Dosis fija diaria (5g):</strong> Con la primera comida por la mañana.' : '<strong>Dose fixa diária (5g):</strong> Com a primeira refeição da manhã.'}</li>`;
-        if (["ENTRA_N", "ENTRE_N", "TN"].includes(turno)) {
-            html += `<li>🧠 ${idiomaActual === 'es' ? '<strong>Escudo nocturno:</strong> Toma de 3g a 5g adicionales con la cena previa a la noche. Funciona como combustible de reserva cerebral ante el desvelo.' : '<strong>Escudo noturno:</strong> Toma 3g a 5g adicionais no jantar prévio. Funciona como combustível cerebral contra a privação de sono.'}</li>`;
-        }
-        html += `</ul>`;
-
-        // ---- 4. KETTLEBELL ----
-        html += `<div class="section-title kb-section">${t.secKettlebell}</div><ul>`;
-        if (["SALIENTE_24H", "MT", "ENTRE_N"].includes(turno) || (turno === "ENTRA_N" && familia === "SOLO_CASA")) {
-            if(idiomaActual === 'es') {
-                html += `<li><strong>Rutina Corta de Vaciado (10-15 min libres):</strong> El sistema nervioso está cansado. Haz Swings intensos pero controlados (3 series x 15) y zancadas. Usa el ejercicio como una esponja metabólica para absorber los azúcares en sangre de los atracones.</li>`;
-            } else {
-                html += `<li><strong>Rotina Curta de Esvaziamento (10-15 min livres):</strong> O sistema nervoso está cansado. Faz Swings controlados (3 séries x 15) e passadas. Redireciona a energia para o músculo.</li>`;
-            }
-        } else {
-            if(idiomaActual === 'es') {
-                html += `<li><strong>Rutina de Hipertrofia (Cerca del Fallo):</strong> Tienes energía disponible. 4 series de Swings x 12, Sentadillas Goblet x 10 y Remos pesados x 10 por lado para combatir la sarcopenia a los 46 años.</li>`;
-            } else {
-                html += `<li><strong>Rotina de Hipertrofia (Perto do Falho):</strong> Tens energia. 4 séries de Swings x 12, Agachamentos Goblet x 10 e Remo pesado x 10 por lado para ganhar massa muscular.</li>`;
-            }
-        }
-        html += `</ul>`;
-
-        // ---- 5. SIESTAS Y SUEÑO ----
-        html += `<div class="section-title">${t.secSueno}</div><ul>`;
+        document.getElementById('fasesContenido').innerHTML = html;
         
-        if (turno === "ENTRA_N") {
-            if (familia === "APOYO") {
-                html += `<li>💤 ${idiomaActual === 'es' ? '<strong>Siesta Profiláctica Completa (90 min):</strong> Duerme por la tarde un ciclo de sueño completo antes de entrar para descargar la adenosina celular.' : '<strong>Sesta Profilática Completa (90 min):</strong> Dorme à tarde um ciclo completo antes de entrar para limpar a adenosina.'}</li>`;
-            } else if (familia === "SOLO_COLE") {
-                html += `<li>💤 ${idiomaActual === 'es' ? '<strong>Powernap de Rescate (20-30 min):</strong> Aprovecha la tarde mientras los niños hacen deberes o están en extraescolares para dar una cabezada en el sofá.' : '<strong>Powernap de Resgate (20-30 min):</strong> Aproveita a tarde enquanto os miúdos fazem os trabalhos ou estão nas atividades para fechar os olhos no sofá.'}</li>`;
-            } else {
-                html += `<li>⚠️ ${idiomaActual === 'es' ? '<strong>Sin siesta hoy (Solo con niños en casa):</strong> No duermes por la tarde. El cansancio de madrugada será severo; mantente activo, usa agua fría e hidratación constante durante el turno.' : '<strong>Sem sesta hoje (Sozinho em casa):</strong> Não consegues dormir à tarde. O cansaço de madrugada será severo; mantém-te ativo e hidratado.'}</li>`;
-            }
-        } else if (turno === "ENTRE_N") {
-            html += `<li>🛌 ${idiomaActual === 'es' ? '<strong>Bloque Sagrado de Mañana:</strong> Vienes de trabajar. Duerme de 08:00h a 13:00h de forma prioritaria en oscuridad absoluta mientras los niños están en el colegio.' : '<strong>Bloco Sagrado da Manhã:</strong> Vens de trabalhar. Dorme das 08:00h às 13:00h em escuridão absoluta enquanto os miúdos estão na escola.'}</li>`;
-        } else if (turno === "SALIENTE_N" || turno === "SALIENTE_24H") {
-            html += `<li>🛌 ${idiomaActual === 'es' ? '<strong>Sueño de Recuperación de Mañana:</strong> Duerme un bloque sólido al llegar. Por la tarde, realiza un paseo lumínico al aire libre para avisar a tu cerebro de que ya es de día.' : '<strong>Sono de Recuperação da Manhã:</strong> Dorme um bloco sólido ao chegar. À tarde, faz um passeio sob o sol para reajustar o cérebro.'}</li>`;
-        } else {
-            html += `<li>🌿 ${idiomaActual === 'es' ? 'Mantén la higiene de sueño habitual y acuéstate temprano los días M o libres.' : 'Mantém a higiene de sono habitual e deita-te cedo nos dias M ou de folga.'}</li>`;
-        }
-        html += `</ul>`;
+        // Renderizar Checklist Dinámico
+        let checkHtml = "";
+        diccionario[idiomaActual].habs.forEach((hab, i) => {
+            checkHtml += `<div class="check-item"><input type="checkbox" id="chk-${i}"> <span>${hab}</span></div>`;
+        });
+        document.getElementById('checklist-zona').innerHTML = checkHtml;
 
-        contenedor.innerHTML = html;
-        output.style.display = "block";
+        document.getElementById('planOutput').style.display = "block";
+    }
+
+    // LÓGICA DE HISTORIAL LOCALSTORAGE
+    function guardarCumplimiento() {
+        let total = diccionario[idiomaActual].habs.length;
+        let marcados = 0;
+        for(let i=0; i<total; i++) {
+            if(document.getElementById(`chk-${i}`).checked) marcados++;
+        }
+        let porcentajeHoy = Math.round((marcados / total) * 100);
+        
+        let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];
+        historial.push({ fecha: new Date().toISOString().slice(0,10), porc: porcentajeHoy });
+        localStorage.setItem('mtn_historial', JSON.stringify(historial));
+        
+        alert(idiomaActual === 'es' ? '¡Progreso guardado con éxito!' : 'Progresso guardado com sucesso!');
+        cargarHistorial();
+        volverHome();
+    }
+
+    function cargarHistorial() {
+        let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];
+        if(historial.length === 0) {
+            document.getElementById('stats-display').innerText = "0%";
+            return;
+        }
+        let suma = historial.reduce((acc, curr) => acc + curr.porc, 0);
+        let media = Math.round(suma / historial.length);
+        document.getElementById('stats-display').innerText = `${media}%`;
+    }
+
+    function borrarHistorial() {
+        localStorage.removeItem('mtn_historial');
+        document.getElementById('stats-display').innerText = "0%";
+    }
+
+    // TIMER EMOM JS
+    function toggleTimer() {
+        const btn = document.getElementById('btn-timer-start');
+        if (timerRunning) {
+            clearInterval(timerInterval);
+            btn.innerText = "Play";
+            btn.style.background = "var(--success)";
+        } else {
+            timerInterval = setInterval(() => {
+                if(timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert("¡Entrenamiento Completado!");
+                    resetTimer();
+                    return;
+                }
+                timerSeconds--;
+                let mins = Math.floor(timerSeconds / 60);
+                let secs = timerSeconds % 60;
+                document.getElementById('display').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+                
+                // Alerta sonora visual cada cambio de minuto (EMOM)
+                if (secs === 0 && timerSeconds > 0) {
+                    document.body.style.background = "#ecc94b";
+                    setTimeout(() => document.body.style.background = "var(--bg-color)", 500);
+                }
+            }, 1000);
+            btn.innerText = "Pause";
+            btn.style.background = "#ecc94b";
+        }
+        timerRunning = !timerRunning;
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timerSeconds = 1200;
+        timerRunning = false;
+        document.getElementById('display').innerText = "20:00";
+        document.getElementById('btn-timer-start').innerText = "Play";
+        document.getElementById('btn-timer-start').style.background = "var(--success)";
     }
 
     window.onload = function() {
