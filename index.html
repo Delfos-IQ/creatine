@@ -1,0 +1,119 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2868
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww38200\viewh21600\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import streamlit as st\
+\
+# Configuraci\'f3n de la p\'e1gina e interfaz adaptada a m\'f3viles\
+st.set_page_config(page_title="Planificador de Turnos 46 a\'f1os", page_icon="\uc0\u55357 \u56490 ", layout="centered")\
+\
+st.title("\uc0\u9201 \u65039  Optimizador de Turnos y Bienestar")\
+st.subheader("Plan Diario Personalizado: 46 a\'f1os | 75.5 kg | Kettlebell 12kg")\
+\
+st.markdown("""\
+Selecciona tu turno actual para obtener tu cronograma optimizado con **creatina, entrenamientos, \
+lectura, meditaci\'f3n al aire libre y descanso**.\
+""")\
+\
+# Selector de turno principal\
+turno = st.selectbox(\
+    "Selecciona tu turno de hoy:",\
+    [\
+        "Turno de Ma\'f1ana (Entrada ~06:00/07:00)",\
+        "Turno de Tarde (Entrada ~14:00)",\
+        "Turno de Noche (Entrada ~22:00)",\
+        "Guardia de 24 Horas (Entrada 06:30 AM)",\
+        "D\'eda de Descanso / Recuperaci\'f3n Post-Turno"\
+    ]\
+)\
+\
+st.markdown("---")\
+\
+# --- TURNO DE MA\'d1ANA ---\
+if "Turno de Ma\'f1ana" in turno:\
+    st.header("\uc0\u9728 \u65039  Rutina para Turno de Ma\'f1ana")\
+    \
+    st.markdown("### \uc0\u55358 \u56800  Suplementaci\'f3n y Nutrici\'f3n")\
+    st.write("\uc0\u9989  **06:00h - Dosis Base (5g de Creatina):** Con el desayuno y un vaso grande de agua.")\
+    \
+    st.markdown("### \uc0\u55357 \u56884  Sue\'f1o y Descanso")\
+    st.write("\uc0\u9989  **22:00h - Ventana de Sue\'f1o:** Apagar pantallas y dormir para asegurar 7-8 horas continuas.")\
+    \
+    st.markdown("### \uc0\u55356 \u57151  Bienestar, Deporte y Mente")\
+    st.write("\uc0\u9989  **16:00h - Deporte Exterior y Sol (20 min):** Camina a paso ligero o trota en un parque. La luz solar de la tarde fija tus ritmos circadianos.")\
+    st.write("\uc0\u9989  **16:30h - Kettlebell (15 min):** Circuito en casa (4 series de 12 Swings, 10 Sentadillas Goblet, 8 Remos).")\
+    st.write("\uc0\u9989  **18:00h - Sesi\'f3n de Lectura (30 min):** Momento de relajaci\'f3n mental con lectura de ficci\'f3n o desarrollo personal.")\
+    st.write("\uc0\u9989  **21:30h - Meditaci\'f3n Pre-Sue\'f1o (10 min):** Meditaci\'f3n de respiraci\'f3n diafragm\'e1tica en la cama para desacelerar el pulso.")\
+\
+# --- TURNO DE TARDE ---\
+elif "Turno de Tarde" in turno:\
+    st.header("\uc0\u55357 \u56580  Rutina para Turno de Tarde")\
+    \
+    st.markdown("### \uc0\u55358 \u56800  Suplementaci\'f3n y Nutrici\'f3n")\
+    st.write("\uc0\u9989  **09:00h - Dosis Base (5g de Creatina):** Al despertar con tu primera comida.")\
+    \
+    st.markdown("### \uc0\u55357 \u56884  Sue\'f1o y Descanso")\
+    st.write("\uc0\u9989  **00:30h a 01:00h - Transici\'f3n al Sue\'f1o:** Evita luz azul al volver del trabajo.")\
+    \
+    st.markdown("### \uc0\u55356 \u57151  Bienestar, Deporte y Mente")\
+    st.write("\uc0\u9989  **09:30h - Meditaci\'f3n Matutina (10 min):** Enfoque y atenci\'f3n plena para empezar el d\'eda sin prisas.")\
+    st.write("\uc0\u9989  **10:00h - Deporte Exterior (30 min):** Exposici\'f3n lum\'ednica crucial. Corre, camina o haz movilidad al aire libre.")\
+    st.write("\uc0\u9989  **11:00h - Kettlebell (15 min):** Rutina corta de fuerza (3 series por ejercicio) para entrar activo al turno.")\
+    st.write("\uc0\u9989  **23:15h - Sesi\'f3n de Lectura (20 min):** Lee algo ligero al llegar a casa para bajar las revoluciones del trabajo nocturno.")\
+\
+# --- TURNO DE NOCHE ---\
+elif "Turno de Noche" in turno:\
+    st.header("\uc0\u55356 \u57105  Rutina para Turno de Noche")\
+    \
+    st.markdown("### \uc0\u55358 \u56800  Suplementaci\'f3n y Nutrici\'f3n")\
+    st.write("\uc0\u9989  **09:00h - Dosis Base (5g de Creatina):** Con el desayuno post-despertar.")\
+    st.write("\uc0\u9989  **20:00h - Dosis de Protecci\'f3n Cerebral (3g a 5g de Creatina):** Con la cena previa al turno. Protege tus funciones cognitivas en la madrugada.")\
+    \
+    st.markdown("### \uc0\u55357 \u56884  Sue\'f1o y Descanso")\
+    st.write("\uc0\u9989  **16:30h a 18:00h - Siesta Profil\'e1ctica Obligatoria:** Ciclo de sue\'f1o de 90 min. Es tu salvavidas para no colapsar a las 04:00 AM.")\
+    \
+    st.markdown("### \uc0\u55356 \u57151  Bienestar, Deporte y Mente")\
+    st.write("\uc0\u9989  **11:30h - Deporte Exterior y Sol (25 min):** Camina bajo el sol. La luz solar de la ma\'f1ana frena la producci\'f3n de melatonina y te activa.")\
+    st.write("\uc0\u9989  **12:00h - Kettlebell (10-15 min):** Activaci\'f3n muscular metab\'f3lica suave. No te dejes exhausto.")\
+    st.write("\uc0\u9989  **15:30h - Sesi\'f3n de Lectura (30 min):** Excelente h\'e1bito antes de la siesta para relajar los ojos.")\
+    st.write("\uc0\u9989  **21:15h - Meditaci\'f3n Pre-Turno (10 min):** Meditaci\'f3n de enfoque y presencia para mentalizarte ante la noche de trabajo.")\
+\
+# --- GUARDIA DE 24 HORAS ---\
+elif "Guardia de 24 Horas" in turno:\
+    st.header("\uc0\u55357 \u57000  Rutina para Guardia Extrema de 24 Horas")\
+    \
+    st.markdown("### \uc0\u55358 \u56800  Suplementaci\'f3n y Nutrici\'f3n")\
+    st.write("\uc0\u9989  **06:30h - Dosis Base (5g de Creatina):** Junto con un desayuno consistente y cal\'f3rico.")\
+    st.write("\uc0\u9989  **03:00h (Madrugada) - Dosis de Rescate (5g de Creatina):** T\'f3mala con agua muy fr\'eda si la neblina mental interfiere con tu seguridad.")\
+    \
+    st.markdown("### \uc0\u55357 \u56884  Sue\'f1o y Descanso")\
+    st.write("\uc0\u9989  **Durante el turno - Micro-siestas:** Si el servicio lo permite, haz siestas de exactamente **20 minutos** para mitigar la fatiga extrema.")\
+    \
+    st.markdown("### \uc0\u55356 \u57151  Bienestar, Deporte y Mente")\
+    st.write("\uc0\u9989  **\u10060  DEPORTE F\'cdSICO SUSPENDIDO:** Prohibido desgastar al cuerpo antes o durante una jornada de 24h. Preserva tu energ\'eda.")\
+    st.write("\uc0\u9989  **14:00h - Meditaci\'f3n del Silencio (10 min):** Cierra los ojos en un espacio tranquilo durante tu descanso para bajar el cortisol de la guardia.")\
+    st.write("\uc0\u9989  **19:00h - Sesi\'f3n de Lectura (15-20 min):** Pausa cognitiva para desconectar temporalmente de las demandas del entorno laboral.")\
+\
+# --- D\'cdA DE DESCANSO ---\
+elif "D\'eda de Descanso" in turno:\
+    st.header("\uc0\u55357 \u56587  Rutina para D\'eda de Descanso y Reseteo Biol\'f3gico")\
+    \
+    st.markdown("### \uc0\u55358 \u56800  Suplementaci\'f3n y Nutrici\'f3n")\
+    st.write("\uc0\u9989  **Al despertar de la siesta larga - Dosis Base (5g de Creatina):** Repara el da\'f1o celular de las noches acumuladas.")\
+    \
+    st.markdown("### \uc0\u55357 \u56884  Sue\'f1o y Descanso")\
+    st.write("\uc0\u9989  **07:30h a 12:30h - Recuperaci\'f3n Cr\'edtica:** Bloque de sue\'f1o de 5 horas al salir de la \'faltima noche. Usa antifaz y tapones.")\
+    st.write("\uc0\u9989  **22:30h - Sue\'f1o Nocturno Regular:** Acu\'e9state temprano para intentar sincronizarte de nuevo con el horario solar.")\
+    \
+    st.markdown("### \uc0\u55356 \u57151  Bienestar, Deporte y Mente")\
+    st.write("\uc0\u9989  **13:00h - Meditaci\'f3n de Conexi\'f3n (12 min):** Al levantarte de la siesta, medita para reducir la desorientaci\'f3n t\'edpica post-turno nocturno.")\
+    st.write("\uc0\u9989  **16:30h - Deporte Exterior Eficiente (30 min):** Sal a correr suave o camina r\'e1pido en la naturaleza. Oxigena tus pulmones.")\
+    st.write("\uc0\u9989  **17:00h - Kettlebell Entrenamiento Principal (20 min):** Tu sesi\'f3n m\'e1s intensa de la semana (4 series completas) para mantener masa muscular a tus 46 a\'f1os.")\
+    st.write("\uc0\u9989  **19:00h - Sesi\'f3n de Lectura Profunda (45 min):** Aprovecha que el cerebro descansa para disfrutar de tus libros favoritos.")\
+\
+st.markdown("---")\
+st.caption("\uc0\u9881 \u65039  Dise\'f1ado cient\'edficamente para optimizar los niveles de adenosina, cortisol y ATP celular en trabajadores de alta resistencia cronol\'f3gica.")\
+}
