@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoBienestar: Fuerza y Conciliación</title>
+    <title>CronoBienestar Total: Fuerza y Control de Insulina</title>
     <style>
         :root {
             --bg-color: #f0f4f8;
@@ -12,6 +12,8 @@
             --primary: #2b6cb0;
             --accent: #dd6b20;
             --kettlebell: #2c5282;
+            --vitd: #b7791f;
+            --glucose: #9b2c2c;
             --border: #e2e8f0;
         }
         body {
@@ -32,7 +34,7 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
-        h1 { text-align: center; font-size: 22px; margin-bottom: 5px; color: #1a202c; }
+        h1 { text-align: center; font-size: 21px; margin-bottom: 5px; color: #1a202c; }
         h2 { text-align: center; font-size: 13px; color: #718096; font-weight: normal; margin-top: 0; margin-bottom: 20px; }
         
         .box-question {
@@ -66,7 +68,7 @@
             margin-top: 5px;
             transition: background 0.2s;
         }
-        button:hover { background-color: #2b6cb0; }
+        button:hover { background-color: #234e7a; }
         
         .output-box {
             margin-top: 20px;
@@ -82,6 +84,8 @@
             color: var(--primary);
         }
         .kb-section { color: var(--kettlebell); border-bottom: 2px solid #bee3f8; }
+        .vitd-section { color: var(--vitd); border-bottom: 2px solid #feebc8; }
+        .glucose-section { color: var(--glucose); border-bottom: 2px solid #fed7d7; }
         ul { padding-left: 18px; margin: 0; }
         li { margin-bottom: 10px; line-height: 1.4; font-size: 14px; }
         .study-note {
@@ -95,20 +99,20 @@
 <body>
 
 <div class="container">
-    <h1>⏱️ Planificador de Fuerza Real</h1>
-    <h2>46 años | 75.5 kg | Objetivo: Hipertrofia y Longevidad</h2>
+    <h1>⏱️ Planificador Metabólico MTN</h1>
+    <h2>46 años | Control de Glucemia, Estrés e Hipertrofia</h2>
 
     <!-- FORMULARIO INTERACTIVO -->
     <div class="box-question">
-        <label for="turnoSelect">💼 ¿Qué jornada laboral tienes hoy?</label>
+        <label for="turnoSelect">💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?</label>
         <select id="turnoSelect">
             <option value="M">Turno M (Mañana sola)</option>
             <option value="T">Turno T (Tarde sola)</option>
-            <option value="N">Turno N (Noche sola)</option>
+            <option value="N">Saliente de Turno N (Noche)</option>
             <option value="MT">Doblando Turno (M + T)</option>
             <option value="TN">Doblando Turno (T + N)</option>
-            <option value="24H">Guardia Extrema de 24 Horas</option>
-            <option value="LIBRE">Día Libre / Descanso</option>
+            <option value="24H">Saliente de Guardia de 24 Horas</option>
+            <option value="LIBRE">Día Libre / Descanso Puro</option>
         </select>
     </div>
 
@@ -121,7 +125,7 @@
         </select>
     </div>
 
-    <button onclick="generarPlanPersonalizado()">⚡ Calcular mi Plan de Hoy</button>
+    <button onclick="generarPlanCompleto()">⚡ Calcular mi Plan de Hoy</button>
 
     <!-- ZONA DE SALIDA -->
     <div id="output" class="output-box">
@@ -130,67 +134,63 @@
 </div>
 
 <script>
-    function generarPlanPersonalizado() {
+    function generarPlanCompleto() {
         const turno = document.getElementById('turnoSelect').value;
         const familia = document.getElementById('familiaSelect').value;
         const output = document.getElementById('output');
         const contenedor = document.getElementById('dinamicoContenido');
         
-        let html = `<h2>📋 Tu Estrategia Optimizada para Hoy</h2>`;
+        let html = `<h2>📋 Tu Estrategia Anti-Cortisol y de Glucemia</h2>`;
         
-        // ---- 1. LÓGICA DE SUEÑO Y SIESTAS ----
-        html += `<div class="section-title">😴 Gestión del Sueño Realista</div><ul>`;
-        if (turno === "N" && familia === "SOLO_CASA") {
-            html += `<li>⚠️ <strong>Alerta Biológica:</strong> Al estar solo con los niños y no poder dormir siesta por la tarde, tu deuda de sueño nocturna será alta. Pon el foco en resistir de forma segura. No fuerces micro-siestas si comprometen la supervisión de los niños.</li>`;
-        } else if (turno === "N" && familia === "SOLO_COLE") {
-            html += `<li>💤 <strong>Siesta de Emergencia:</strong> Aprovecha el bloque de las 15:30h (cuando aún están bajo logística externa o haciendo deberes) para una siesta corta de 20-30 minutos en el sofá.</li>`;
-        } else if (turno === "N" && familia === "APOYO") {
-            html += `<li>💤 <strong>Siesta Profiláctica Completa:</strong> Tienes apoyo. Duerme un ciclo completo de 90 minutos por la tarde antes de entrar. Descarga la adenosina acumulada.</li>`;
-        } else if (turno === "24H") {
-            html += `<li>🚨 <strong>Guardia de 24h:</strong> Si el servicio lo permite, acumula siestas de exactamente 20 minutos durante la noche. Evitas la inercia del sueño profundo.</li>`;
-        } else if (turno === "M") {
-            html += `<li>🛌 <strong>Descanso Nocturno:</strong> Ve a dormir a las 22:00h para asegurar un bloque de recuperación consistente.</li>`;
+        // ---- 1. MÓDULO DE CONTROL DE GLUCEMIA Y REORDENACIÓN DE DESAYUNO ----
+        html += `<div class="section-title glucose-section">🩸 Optimización de tus Desayunos Reales (Post-Turno/Guardia)</div><ul>`;
+        if (turno === "N" || turno === "24H" || turno === "TN") {
+            html += `<li>🥪 <strong>Si eliges el Bocadillo (Opción 1):</strong> ¡Excelente la proteína de la tortilla, caballa o sardinas! Para bajar la barriga de estrés, reduce el pan de 80g a unos 40-50g (preferiblemente integral o de masa madre). 
+                <br>• <em>Regla de Oro:</em> Dale un mordisco a la tortilla/pescado antes de morder el pan. La proteína en el estómago reduce drásticamente el pico de azúcar en sangre que causa el pan blanco.</li>`;
+            html += `<li>🥛 <strong>Si eliges las Gachas/Batido (Opción 2):</strong> La harina de avena líquida junto con la bebida de avena eleva la glucosa muy rápido antes de dormir. 
+                <br>• <em>Mejora:</em> Cambia la bebida de avena por bebida de almendras sin azúcar (apenas tiene carbohidratos) o agua, y dobla la cantidad de clara de huevo en polvo para aumentar la saciedad y proteger tus músculos.</li>`;
+            html += `<li>⚠️ <strong>El peligro de la Bebida de Avena:</strong> La bebida de avena comercial es, esencialmente, almidón licuado con un índice glucémico muy alto. Al salir de la guardia tu cuerpo es resistente a la insulina; cambiarla por leche entera, bebida de soja sin azúcar o bebida de almendras reducirá drásticamente el almacenamiento de grasa abdominal mientras duermes.</li>`;
         } else {
-            html += `<li>🛌 Mantén tus horarios regulares de descanso en la medida en que la logística con tu esposa lo permita.</li>`;
+            html += `<li>🥗 <strong>Estructura Normal:</strong> Mantén tus comidas ordenadas. Prioriza grasas y proteínas en el desayuno para no tener picos de fatiga a media tarde.</li>`;
         }
         html += `</ul>`;
 
-        // ---- 2. LÓGICA DE CREATINA (Coadyuvante Cognitivo) ----
-        html += `<div class="section-title">🧠 Suplementación Eficiente (Creatina)</div><ul>`;
-        html += `<li>🥛 <strong>Dosis Fija Base (5g):</strong> Tómala por la mañana con tu primera comida familiar. La constancia celular mantiene tus depósitos llenos.</li>`;
+        // ---- 2. SUPLEMENTACIÓN VITAMINA D ----
+        html += `<div class="section-title vitd-section">☀️ Protocolo Vitamina D (Masa Muscular y Longevidad)</div><ul>`;
+        html += `<li>💊 <strong>Suplementación:</strong> Incorpora Vitamina D3 según prescripción profesional. 
+            <br>• <em>Momento Clave:</em> Tómala con tu desayuno de pescados grasos (caballa o sardinas en conserva). Al ser un suplemento liposoluble, las grasas saludables de estos pescados multiplican su absorción.</li>`;
+        html += `</ul>`;
+
+        // ---- 3. SUPLEMENTACIÓN CREATINA ----
+        html += `<div class="section-title">🧠 Suplementación (Creatina Monohidrato)</div><ul>`;
+        html += `<li>🥛 <strong>Uso diario:</strong> Consume creatina para mantener los depósitos celulares saturados.</li>`;
         if (turno === "N" || turno === "TN" || turno === "24H") {
-            html += `<li>🧠 <strong>Dosis Extra de Noche (3g a 5g):</strong> Tómala con la cena de las 20:00h. La evidencia (Nature, 2024) demuestra que la creatina actúa como combustible de rescate mitigando el declive de la memoria y la velocidad de reacción ante la falta de sueño severa.</li>`;
+            html += `<li>🧠 <strong>Estrategia de Noche:</strong> Considera su uso en la cena para apoyar la función cognitiva durante la falta de sueño.</li>`;
         }
         html += `</ul>`;
 
-        // ---- 3. ENTRENAMIENTO DE FUERZA (Masa Muscular y Longevidad) ----
-        html += `<div class="section-title kb-section">🏋️ Tu Bloque de Fuerza en Casa (10-15 Minutos)</div><ul>`;
-        
-        // Selección del entrenamiento óptimo según el cansancio de los turnos
+        // ---- 4. ENTRENAMIENTO DE FUERZA (10-15 MINUTOS) ----
+        html += `<div class="section-title kb-section">🏋️ Tu Estímulo Kettlebell en Casa (12kg)</div><ul>`;
         if (turno === "24H" || turno === "MT" || (turno === "N" && familia === "SOLO_CASA")) {
-            html += `<li><strong>Estímulo de Mantenimiento Metabólico:</strong> Tu fatiga del sistema nervioso central es muy elevada hoy. Para ganar músculo sin lesionarte, haz movimientos controlados sin llegar al fallo total.
-                <br>• <strong>Kettlebell Goblet Squat:</strong> 3 series x 10 repeticiones (lento al bajar).
-                <br>• <strong>Remo a una mano:</strong> 3 series x 8 repeticiones por lado (apretando la espalda).
-                <div class="study-note">Estudios epidemiológicos confirman que mantener solo 30-60 minutos de fuerza acumulados a la semana disminuye drásticamente el riesgo de mortalidad prematura cardiovascular. ¡Cada minuto cuenta!</div></li>`;
+            html += `<li><strong>Rutina Corta de Vaciado de Glucógeno:</strong> Estás muy cansado. Mover tus músculos actúa como una esponja que absorbe el azúcar en sangre. Haz esto en cualquier ventana libre de 10 minutos:
+                <br>• <strong>Kettlebell Swings (Balanceos):</strong> 3 series x 15 repeticiones (explosivo).
+                <br>• <strong>Zancadas (Lunges) sujetando la pesa:</strong> 3 series x 8 por pierna.</li>`;
         } else {
-            html += `<li><strong>Estímulo de Hipertrofia Sólido (Cerca del Fallo):</strong> Al tener mejores condiciones, busca máxima tensión mecánica con tu pesa de 12kg:
-                <br>• <strong>Kettlebell Swings (Balanceos explosivos):</strong> 4 series x 12 repeticiones (Potencia de cadena posterior).
-                <br>• <strong>Sentadilla Goblet Profunda:</strong> 4 series x 10 repeticiones (Controlando 3 segundos la bajada).
-                <br>• <strong>Remo a una mano en silla:</strong> 4 series x 10 repeticiones por lado (Llegando casi a no poder hacer ninguna más).
-                <div class="study-note">A los 46 años, el entrenamiento de fuerza cercano al fallo compensa la pérdida de masa muscular (sarcopenia) y reduce la incidencia de enfermedades metabólicas de forma severa según el BJSM.</div></li>`;
+            html += `<li><strong>Rutina Completa de Hipertrofia (Cerca del Fallo):</strong> Tienes energía disponible. Ejecuta con máxima tensión mecánica para romper fibras y ganar músculo:
+                <br>• <strong>Kettlebell Swings (Balanceos):</strong> 4 series x 12 repeticiones.
+                <br>• <strong>Sentadilla Goblet Profunda:</strong> 4 series x 10 repeticiones.
+                <br>• <strong>Remo a una mano en silla:</strong> 4 series x 10 repeticiones por lado.</li>`;
         }
         html += `</ul>`;
 
-        // ---- 4. HÁBITOS BIENESTAR CAMUFLADOS ----
-        html += `<div class="section-title">🌿 Bienestar Camuflado (Sol, Lectura y Mente)</div><ul>`;
+        // ---- 5. SUEÑO Y HÁBITOS FAMILIARES ----
+        html += `<div class="section-title">🌿 Logística y Descanso Realista</div><ul>`;
         if (familia === "SOLO_CASA" || familia === "SOLO_COLE") {
-            html += `<li>☀️ <strong>Deporte Exterior:</strong> Usa el trayecto a pie para llevar o recoger a los niños como tu paseo lumínico. La luz del sol bloquea tu melatonina diurna.</li>`;
-            html += `<li>📚 <strong>Lectura en Micro-dosis:</strong> Lee 15 minutos en el coche o en la grada mientras esperas a que salgan de sus actividades extraescolares.</li>`;
-            html += `<li>🧘 <strong>Meditación de Rescate (3 min):</strong> Siéntate solo en el coche en silencio antes de apagar el motor al llegar a casa. Respira de forma cuadrada (Inhala 4s, mantén 4s, exhala 4s, mantén 4s) para bajar el cortisol de la jornada laboral.</li>`;
+            html += `<li>☀️ <strong>Paseo de Luz Solar:</strong> Camina a pie a por los niños. La luz detiene la melatonina e incrementa la dopamina, reduciendo los antojos azucarados de la tarde.</li>`;
+            html += `<li>🧘 <strong>Meditación Cortisol (3 min):</strong> Respiración cuadrada en el coche. Bajar el estrés disminuye directamente la acumulación de grasa en el abdomen.</li>`;
         } else {
-            html += `<li>☀️ <strong>Deporte Exterior:</strong> Sal a caminar de forma individual 20-30 minutos en tu ventana libre por la mañana o tarde.</li>`;
-            html += `<li>📚 <strong>Lectura Consciente:</strong> Dedica 30 minutos a leer antes de tus periodos de descanso para relajar la vista.</li>`;
-            html += `<li>🧘 <strong>Meditación Formal (10 min):</strong> Realiza una práctica guiada en un espacio silencioso de tu casa.</li>`;
+            html += `<li>☀️ <strong>Sol Directo:</strong> Pasea 20 minutos individuales bajo el sol.</li>`;
+            html += `<li>🧘 <strong>Meditación Formal (10 min):</strong> Práctica en un lugar silencioso de tu casa.</li>`;
         }
         html += `</ul>`;
 
