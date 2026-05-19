@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CronoFuerza MTN</title>
-    <!-- Enlaces PWA e Iconos -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <meta name="theme-color" content="#2b6cb0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="logo.svg">
-    
     <style>
         :root {
             --bg-color: #f0f4f8;
@@ -244,12 +242,14 @@
             fases: { m: "🌅 FASE MAÑANA", t: "☀️ FASE TARDE", n: "🌑 FASE NOCHE / MADRUGADA", s: "🔄 FASE SALIENTE / POST-TURNO" },
             habs: ["Creatina Base (5g)", "Vitamina D3 (Con grasa)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glucemia", "Powernap (20 min) / Sueño"],
             turnos: [
+                {v: "", t: "-- Selecciona una jornada --"},
                 {v: "M", t: "Turno M (Mañana)"}, {v: "T", t: "Turno T (Tarde)"},
                 {v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"}, {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},
                 {v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"}, {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},
                 {v: "LIBRE", t: "Día Libre / Descanso Puro"}
             ],
             familia: [
+                {v: "", t: "-- Selecciona situación familiar --"},
                 {v: "APOYO", t: "Tengo apoyo (Cónyuge en casa / Niños en escuela)"},
                 {v: "SOLO_COLE", t: "Solo con peques (Van a escuela/extraescolares)"},
                 {v: "SOLO_CASA", t: "Solo con peques atrapados en casa (Logística total)"}
@@ -273,12 +273,14 @@
             fases: { m: "🌅 FASE MANHÃ", t: "☀️ FASE TARDE", n: "🌑 FASE NOITE / MADRUGADA", s: "🔄 FASE DE SAÍDA / PÓS-TURNO" },
             habs: ["Creatina Base (5g)", "Vitamina D3 (Com gordura)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glicémia", "Powernap (20 min) / Sono"],
             turnos: [
+                {v: "", t: "-- Seleciona uma jornada --"},
                 {v: "M", t: "Turno M (Manhã)"}, {v: "T", t: "Turno T (Tarde)"},
                 {v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"}, {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites seguidas)"},
                 {v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"}, {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24h"},
                 {v: "LIBRE", t: "Dia de Folga / Descanso Puro"}
             ],
             familia: [
+                {v: "", t: "-- Seleciona situação familiar --"},
                 {v: "APOYO", t: "Tenho apoio (Cônjuge em casa / Miúdos na escola)"},
                 {v: "SOLO_COLE", t: "Sozinho com miúdos (Vão à escola/atividades)"},
                 {v: "SOLO_CASA", t: "Sozinho com miúdos em casa (Logística total)"}
@@ -310,16 +312,14 @@
         document.getElementById('hist-desc').innerText = diccionario[lang].histD;
         document.getElementById('btn-clear-hist').innerText = diccionario[lang].btnClear;
 
-        const tSel = document.getElementById('turnoSelect'); const tVal = tSel.value;
+        const tSel = document.getElementById('turnoSelect');
         tSel.innerHTML = diccionario[lang].turnos.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
-        if(tVal) tSel.value = tVal;
 
-        const fSel = document.getElementById('familiaSelect'); const fVal = fSel.value;
+        const fSel = document.getElementById('familiaSelect');
         fSel.innerHTML = diccionario[lang].familia.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
-        if(fVal) fSel.value = fVal;
 
         document.getElementById('kb-guide-list').innerHTML = diccionario[lang].kbLista.map(li => `<li>${li}</li>`).join('');
-        volverHome();
+        document.getElementById('planOutput').style.display = "none";
         cargarHistorial();
     }
 
@@ -345,7 +345,6 @@
         const f = diccionario[idiomaActual].fases;
         let html = "";
 
-        // MAÑANA
         html += `<div class="phase-title">${f.m}</div><ul>`;
         html += `<li>🥛 <strong>06:00h/08:30h - Creatina (5g):</strong> Toma fija matutina diaria.</li>`;
         if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
@@ -355,14 +354,12 @@
         if(turno === "M" && familia === "SOLO_CASA") html += `<li>☀️ <strong>Paseo Lumínico:</strong> Lleva a los niños a pie para frenar la melatonina.</li>`;
         html += `</ul>`;
 
-        // TARDE
         html += `<div class="phase-title">${f.t}</div><ul>`;
         html += `<li>💤 <strong>Powernap Universal (20 min):</strong> Micro-siesta protectora en el sofá para reducir el cortisol y controlar la barriga de estrés.</li>`;
         if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 <strong>Siesta Profiláctica Extendida:</strong> Duerme 90 minutos para vaciar la presión de sueño antes del turno.</li>`;
         html += `<li>🏋️ <strong>Bloque Kettlebell:</strong> Inicia tus 10-15m libres o abre el EMOM en la pestaña superior.</li>`;
         html += `</ul>`;
 
-        // NOCHE
         html += `<div class="phase-title" style="background:#2d3748; color:#fff;">${f.n}</div><ul>`;
         if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
             html += `<li>🧠 <strong>Cena + Escudo de Creatina:</strong> Añade 3g a 5g de creatina en la cena previa (20:00h).</li>`;
@@ -453,17 +450,10 @@
         document.getElementById('btn-timer-start').style.background = "var(--success)";
     }
 
-    // REGISTRO OBLIGATORIO DE SERVICE WORKER PARA PWA
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').then((reg) => {
-                console.log('CronoFuerza PWA cargada con éxito', reg.scope);
-            }).catch((err) => {
-                console.log('Fallo al registrar Service Worker', err);
-            });
-        });
-    }
+    // Inicialización explícita al arrancar
+    window.onload = function() {
+        cambiarIdioma('es');
+    };
 </script>
-
 </body>
 </html>
