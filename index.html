@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador M-T-N Flexible</title>
+    <title>CronoBienestar: Fuerza y Conciliación</title>
     <style>
         :root {
-            --bg-color: #f7fafc;
+            --bg-color: #f0f4f8;
             --card-bg: #ffffff;
             --text-color: #2d3748;
-            --primary: #3182ce;
+            --primary: #2b6cb0;
             --accent: #dd6b20;
-            --kettlebell-color: #4a5568;
+            --kettlebell: #2c5282;
             --border: #e2e8f0;
         }
         body {
@@ -19,30 +19,31 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             justify-content: center;
         }
         .container {
-            max-width: 480px;
+            max-width: 460px;
             width: 100%;
             background: var(--card-bg);
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-sizing: border-box;
         }
         h1 { text-align: center; font-size: 22px; margin-bottom: 5px; color: #1a202c; }
         h2 { text-align: center; font-size: 13px; color: #718096; font-weight: normal; margin-top: 0; margin-bottom: 20px; }
         
-        .box-component {
+        .box-question {
             background: #edf2f7;
             border: 1px solid var(--border);
-            padding: 15px;
+            padding: 14px;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-        label { font-weight: bold; display: block; margin-bottom: 8px; font-size: 14px; }
-        select, input[type="file"] {
+        label { font-weight: bold; display: block; margin-bottom: 6px; font-size: 14px; }
+        select {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
@@ -50,21 +51,27 @@
             font-size: 15px;
             box-sizing: border-box;
             background-color: #fff;
-            margin-bottom: 12px;
+            margin-bottom: 5px;
         }
-        .switch-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 8px;
-            border-top: 1px solid #cbd5e1;
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background 0.2s;
         }
-        .switch-label { font-weight: bold; font-size: 14px; color: var(--accent); }
-        .checkbox-large { width: 20px; height: 20px; cursor: pointer; }
+        button:hover { background-color: #2b6cb0; }
         
-        .plan-box { display: none; }
-        .active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        
+        .output-box {
+            margin-top: 20px;
+            display: none;
+        }
         .section-title {
             font-size: 15px;
             font-weight: bold;
@@ -74,222 +81,121 @@
             border-bottom: 2px solid var(--border);
             color: var(--primary);
         }
-        .kettlebell-title {
-            color: var(--kettlebell-color);
-            border-bottom: 2px solid #cbd5e1;
-        }
+        .kb-section { color: var(--kettlebell); border-bottom: 2px solid #bee3f8; }
         ul { padding-left: 18px; margin: 0; }
         li { margin-bottom: 10px; line-height: 1.4; font-size: 14px; }
-        
-        .badge {
-            background-color: #e2e8f0;
-            color: #4a5568;
-            font-size: 12px;
-            padding: 5px 10px;
-            border-radius: 12px;
-            font-weight: bold;
-            display: block;
-            text-align: center;
-            margin-bottom: 15px;
+        .study-note {
+            font-size: 11px;
+            color: #718096;
+            font-style: italic;
+            margin-top: 4px;
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>⏱️ Mi Cuadrante M-T-N</h1>
-    <h2>Conciliación Familiar | 46 años | Kettlebell 12kg</h2>
+    <h1>⏱️ Planificador de Fuerza Real</h1>
+    <h2>46 años | 75.5 kg | Objetivo: Hipertrofia y Longevidad</h2>
 
-    <!-- CONTROLADORES -->
-    <div class="box-component">
-        <label for="icsFile">📅 Sincronizar Calendario Laboral (.ics):</label>
-        <input type="file" id="icsFile" accept=".ics" onchange="importarCalendario(event)">
-
-        <label for="turnoSelect">⚙️ O selecciona manualmente:</label>
-        <select id="turnoSelect" onchange="calcularPlan()">
-            <option value="">-- Selecciona --</option>
-            <option value="manana">☀️ Turno M (Mañana)</option>
-            <option value="tarde">🔄 Turno T (Tarde)</option>
-            <option value="noche">🌑 Turno N (Noche)</option>
-            <option value="descanso">🔋 Día Libre / Descanso</option>
+    <!-- FORMULARIO INTERACTIVO -->
+    <div class="box-question">
+        <label for="turnoSelect">💼 ¿Qué jornada laboral tienes hoy?</label>
+        <select id="turnoSelect">
+            <option value="M">Turno M (Mañana sola)</option>
+            <option value="T">Turno T (Tarde sola)</option>
+            <option value="N">Turno N (Noche sola)</option>
+            <option value="MT">Doblando Turno (M + T)</option>
+            <option value="TN">Doblando Turno (T + N)</option>
+            <option value="24H">Guardia Extrema de 24 Horas</option>
+            <option value="LIBRE">Día Libre / Descanso</option>
         </select>
-        
-        <div class="switch-container">
-            <span class="switch-label">🧒 ¿Estás SOLO con los niños hoy?</span>
-            <input type="checkbox" id="soloNinos" class="checkbox-large" onchange="calcularPlan()">
-        </div>
     </div>
 
-    <div id="statusInfo" class="badge" style="display:none;"></div>
+    <div class="box-question">
+        <label for="familiaSelect">🧒 ¿Cuál es la situación con tus hijos hoy?</label>
+        <select id="familiaSelect">
+            <option value="APOYO">Tengo apoyo (Esposa en casa / Niños en escuela)</option>
+            <option value="SOLO_COLE">Solo con peques, pero van a la escuela/extraescolares</option>
+            <option value="SOLO_CASA">Solo con peques atrapados en casa (No duermo / Logística total)</option>
+        </select>
+    </div>
 
-    <!-- CONTENEDOR DINÁMICO DEL PLAN -->
-    <div id="planContenedor"></div>
+    <button onclick="generarPlanPersonalizado()">⚡ Calcular mi Plan de Hoy</button>
+
+    <!-- ZONA DE SALIDA -->
+    <div id="output" class="output-box">
+        <div id="dinamicoContenido"></div>
+    </div>
 </div>
 
 <script>
-    const planesDatos = {
-        manana: {
-            titulo: "☀️ Plan para Turno M (Mañana)",
-            creatina: ["<strong>06:00h - Dosis Base (5g):</strong> Con el desayuno antes de que despierte la casa."],
-            kettlebell: "<strong>Cualquier momento libre (10-15 min):</strong> ¡Día de fuerza! Aprovecha que tienes la tarde libre. Haz series pesadas y lentas de Sentadillas Goblet y Remos para mantener masa muscular a tus 46 años.",
-            bienestar: {
-                normal: [
-                    "<strong>16:00h - Deporte Exterior (20 min):</strong> Salida individual a caminar o trotar bajo el sol.",
-                    "<strong>18:00h - Lectura (30 min):</strong> Tiempo propio de desconexión.",
-                    "<strong>21:30h - Meditación (10 min):</strong> En la cama antes de dormir."
-                ],
-                solo: [
-                    "<strong>14:00h - Meditación Express (3 min):</strong> En el coche, justo al aparcar al volver del trabajo, antes de entrar a casa.",
-                    "<strong>16:30h - Deporte Exterior Camuflado:</strong> Ve a pie a recoger a los niños a las extraescolares a paso ligero.",
-                    "<strong>17:30h - Lectura en Espera (15 min):</strong> Llévate el libro y lee en el coche o en la grada de su actividad.",
-                    "<strong>21:30h - Lectura en Familia:</strong> Lee con ellos en la cama antes de apagar las luces."
-                ]
-            },
-            sueno: ["<strong>22:00h - Ventana de Sueño:</strong> Límite para ir a dormir para asegurar el descanso."]
-        },
-        tarde: {
-            titulo: "🔄 Plan para Turno T (Tarde)",
-            creatina: ["<strong>08:30h - Dosis Base (5g):</strong> Con el desayuno familiar."],
-            kettlebell: "<strong>Cualquier momento libre (10-15 min):</strong> ¡Día de activación! Hazlo preferiblemente por la mañana. Enfoque dinámico: Kettlebell Swings intensos para activar el sistema nervioso antes de entrar al turno.",
-            bienestar: {
-                normal: [
-                    "<strong>09:30h - Meditación (10 min):</strong> Enfoque matutino.",
-                    "<strong>10:00h - Deporte Exterior (30 min):</strong> Exposición solar individual."
-                ],
-                solo: [
-                    "<strong>08:45h - Deporte Exterior Lumínico:</strong> Ve caminando a dejar a los niños al colegio para activar tus ritmos circadianos.",
-                    "<strong>09:15h - Meditación de Rescate (5 min):</strong> Al volver a casa en silencio.",
-                    "<strong>23:30h - Lectura de Cierre (15 min):</strong> Al llegar del trabajo para desconectar el cerebro."
-                ]
-            },
-            sueno: ["<strong>00:30h - Descanso:</strong> Intenta apagar pantallas rápido al volver del turno."]
-        },
-        noche: {
-            titulo: "🌑 Plan para Turno N (Noche)",
-            creatina: [
-                "<strong>09:00h - Dosis Base (5g):</strong> Al despertar de tu bloque de sueño.",
-                "<strong>20:00h - Dosis Extra de Protección (3g a 5g):</strong> En la cena familiar para proteger tus neuronas de madrugada."
-            ],
-            kettlebell: "<strong>Cualquier momento libre (10-15 min):</strong> ¡Día suave! No te agotes antes de la noche. Haz balanceos (swings) fluidos y controlados o halos de movilidad para desentumecer la espalda sin acumular fatiga muscular.",
-            bienestar: {
-                normal: [
-                    "<strong>11:30h - Deporte Exterior (25 min):</strong> Paseo al sol.",
-                    "<strong>15:30h - Lectura (30 min):</strong> Relajación pre-siesta.",
-                    "<strong>16:30h a 18:00h - Siesta Profiláctica Clave:</strong> 90 minutos de sueño profundo."
-                ],
-                solo: [
-                    "<strong>15:30h - Meditación en Calma (5 min):</strong> Justo antes de que los niños salgan del colegio.",
-                    "<strong>16:45h - Deporte Exterior con Niños:</strong> Parque de tarde o paseo activo con ellos de regreso a casa.",
-                    "<strong>18:30h - Siesta de Emergencia (20-30 min):</strong> Si estás solo, aprovecha cuando hagan deberes o vean dibujos en el sofá."
-                ]
-            },
-            sueno: ["<strong>Mañana siguiente:</strong> Al salir del turno, duerme tu bloque sólido mientras ellos están en la escuela."]
-        },
-        descanso: {
-            titulo: "🔋 Plan para Día Libre / Descanso",
-            creatina: ["<strong>Al despertar - Dosis Base (5g):</strong> Clave para acelerar la recuperación celular."],
-            kettlebell: "<strong>Cualquier momento libre (15 min):</strong> ¡Entrenamiento libre! Elige tus movimientos favoritos con tus 12kg. Al no trabajar hoy, puedes buscar un punto más de intensidad si el cuerpo te lo pide.",
-            bienestar: {
-                normal: [
-                    "<strong>13:00h - Meditación (12 min):</strong> Post-siesta larga.",
-                    "<strong>16:30h - Deporte Exterior (30 min):</strong> Actividad en la naturaleza.",
-                    "<strong>19:00h - Lectura Profunda (45 min):</strong> Disfruta de la lectura ahora que tu cerebro descansa."
-                ],
-                solo: [
-                    "<strong>07:30h a 12:30h - Sueño de Recuperación:</strong> Bloque sagrado mientras los niños están en el colegio.",
-                    "<strong>13:00h - Meditación de Reseteo (5 min):</strong> Para quitar la desorientación post-turno.",
-                    "<strong>19:30h - Lectura en Silencio Compartido:</strong> Propón en casa 'los 20 minutos de lectura' donde todos leen juntos en el salón."
-                ]
-            },
-            sueno: ["<strong>22:30h - Reajuste Circadiano:</strong> Acuéstate temprano aprovechando el ritmo infantil."]
-        }
-    };
-
-    function calcularPlan() {
+    function generarPlanPersonalizado() {
         const turno = document.getElementById('turnoSelect').value;
-        const soloConNinos = document.getElementById('soloNinos').checked;
-        const contenedor = document.getElementById('planContenedor');
+        const familia = document.getElementById('familiaSelect').value;
+        const output = document.getElementById('output');
+        const contenedor = document.getElementById('dinamicoContenido');
         
-        if (!turno) {
-            contenedor.innerHTML = "";
-            return;
+        let html = `<h2>📋 Tu Estrategia Optimizada para Hoy</h2>`;
+        
+        // ---- 1. LÓGICA DE SUEÑO Y SIESTAS ----
+        html += `<div class="section-title">😴 Gestión del Sueño Realista</div><ul>`;
+        if (turno === "N" && familia === "SOLO_CASA") {
+            html += `<li>⚠️ <strong>Alerta Biológica:</strong> Al estar solo con los niños y no poder dormir siesta por la tarde, tu deuda de sueño nocturna será alta. Pon el foco en resistir de forma segura. No fuerces micro-siestas si comprometen la supervisión de los niños.</li>`;
+        } else if (turno === "N" && familia === "SOLO_COLE") {
+            html += `<li>💤 <strong>Siesta de Emergencia:</strong> Aprovecha el bloque de las 15:30h (cuando aún están bajo logística externa o haciendo deberes) para una siesta corta de 20-30 minutos en el sofá.</li>`;
+        } else if (turno === "N" && familia === "APOYO") {
+            html += `<li>💤 <strong>Siesta Profiláctica Completa:</strong> Tienes apoyo. Duerme un ciclo completo de 90 minutos por la tarde antes de entrar. Descarga la adenosina acumulada.</li>`;
+        } else if (turno === "24H") {
+            html += `<li>🚨 <strong>Guardia de 24h:</strong> Si el servicio lo permite, acumula siestas de exactamente 20 minutos durante la noche. Evitas la inercia del sueño profundo.</li>`;
+        } else if (turno === "M") {
+            html += `<li>🛌 <strong>Descanso Nocturno:</strong> Ve a dormir a las 22:00h para asegurar un bloque de recuperación consistente.</li>`;
+        } else {
+            html += `<li>🛌 Mantén tus horarios regulares de descanso en la medida en que la logística con tu esposa lo permita.</li>`;
         }
-        
-        const datos = planesDatos[turno];
-        const modo = soloConNinos ? 'solo' : 'normal';
-        const listaBienestar = datos.bienestar[modo];
-        
-        let html = `<h2>${datos.titulo} ${soloConNinos ? '🧒 (Modo Solo)' : '👥 (Modo con Apoyo)'}</h2>`;
-        
-        // Creatina
-        html += `<div class="section-title">🧠 Suplementación (Creatina)</div><ul>`;
-        datos.creatina.forEach(item => html += `<li>${item}</li>`);
         html += `</ul>`;
-        
-        // KETTLEBELL (Sección fija independiente del horario)
-        html += `<div class="section-title kettlebell-title">🏋️ Rutina Kettlebell de hoy (12kg)</div><ul>`;
-        html += `<li>${datos.kettlebell}</li>`;
+
+        // ---- 2. LÓGICA DE CREATINA (Coadyuvante Cognitivo) ----
+        html += `<div class="section-title">🧠 Suplementación Eficiente (Creatina)</div><ul>`;
+        html += `<li>🥛 <strong>Dosis Fija Base (5g):</strong> Tómala por la mañana con tu primera comida familiar. La constancia celular mantiene tus depósitos llenos.</li>`;
+        if (turno === "N" || turno === "TN" || turno === "24H") {
+            html += `<li>🧠 <strong>Dosis Extra de Noche (3g a 5g):</strong> Tómala con la cena de las 20:00h. La evidencia (Nature, 2024) demuestra que la creatina actúa como combustible de rescate mitigando el declive de la memoria y la velocidad de reacción ante la falta de sueño severa.</li>`;
+        }
         html += `</ul>`;
+
+        // ---- 3. ENTRENAMIENTO DE FUERZA (Masa Muscular y Longevidad) ----
+        html += `<div class="section-title kb-section">🏋️ Tu Bloque de Fuerza en Casa (10-15 Minutos)</div><ul>`;
         
-        // Bienestar
-        html += `<div class="section-title">🌿 Hábitos Adaptados (Deporte, Lectura, Mente)</div><ul>`;
-        listaBienestar.forEach(item => html += `<li>${item}</li>`);
+        // Selección del entrenamiento óptimo según el cansancio de los turnos
+        if (turno === "24H" || turno === "MT" || (turno === "N" && familia === "SOLO_CASA")) {
+            html += `<li><strong>Estímulo de Mantenimiento Metabólico:</strong> Tu fatiga del sistema nervioso central es muy elevada hoy. Para ganar músculo sin lesionarte, haz movimientos controlados sin llegar al fallo total.
+                <br>• <strong>Kettlebell Goblet Squat:</strong> 3 series x 10 repeticiones (lento al bajar).
+                <br>• <strong>Remo a una mano:</strong> 3 series x 8 repeticiones por lado (apretando la espalda).
+                <div class="study-note">Estudios epidemiológicos confirman que mantener solo 30-60 minutos de fuerza acumulados a la semana disminuye drásticamente el riesgo de mortalidad prematura cardiovascular. ¡Cada minuto cuenta!</div></li>`;
+        } else {
+            html += `<li><strong>Estímulo de Hipertrofia Sólido (Cerca del Fallo):</strong> Al tener mejores condiciones, busca máxima tensión mecánica con tu pesa de 12kg:
+                <br>• <strong>Kettlebell Swings (Balanceos explosivos):</strong> 4 series x 12 repeticiones (Potencia de cadena posterior).
+                <br>• <strong>Sentadilla Goblet Profunda:</strong> 4 series x 10 repeticiones (Controlando 3 segundos la bajada).
+                <br>• <strong>Remo a una mano en silla:</strong> 4 series x 10 repeticiones por lado (Llegando casi a no poder hacer ninguna más).
+                <div class="study-note">A los 46 años, el entrenamiento de fuerza cercano al fallo compensa la pérdida de masa muscular (sarcopenia) y reduce la incidencia de enfermedades metabólicas de forma severa según el BJSM.</div></li>`;
+        }
         html += `</ul>`;
-        
-        // Sueño
-        html += `<div class="section-title">😴 Gestión del Sueño</div><ul>`;
-        datos.sueno.forEach(item => html += `<li>${item}</li>`);
+
+        // ---- 4. HÁBITOS BIENESTAR CAMUFLADOS ----
+        html += `<div class="section-title">🌿 Bienestar Camuflado (Sol, Lectura y Mente)</div><ul>`;
+        if (familia === "SOLO_CASA" || familia === "SOLO_COLE") {
+            html += `<li>☀️ <strong>Deporte Exterior:</strong> Usa el trayecto a pie para llevar o recoger a los niños como tu paseo lumínico. La luz del sol bloquea tu melatonina diurna.</li>`;
+            html += `<li>📚 <strong>Lectura en Micro-dosis:</strong> Lee 15 minutos en el coche o en la grada mientras esperas a que salgan de sus actividades extraescolares.</li>`;
+            html += `<li>🧘 <strong>Meditación de Rescate (3 min):</strong> Siéntate solo en el coche en silencio antes de apagar el motor al llegar a casa. Respira de forma cuadrada (Inhala 4s, mantén 4s, exhala 4s, mantén 4s) para bajar el cortisol de la jornada laboral.</li>`;
+        } else {
+            html += `<li>☀️ <strong>Deporte Exterior:</strong> Sal a caminar de forma individual 20-30 minutos en tu ventana libre por la mañana o tarde.</li>`;
+            html += `<li>📚 <strong>Lectura Consciente:</strong> Dedica 30 minutos a leer antes de tus periodos de descanso para relajar la vista.</li>`;
+            html += `<li>🧘 <strong>Meditación Formal (10 min):</strong> Realiza una práctica guiada en un espacio silencioso de tu casa.</li>`;
+        }
         html += `</ul>`;
-        
+
         contenedor.innerHTML = html;
-    }
-
-    function importarCalendario(event) {
-        const file = event.target.files;
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            procesarICS(e.target.result);
-        };
-        reader.readAsText(file);
-    }
-
-    function procesarICS(data) {
-        const hoy = new Date().toISOString().slice(0,10).replace(/-/g, "");
-        const lineas = data.split(/\r?\n/);
-        let esEventoHoy = false;
-        let resumenEvento = "";
-        let turnoDetectado = "descanso";
-
-        for (let i = 0; i < lineas.length; i++) {
-            let linea = lineas[i];
-            if (linea.startsWith("DTSTART") && linea.includes(hoy)) {
-                esEventoHoy = true;
-            }
-            if (linea.startsWith("SUMMARY") && esEventoHoy) {
-                resumenEvento = linea.split(":").trim().toUpperCase();
-                esEventoHoy = false;
-                break;
-            }
-            if (linea.startsWith("END:VEVENT")) esEventoHoy = false;
-        }
-
-        if (resumenEvento === "M" || resumenEvento.includes("MAÑANA")) {
-            turnoDetectado = "manana";
-        } else if (resumenEvento === "T" || resumenEvento.includes("TARDE")) {
-            turnoDetectado = "tarde";
-        } else if (resumenEvento === "N" || resumenEvento.includes("NOCHE")) {
-            turnoDetectado = "noche";
-        }
-
-        const statusBox = document.getElementById('statusInfo');
-        statusBox.style.display = 'block';
-        statusBox.innerHTML = `📅 Calendario Sincronizado. Hoy toca: <b>Turno ${resumenEvento}</b>`;
-        
-        document.getElementById('turnoSelect').value = turnoDetectado;
-        calcularPlan();
+        output.style.display = "block";
     }
 </script>
 
