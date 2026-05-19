@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoBienestar / CronoBemEstar</title>
+    <title>CronoBienestar MTN v3</title>
     <style>
         :root {
             --bg-color: #f0f4f8;
@@ -109,18 +109,11 @@
         .glucose-section { color: var(--glucose); border-bottom: 2px solid #fed7d7; }
         ul { padding-left: 18px; margin: 0; }
         li { margin-bottom: 10px; line-height: 1.4; font-size: 14px; }
-        .study-note {
-            font-size: 11px;
-            color: #718096;
-            font-style: italic;
-            margin-top: 4px;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- SELECTOR DE IDIOMA -->
     <div class="lang-selector">
         <button class="lang-btn active" id="btn-es" onclick="cambiarIdioma('es')">🇪🇸 Español</button>
         <button class="lang-btn" id="btn-pt" onclick="cambiarIdioma('pt')">🇵🇹 Português</button>
@@ -129,24 +122,22 @@
     <h1 id="app-title">⏱️ Planificador Metabólico MTN</h1>
     <h2 id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</h2>
 
-    <!-- FORMULARIO INTERACTIVO -->
     <div class="box-question">
         <label id="lbl-turno" for="turnoSelect">💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?</label>
         <select id="turnoSelect">
-            <!-- Se llena dinámicamente mediante JS -->
+            <!-- Dinámico -->
         </select>
     </div>
 
     <div class="box-question">
         <label id="lbl-familia" for="familiaSelect">🧒 ¿Cuál es la situación con tus hijos hoy?</label>
         <select id="familiaSelect">
-            <!-- Se llena dinámicamente mediante JS -->
+            <!-- Dinámico -->
         </select>
     </div>
 
     <button class="calc-button" id="btn-calc" onclick="generarPlanCompleto()">⚡ Calcular mi Plan de Hoy</button>
 
-    <!-- ZONA DE SALIDA -->
     <div id="output" class="output-box">
         <div id="dinamicoContenido"></div>
     </div>
@@ -162,14 +153,16 @@
             lblTurno: "💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?",
             lblFamilia: "🧒 ¿Cuál es la situación con tus hijos hoy?",
             btnCalc: "⚡ Calcular mi Plan de Hoy",
-            resTitulo: "📋 Tu Estrategia Anti-Cortisol y de Glucemia",
+            resTitulo: "📋 Tu Estrategia Personalizada de Hoy",
             turnos: [
-                {v: "M", t: "Turno M (Mañana sola)"},
-                {v: "T", t: "Turno T (Tarde sola)"},
-                {v: "N", t: "Saliente de Turno N (Noche)"},
+                {v: "M", t: "Turno M (Mañana)"},
+                {v: "T", t: "Turno T (Tarde)"},
+                {v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"},
+                {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},
+                {v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"},
                 {v: "MT", t: "Doblando Turno (M + T)"},
                 {v: "TN", t: "Doblando Turno (T + N)"},
-                {v: "24H", t: "Saliente de Guardia de 24 Horas"},
+                {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},
                 {v: "LIBRE", t: "Día Libre / Descanso Puro"}
             ],
             familia: [
@@ -177,11 +170,11 @@
                 {v: "SOLO_COLE", t: "Solo con peques, pero van a la escuela/extraescolares"},
                 {v: "SOLO_CASA", t: "Solo con peques atrapados en casa (No duermo / Logística total)"}
             ],
-            secGlucosa: "🩸 Escudo Anti-Atracones (Post-Turno/Guardia)",
-            secVitD: "☀️ Protocolo Vitamina D (Masa Muscular y Longevidad)",
+            secGlucosa: "🩸 Escudo Anti-Atracones y Nutrición",
+            secVitD: "☀️ Protocolo Vitamina D (Masa Muscular)",
             secCreatina: "🧠 Suplementación (Creatina Monohidrato)",
             secKettlebell: "🏋️ Tu Estímulo Kettlebell en Casa (12kg)",
-            secSueno: "🌿 Logística y Descanso Realista"
+            secSueno: "🌿 Siestas, Logística y Descanso Realista"
         },
         pt: {
             title: "⏱️ Planeador Metabólico MTN",
@@ -189,14 +182,16 @@
             lblTurno: "💼 Que jornada de trabalho tens hoje ou acabaste de fazer?",
             lblFamilia: "🧒 Qual é a situação com os miúdos hoje?",
             btnCalc: "⚡ Calcular o meu Plano de Hoje",
-            resTitulo: "📋 Tua Estratégia Anti-Cortisol e de Glicémia",
+            resTitulo: "📋 Tua Estratégia Personalizada de Hoje",
             turnos: [
-                {v: "M", t: "Turno M (Manhã apenas)"},
-                {v: "T", t: "Turno T (Tarde apenas)"},
-                {v: "N", t: "Sair do Turno N (Noite)"},
+                {v: "M", t: "Turno M (Manhã)"},
+                {v: "T", t: "Turno T (Tarde)"},
+                {v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"},
+                {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites consecutivas)"},
+                {v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"},
                 {v: "MT", t: "Turno Duplo (M + T)"},
                 {v: "TN", t: "Turno Duplo (T + N)"},
-                {v: "24H", t: "Sair de Banco / Piquete de 24 Horas"},
+                {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24 Horas"},
                 {v: "LIBRE", t: "Dia de Folga / Descanso Puro"}
             ],
             familia: [
@@ -204,11 +199,11 @@
                 {v: "SOLO_COLE", t: "Sozinho com os miúdos, mas vão à escola/atividades"},
                 {v: "SOLO_CASA", t: "Sozinho com os miúdos em casa (Sem dormir / Logística total)"}
             ],
-            secGlucosa: "🩸 Escudo Anti-Compulsão (Pós-Turno/Banco)",
-            secVitD: "☀️ Protocolo Vitamina D (Massa Muscular e Longevidade)",
+            secGlucosa: "🩸 Escudo Anti-Compulsão e Nutrição",
+            secVitD: "☀️ Protocolo Vitamina D (Massa Muscular)",
             secCreatina: "🧠 Suplementação (Creatina Monohidrato)",
-            secKettlebell: "🏋️ Teu Estímulo Kettlebell em Casa (12kg)",
-            secSueno: "🌿 Logística e Descanso Realista"
+            secKettlebell: "🏋️ Teu Estímulo Kettlebell en Casa (12kg)",
+            secSueno: "🌿 Sestas, Logística e Descanso Realista"
         }
     };
 
@@ -217,14 +212,12 @@
         document.getElementById('btn-es').classList.toggle('active', lang === 'es');
         document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
         
-        // Actualizar textos fijos
         document.getElementById('app-title').innerText = traducciones[lang].title;
         document.getElementById('app-subtitle').innerText = traducciones[lang].subtitle;
         document.getElementById('lbl-turno').innerText = traducciones[lang].lblTurno;
         document.getElementById('lbl-familia').innerText = traducciones[lang].lblFamilia;
         document.getElementById('btn-calc').innerText = traducciones[lang].btnCalc;
         
-        // Re-renderizar selectores manteniendo selección si existe
         const tSel = document.getElementById('turnoSelect');
         const tVal = tSel.value;
         tSel.innerHTML = traducciones[lang].turnos.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
@@ -235,7 +228,6 @@
         fSel.innerHTML = traducciones[lang].familia.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
         if(fVal) fSel.value = fVal;
 
-        // Ocultar output anterior al cambiar idioma para evitar inconsistencias
         document.getElementById('output').style.display = "none";
     }
 
@@ -248,89 +240,68 @@
         
         let html = `<h2>${t.resTitulo}</h2>`;
         
-        // ---- 1. ESCUDO GLUCEMIA ----
+        // ---- 1. NUTRICIÓN Y GLUCEMIA ----
         html += `<div class="section-title glucose-section">${t.secGlucosa}</div><ul>`;
-        if (turno === "N" || turno === "24H" || turno === "TN") {
+        if (["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
             if(idiomaActual === 'es') {
-                html += `<li>🥪 <strong>Si eliges el Bocadillo (Opción 1):</strong> ¡Excelente la proteína de la tortilla o pescados en conserva! Para bajar la barriga, reduce el pan a unos 40-50g. Da un mordisco a la proteína antes del pan para aplanar el pico de azúcar.</li>`;
-                html += `<li>🥛 <strong>Si eliges las Gachas (Opción 2):</strong> La harina + la bebida de avena elevan mucho la insulina antes de dormir. Cambia la bebida de avena por bebida de almendras o soja sin azúcar para evitar almacenar grasa en el abdomen mientras duermes.</li>`;
+                html += `<li>🥪 <strong>Bocadillo de Rescate (Pan 40-50g + Tortilla/Caballa/Sardinas):</strong> Excelente opción. Da siempre el primer bocado a la proteína/pescado antes de morder el pan. Así el estómago asimila las grasas y reduce el impacto de la insulina del pan blanco.</li>`;
+                html += `<li>🥛 <strong>Bebida vegetal alternativa:</strong> Evita la bebida de avena líquida pura antes de dormir. Usa soja o almendras sin azúcar con tu clara de huevo en polvo para mantener estable la hormona del crecimiento mientras duermes.</li>`;
             } else {
-                html += `<li>🥪 <strong>Se escolheres a Sandes (Opção 1):</strong> Excelente proteína na omelete ou peixe em conserva! Para perder a barriga de stress, reduz o pão para cerca de 40-50g. Dá uma trinca na proteína antes do pão para achatar o pico de açúcar.</li>`;
-                html += `<li>🥛 <strong>Se escolheres as Papas/Batido (Opção 2):</strong> A farinha + a bebida de aveia elevam muito a insulina antes de dormir. Troca a bebida de aveia por bebida de amêndoa ou soja sem açúcar para evitar acumular gordura na barriga enquanto dormes.</li>`;
+                html += `<li>🥪 <strong>Sandes de Resgate (Pão 40-50g + Omelete/Cavala/Sardinhas):</strong> Excelente opção. Dá sempre a primeira trinca na proteína/peixe antes de morder o pão. Assim achatas o pico de insulina.</li>`;
+                html += `<li>🥛 <strong>Bebida vegetal alternativa:</strong> Evita a bebida de aveia líquida pura antes de dormir. Usa soja ou amêndoa sem açúcar com a tua clara de ovo para proteger a massa muscular.</li>`;
             }
         } else {
-            html += `<li>${idiomaActual === 'es' ? '🥗 <strong>Día Estable:</strong> Come en este orden: vegetales, proteínas y carbohidratos al final para evitar bajones de energía.' : '🥗 <strong>Dia Estável:</strong> Come nesta ordem: vegetais, proteínas e hidratos no fim para evitar quebras de energia a meio da tarde.'}</li>`;
+            html += `<li>${idiomaActual === 'es' ? '🥗 <strong>Orden metabólico:</strong> Come primero las verduras, luego las proteínas y deja los carbohidratos para el final.' : '🥗 <strong>Ordem metabólica:</strong> Come primeiro os vegetais, depois as proteínas e deixa os hidratos para o fim.'}</li>`;
         }
         html += `</ul>`;
 
         // ---- 2. VITAMINA D ----
         html += `<div class="section-title vitd-section">${t.secVitD}</div><ul>`;
-        if(idiomaActual === 'es') {
-            html += `<li>💊 <strong>Suplementación Liposoluble:</strong> Tómala siempre con tu desayuno de pescados grasos (caballa/sardinas). Las grasas saludables multiplican su absorción. Optimizar la Vitamina D ayuda a desinflamar la zona abdominal y retener masa muscular a los 46 años.</li>`;
-        } else {
-            html += `<li>💊 <strong>Suplementação Lipossolúvel:</strong> Toma sempre com o teu pequeno-almoço de peixes gordos (cavala/sardinhas). As gorduras saudáveis multiplicam a sua absorção. Otimizar a Vitamina D ajuda a desinflamar a zona abdominal e a reter massa muscular.</li>`;
-        }
+        html += `<li>💊 ${idiomaActual === 'es' ? '<strong>Con comida grasa:</strong> Tómala junto a las sardinas o caballa para optimizar su absorción y combatir la barriga de estrés.' : '<strong>Com comida gorda:</strong> Toma com as sardinhas ou cavala para otimizar a absorção e reduzir a gordura abdominal.'}</li>`;
         html += `</ul>`;
 
         // ---- 3. CREATINA ----
         html += `<div class="section-title">${t.secCreatina}</div><ul>`;
-        if(idiomaActual === 'es') {
-            html += `<li>🥛 <strong>Dosis Fija (5g):</strong> Con tu primera comida del día.</li>`;
-            if (turno === "N" || turno === "TN" || turno === "24H") {
-                html += `<li>🧠 <strong>Estrategia Nocturna:</strong> Toma de 3g a 5g extra en la cena previa. Actúa como combustible cerebral de rescate contra la falta de sueño severa.</li>`;
-            }
-        } else {
-            html += `<li>🥛 <strong>Dose Fixa (5g):</strong> Com a tua primeira refeição do dia.</li>`;
-            if (turno === "N" || turno === "TN" || turno === "24H") {
-                html += `<li>🧠 <strong>Estratégia Noturna:</strong> Toma 3g a 5g extra no jantar prévio. Funciona como combustível cerebral de resgate contra a privação de sono severa.</li>`;
-            }
+        html += `<li>🥛 ${idiomaActual === 'es' ? '<strong>Dosis fija diaria (5g):</strong> Con la primera comida por la mañana.' : '<strong>Dose fixa diária (5g):</strong> Com a primeira refeição da manhã.'}</li>`;
+        if (["ENTRA_N", "ENTRE_N", "TN"].includes(turno)) {
+            html += `<li>🧠 ${idiomaActual === 'es' ? '<strong>Escudo nocturno:</strong> Toma de 3g a 5g adicionales con la cena previa a la noche. Funciona como combustible de reserva cerebral ante el desvelo.' : '<strong>Escudo noturno:</strong> Toma 3g a 5g adicionais no jantar prévio. Funciona como combustível cerebral contra a privação de sono.'}</li>`;
         }
         html += `</ul>`;
 
-        // ---- 4. KETTLEBELL (FUERZA) ----
+        // ---- 4. KETTLEBELL ----
         html += `<div class="section-title kb-section">${t.secKettlebell}</div><ul>`;
-        if (turno === "24H" || turno === "MT" || (turno === "N" && familia === "SOLO_CASA")) {
+        if (["SALIENTE_24H", "MT", "ENTRE_N"].includes(turno) || (turno === "ENTRA_N" && familia === "SOLO_CASA")) {
             if(idiomaActual === 'es') {
-                html += `<li><strong>Rutina Corta de Vaciado de Glucógeno (10 min):</strong> Estás muy cansado; mover los músculos absorberá el azúcar en sangre. 
-                    <br>• Kettlebell Swings: 3 series x 15 (explosivo).
-                    <br>• Zancadas: 3 series x 8 por pierna.</li>`;
+                html += `<li><strong>Rutina Corta de Vaciado (10-15 min libres):</strong> El sistema nervioso está cansado. Haz Swings intensos pero controlados (3 series x 15) y zancadas. Usa el ejercicio como una esponja metabólica para absorber los azúcares en sangre de los atracones.</li>`;
             } else {
-                html += `<li><strong>Rotina Curta de Esvaziamento de Glicogénio (10 min):</strong> Estás muito cansado; mover os músculos vai absorver o açúcar no sangue.
-                    <br>• Kettlebell Swings: 3 séries x 15 (explosivo).
-                    <br>• Lunge / Passadas: 3 séries x 8 por perna.</li>`;
+                html += `<li><strong>Rotina Curta de Esvaziamento (10-15 min livres):</strong> O sistema nervoso está cansado. Faz Swings controlados (3 séries x 15) e passadas. Redireciona a energia para o músculo.</li>`;
             }
         } else {
             if(idiomaActual === 'es') {
-                html += `<li><strong>Rutina de Hipertrofia (Cerca del Fallo):</strong> Tienes energía. Busca máxima tensión mecánica:
-                    <br>• Kettlebell Swings: 4 series x 12.
-                    <br>• Sentadilla Goblet Profunda: 4 series x 10.
-                    <br>• Remo a una mano: 4 series x 10 por lado.</li>`;
+                html += `<li><strong>Rutina de Hipertrofia (Cerca del Fallo):</strong> Tienes energía disponible. 4 series de Swings x 12, Sentadillas Goblet x 10 y Remos pesados x 10 por lado para combatir la sarcopenia a los 46 años.</li>`;
             } else {
-                html += `<li><strong>Rotina de Hipertrofia (Perto do Falho):</strong> Tens energia. Procura a máxima tensão mecânica:
-                    <br>• Kettlebell Swings: 4 séries x 12.
-                    <br>• Agachamento Goblet Profundo: 4 séries x 10.
-                    <br>• Remo a uma mão: 4 séries x 10 por lado.</li>`;
+                html += `<li><strong>Rotina de Hipertrofia (Perto do Falho):</strong> Tens energia. 4 séries de Swings x 12, Agachamentos Goblet x 10 e Remo pesado x 10 por lado para ganhar massa muscular.</li>`;
             }
         }
         html += `</ul>`;
 
-        // ---- 5. SUEÑO Y LOGÍSTICA ----
+        // ---- 5. SIESTAS Y SUEÑO ----
         html += `<div class="section-title">${t.secSueno}</div><ul>`;
-        if (turno === "N" && familia === "SOLO_CASA") {
-            html += `<li>⚠️ ${idiomaActual === 'es' ? '<strong>Alerta:</strong> No hay siesta hoy. Prioriza hidratación fría durante la noche.' : '<strong>Alerta:</strong> Sem sesta hoje. Prioriza a hidratação fria durante a noite.'}</li>`;
-        }
         
-        if (familia === "SOLO_CASA" || familia === "SOLO_COLE") {
-            if(idiomaActual === 'es') {
-                html += `<li>☀️ <strong>Paseo de Sol:</strong> Recoge a los niños a pie para frenar la melatonina e incrementar dopamina.</li>`;
-                html += `<li>🧘 <strong>Meditación Cortisol (3 min):</strong> Respiración cuadrada en el coche para bajar el estrés.</li>`;
+        if (turno === "ENTRA_N") {
+            if (familia === "APOYO") {
+                html += `<li>💤 ${idiomaActual === 'es' ? '<strong>Siesta Profiláctica Completa (90 min):</strong> Duerme por la tarde un ciclo de sueño completo antes de entrar para descargar la adenosina celular.' : '<strong>Sesta Profilática Completa (90 min):</strong> Dorme à tarde um ciclo completo antes de entrar para limpar a adenosina.'}</li>`;
+            } else if (familia === "SOLO_COLE") {
+                html += `<li>💤 ${idiomaActual === 'es' ? '<strong>Powernap de Rescate (20-30 min):</strong> Aprovecha la tarde mientras los niños hacen deberes o están en extraescolares para dar una cabezada en el sofá.' : '<strong>Powernap de Resgate (20-30 min):</strong> Aproveita a tarde enquanto os miúdos fazem os trabalhos ou estão nas atividades para fechar os olhos no sofá.'}</li>`;
             } else {
-                html += `<li>☀️ <strong>Passeio de Sol:</strong> Procura ir buscar os miúdos a pé para travar a melatonina e aumentar a dopamina.</li>`;
-                html += `<li>🧘 <strong>Meditação Cortisol (3 min):</strong> Respiração quadrada dentro do carro para reduzir o stress.</li>`;
+                html += `<li>⚠️ ${idiomaActual === 'es' ? '<strong>Sin siesta hoy (Solo con niños en casa):</strong> No duermes por la tarde. El cansancio de madrugada será severo; mantente activo, usa agua fría e hidratación constante durante el turno.' : '<strong>Sem sesta hoje (Sozinho em casa):</strong> Não consegues dormir à tarde. O cansaço de madrugada será severo; mantém-te ativo e hidratado.'}</li>`;
             }
+        } else if (turno === "ENTRE_N") {
+            html += `<li>🛌 ${idiomaActual === 'es' ? '<strong>Bloque Sagrado de Mañana:</strong> Vienes de trabajar. Duerme de 08:00h a 13:00h de forma prioritaria en oscuridad absoluta mientras los niños están en el colegio.' : '<strong>Bloco Sagrado da Manhã:</strong> Vens de trabalhar. Dorme das 08:00h às 13:00h em escuridão absoluta enquanto os miúdos estão na escola.'}</li>`;
+        } else if (turno === "SALIENTE_N" || turno === "SALIENTE_24H") {
+            html += `<li>🛌 ${idiomaActual === 'es' ? '<strong>Sueño de Recuperación de Mañana:</strong> Duerme un bloque sólido al llegar. Por la tarde, realiza un paseo lumínico al aire libre para avisar a tu cerebro de que ya es de día.' : '<strong>Sono de Recuperação da Manhã:</strong> Dorme um bloco sólido ao chegar. À tarde, faz um passeio sob o sol para reajustar o cérebro.'}</li>`;
         } else {
-            html += `<li>☀️ ${idiomaActual === 'es' ? '<strong>Sol Directo:</strong> Pasea 20 minutos bajo el sol.' : '<strong>Sol Direto:</strong> Caminha 20 minutos sob o sol.'}</li>`;
-            html += `<li>🧘 ${idiomaActual === 'es' ? '<strong>Meditación (10 min):</strong> Práctica en un lugar silencioso.' : '<strong>Meditação (10 min):</strong> Prática num local silencioso.'}</li>`;
+            html += `<li>🌿 ${idiomaActual === 'es' ? 'Mantén la higiene de sueño habitual y acuéstate temprano los días M o libres.' : 'Mantém a higiene de sono habitual e deita-te cedo nos dias M ou de folga.'}</li>`;
         }
         html += `</ul>`;
 
@@ -338,7 +309,6 @@
         output.style.display = "block";
     }
 
-    // Inicializar selectores al cargar la página
     window.onload = function() {
         cambiarIdioma('es');
     };
