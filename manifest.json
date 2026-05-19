@@ -1,0 +1,24 @@
+{
+  "name": "CronoFuerza MTN",
+  "short_name": "CronoFuerza",
+  "description": "Control metabólico, turnos y fuerza para la longevidad.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#2b6cb0",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,455 +1,486 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoBienestar Total v4</title>
-    <style>
-        :root {
-            --bg-color: #f0f4f8;
-            --card-bg: #ffffff;
-            --text-color: #2d3748;
-            --primary: #2b6cb0;
-            --accent: #dd6b20;
-            --kettlebell: #2c5282;
-            --border: #e2e8f0;
-            --success: #38a169;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            max-width: 480px;
-            width: 100%;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
-        h1 { text-align: center; font-size: 20px; margin-bottom: 5px; color: #1a202c; }
-        h2 { text-align: center; font-size: 12px; color: #718096; font-weight: normal; margin-top: 0; margin-bottom: 15px; }
-        
-        .lang-selector, .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        .lang-btn, .tab-btn {
-            padding: 6px 12px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: #fff;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-        }
-        .lang-btn.active, .tab-btn.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-        .home-btn { background: #718096; color: white; border: none; }
-
-        .box-question {
-            background: #edf2f7;
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-        label { font-weight: bold; display: block; margin-bottom: 6px; font-size: 13px; }
-        select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            font-size: 14px;
-            background-color: #fff;
-        }
-        .calc-button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .app-section { display: none; margin-top: 15px; }
-        .app-section.active { display: block; animation: fadeIn 0.3s ease; }
-        
-        .phase-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 6px;
-            padding: 4px 8px;
-            background: #e2e8f0;
-            border-radius: 6px;
-            color: #2d3748;
-        }
-        ul { padding-left: 18px; margin: 0; }
-        li { margin-bottom: 8px; line-height: 1.4; font-size: 13.5px; }
-
-        /* CHECKBOXES CUMPLIMIENTO */
-        .check-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f7fafc;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-            border: 1px solid var(--border);
-        }
-        .check-item input { width: 18px; height: 18px; }
-
-        /* TEMPORIZADOR */
-        .timer-box {
-            text-align: center;
-            background: #1a202c;
-            color: #fff;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-        .timer-display { font-size: 36px; font-weight: bold; font-family: monospace; color: #63b3ed; }
-        .timer-btn {
-            padding: 6px 15px;
-            margin: 5px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-start { background: var(--success); color: white; }
-        .btn-stop { background: #e53e3e; color: white; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
 </head>
 <body>
-
-<div class="container">
-    <!-- SELECTOR IDIOMA -->
-    <div class="lang-selector">
-        <button class="lang-btn active" id="btn-es" onclick="cambiarIdioma('es')">🇪🇸 ES</button>
-        <button class="lang-btn" id="btn-pt" onclick="cambiarIdioma('pt')">🇵🇹 PT</button>
-    </div>
-
-    <!-- PESTAÑAS PRINCIPALES -->
-    <div class="nav-tabs">
-        <button class="tab-btn home-btn" onclick="volverHome()">🏠 Home</button>
-        <button class="tab-btn active" id="tab-diario" onclick="cambiarPestana('diario')">📅 Diario</button>
-        <button class="tab-btn" id="tab-kb" onclick="cambiarPestana('kb')">🏋️ Kettlebell</button>
-        <button class="tab-btn" id="tab-stats" onclick="cambiarPestana('stats')">📊 Historial</button>
-    </div>
-
-    <h1 id="app-title">⏱️ Planificador MTN</h1>
-    <h2 id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</h2>
-
-    <!-- PESTAÑA 1: DIARIO -->
-    <div id="sec-diario" class="app-section active">
-        <div class="box-question">
-            <label id="lbl-turno" for="turnoSelect">💼 ¿Qué jornada tienes hoy?</label>
-            <select id="turnoSelect"><!-- Dinámico --></select>
-        </div>
-        <div class="box-question">
-            <label id="lbl-familia" for="familiaSelect">🧒 ¿Situación familiar hoy?</label>
-            <select id="familiaSelect"><!-- Dinámico --></select>
-        </div>
-        <button class="calc-button" id="btn-calc" onclick="generarPlanFases()">⚡ Ver Mi Día por Fases</button>
-
-        <div id="planOutput" style="display:none; margin-top:15px;">
-            <div id="fasesContenido"></div>
-            
-            <!-- Checklist Diario Integrado -->
-            <div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success);" id="lbl-check-title">✅ Marcado de Cumplimiento de Hoy</div>
-            <div id="checklist-zona"></div>
-            <button class="calc-button" style="background:var(--success); margin-top:10px;" id="btn-save-check" onclick="guardarCumplimiento()">💾 Guardar Progreso de Hoy</button>
-        </div>
-    </div>
-
-    <!-- PESTAÑA 2: KETTLEBELL & TIMER -->
-    <div id="sec-kb" class="app-section">
-        <div class="timer-box">
-            <div id="timer-label" style="font-size:12px; color:#a0aec0;">EMOM 20 MINUTOS (Cuerpo Completo)</div>
-            <div class="timer-display" id="display">20:00</div>
-            <div id="timer-routine" style="font-size:13px; font-weight:bold; margin: 8px 0; color:#ecc94b;">Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats</div>
-            <button class="timer-btn btn-start" id="btn-timer-start" onclick="toggleTimer()">Play</button>
-            <button class="timer-btn btn-stop" onclick="resetTimer()">Reset</button>
-        </div>
-        <div class="box-question" style="background:#fff; border:1px solid var(--border);">
-            <h3 style="font-size:14px; margin-top:0;" id="kb-guide-title">📖 Guía de Hipertrofia y Longevidad (12kg)</h3>
-            <ul style="font-size:12.5px;" id="kb-guide-list">
-                <!-- Traducido por JS -->
-            </ul>
-        </div>
-    </div>
-
-    <!-- PESTAÑA 3: HISTORIAL -->
-    <div id="sec-stats" class="app-section">
-        <div class="box-question" style="text-align:center;">
-            <h3 id="hist-title">📈 Tu Consistencia Semanal</h3>
-            <div id="stats-display" style="font-size:24px; font-weight:bold; color:var(--primary); margin:10px 0;">0%</div>
-            <p style="font-size:12px; color:#718096;" id="hist-desc">Porcentaje de hábitos completados guardados en este dispositivo.</p>
-            <button class="timer-btn btn-stop" style="font-size:11px; padding:4px 10px;" id="btn-clear-hist" onclick="borrarHistorial()">Borrar Datos</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    let idiomaActual = 'es';
-    let timerInterval = null;
-    let timerSeconds = 1200; // 20 minutos
-    let timerRunning = false;
-
-    const diccionario = {
-        es: {
-            title: "⏱️ Planificador MTN", subtitle: "Control de Glucemia, Estrés e Hipertrofia",
-            lblTurno: "💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?",
-            lblFamilia: "🧒 ¿Cuál es la situación con tus hijos hoy?",
-            btnCalc: "⚡ Calcular mi Plan de Hoy", checkTitle: "✅ Marcado de Cumplimiento de Hoy",
-            btnSaveCheck: "💾 Guardar Progreso de Hoy", kbTitle: "EMOM 20 MINUTOS (Cuerpo Completo)",
-            kbRoutine: "Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",
-            kbGuideT: "📖 Guía de Hipertrofia y Longevidad (12kg)",
-            histT: "📈 Tu Consistencia Semanal", histD: "Porcentaje de hábitos completados guardados.",
-            btnClear: "Borrar Datos",
-            fases: { m: "🌅 FASE MAÑANA", t: "☀️ FASE TARDE", n: "🌑 FASE NOCHE / MADRUGADA", s: "🔄 FASE SALIENTE / POST-TURNO" },
-            habs: ["Creatina Base (5g)", "Vitamina D3 (Con grasa)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glucemia", "Powernap (20 min) / Sueño"],
-            turnos: [
-                {v: "M", t: "Turno M (Mañana)"}, {v: "T", t: "Turno T (Tarde)"},
-                {v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"}, {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},
-                {v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"}, {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},
-                {v: "LIBRE", t: "Día Libre / Descanso Puro"}
-            ],
-            familia: [
-                {v: "APOYO", t: "Tengo apoyo (Cónyuge en casa / Niños en escuela)"},
-                {v: "SOLO_COLE", t: "Solo con peques (Van a escuela/extraescolares)"},
-                {v: "SOLO_CASA", t: "Solo con peques atrapados en casa (Logística total)"}
-            ],
-            kbLista: [
-                "<strong>EMOM (Cada minuto en el minuto):</strong> Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats. Alterna hasta llegar a 20 minutos.",
-                "<strong>Tensión Mecánica:</strong> A los 46 años, controla la bajada (3 segundos) en las sentadillas para romper fibras musculares sin dañar articulaciones.",
-                "<strong>Frecuencia diaria:</strong> Si solo tienes 10 minutos, haz solo 10 minutos de EMOM. Mover el músculo vacía el azúcar en sangre inmediatamente."
-            ]
-        },
-        pt: {
-            title: "⏱️ Planeador MTN", subtitle: "Controlo de Glicémia, Stress e Hipertrofia",
-            lblTurno: "💼 Que jornada de trabalho tens hoje ou acasbaste de fazer?",
-            lblFamilia: "🧒 Qual é a situação com os miúdos hoje?",
-            btnCalc: "⚡ Calcular o meu Plano de Hoje", checkTitle: "✅ Marcar Cumprimento de Hoje",
-            btnSaveCheck: "💾 Guardar Progresso de Hoje", kbTitle: "EMOM 20 MINUTOS (Corpo Inteiro)",
-            kbRoutine: "Minuto Ímpar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",
-            kbGuideT: "📖 Guia de Hipertrofia e Longevidade (12kg)",
-            histT: "📈 Tua Consistência Semanal", histD: "Percentagem de hábitos concluídos guardados.",
-            btnClear: "Apagar Dados",
-            fases: { m: "🌅 FASE MANHÃ", t: "☀️ FASE TARDE", n: "🌑 FASE NOITE / MADRUGADA", s: "🔄 FASE DE SAÍDA / PÓS-TURNO" },
-            habs: ["Creatina Base (5g)", "Vitamina D3 (Com gordura)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glicémia", "Powernap (20 min) / Sono"],
-            turnos: [
-                {v: "M", t: "Turno M (Manhã)"}, {v: "T", t: "Turno T (Tarde)"},
-                {v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"}, {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites seguidas)"},
-                {v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"}, {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24h"},
-                {v: "LIBRE", t: "Dia de Folga / Descanso Puro"}
-            ],
-            familia: [
-                {v: "APOYO", t: "Tenho apoio (Cônjuge em casa / Miúdos na escola)"},
-                {v: "SOLO_COLE", t: "Sozinho com miúdos (Vão à escola/atividades)"},
-                {v: "SOLO_CASA", t: "Sozinho com miúdos em casa (Logística total)"}
-            ],
-            kbLista: [
-                "<strong>EMOM (Cada minuto no minuto):</strong> Inicia o cronómetro acima. No Minuto 1 faz 15 Swings e descansa o resto do minuto. No Minuto 2 faz 10 Goblet Squats. Alterna até aos 20 minutos.",
-                "<strong>Tensão Mecânica:</strong> Aos 46 anos, controla a descida (3 segundos) nos agachamentos para ganhar massa muscular sem lesionar articulações.",
-                "<strong>Frequência diária:</strong> Se só tens 10 minutos livres, faz apenas 10 minutos de EMOM. Mover o músculo queima o açúcar no sangue imediatamente."
-            ]
-        }
-    };
-
-    function cambiarIdioma(lang) {
-        idiomaActual = lang;
-        document.getElementById('btn-es').classList.toggle('active', lang === 'es');
-        document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
-        
-        document.getElementById('app-title').innerText = diccionario[lang].title;
-        document.getElementById('app-subtitle').innerText = diccionario[lang].subtitle;
-        document.getElementById('lbl-turno').innerText = diccionario[lang].lblTurno;
-        document.getElementById('lbl-familia').innerText = diccionario[lang].lblFamilia;
-        document.getElementById('btn-calc').innerText = diccionario[lang].btnCalc;
-        document.getElementById('lbl-check-title').innerText = diccionario[lang].checkTitle;
-        document.getElementById('btn-save-check').innerText = diccionario[lang].btnSaveCheck;
-        document.getElementById('timer-label').innerText = diccionario[lang].kbTitle;
-        document.getElementById('timer-routine').innerText = diccionario[lang].kbRoutine;
-        document.getElementById('kb-guide-title').innerText = diccionario[lang].kbGuideT;
-        document.getElementById('hist-title').innerText = diccionario[lang].histT;
-        document.getElementById('hist-desc').innerText = diccionario[lang].histD;
-        document.getElementById('btn-clear-hist').innerText = diccionario[lang].btnClear;
-
-        const tSel = document.getElementById('turnoSelect'); const tVal = tSel.value;
-        tSel.innerHTML = diccionario[lang].turnos.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
-        if(tVal) tSel.value = tVal;
-
-        const fSel = document.getElementById('familiaSelect'); const fVal = fSel.value;
-        fSel.innerHTML = diccionario[lang].familia.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
-        if(fVal) fSel.value = fVal;
-
-        document.getElementById('kb-guide-list').innerHTML = diccionario[lang].kbLista.map(li => `<li>${li}</li>`).join('');
-        volverHome();
-        cargarHistorial();
-    }
-
-    function cambiarPestana(tab) {
-        document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => { if(!b.classList.contains('home-btn')) b.classList.remove('active'); });
-        document.getElementById(`sec-${tab}`).classList.add('active');
-        document.getElementById(`tab-${tab}`).classList.add('active');
-    }
-
-    function volverHome() {
-        document.getElementById('planOutput').style.display = "none";
-        document.getElementById('turnoSelect').value = "";
-        document.getElementById('familiaSelect').value = "";
-        cambiarPestana('diario');
-    }
-
-    function generarPlanFases() {
-        const turno = document.getElementById('turnoSelect').value;
-        const familia = document.getElementById('familiaSelect').value;
-        if(!turno || !familia) return;
-
-        const f = diccionario[idiomaActual].fases;
-        let html = "";
-
-        // MAÑANA
-        html += `<div class="phase-title">${f.m}</div><ul>`;
-        html += `<li>🥛 <strong>06:00h/08:30h - Creatina (5g):</strong> Toma fija matutina diaria para saturar depósitos.</li>`;
-        if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
-            html += `<li>🩸 <strong>Desayuno Control de Insulina:</strong> Pescados azules en conserva (sardinas/caballa) o tortilla. Reduce el pan a 40g y dale el primer bocado a la proteína para aplanar la glucemia. Reemplaza la bebida de avena por soja o almendras sin azúcar para proteger el abdomen.</li>`;
-            html += `<li>💊 <strong>Vitamina D3:</strong> Tómala aquí con las grasas saludables del pescado para maximizar su absorción celular.</li>`;
-        }
-        if(turno === "M" && familia === "SOLO_CASA") html += `<li>☀️ <strong>Paseo Lumínico:</strong> Lleva a los niños a pie al colegio para frenar la melatonina.</li>`;
-        html += `</ul>`;
-
-        // TARDE
-        html += `<div class="phase-title">${f.t}</div><ul>`;
-        html += `<li>💤 <strong>Powernap Universal (20 min):</strong> Haz una micro-siesta en el sofá a primera hora de la tarde para resetear el sistema nervioso central y reducir el cortisol.</li>`;
-        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 <strong>Siesta Profiláctica Extendida:</strong> Duerme un ciclo de 90 minutos para vaciar la presión de sueño antes de la noche.</li>`;
-        html += `<li>🏋️ <strong>Bloque Kettlebell (10-15 min libres):</strong> Ejecuta tu rutina corta o inicia el EMOM de la pestaña superior. Si estás muy cansado, haz balanceos suaves para absorber el azúcar en sangre.</li>`;
-        html += `</ul>`;
-
-        // NOCHE
-        html += `<div class="section-title phase-title" style="background:#2d3748; color:#fff;">${f.n}</div><ul>`;
-        if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
-            html += `<li>🧠 <strong>Cena (20:00h) + Escudo de Creatina:</strong> Añade de 3g a 5g de creatina en la cena previa. Actúa como energía limpia para las neuronas de madrugada.</li>`;
-            html += `<li>💧 <strong>Hidratación de Rescate:</strong> Bebe agua fría durante la madrugada para combatir la confusión mental y la falsa alarma de hambre de azúcar.</li>`;
-        } else if(turno === "M") {
-            html += `<li>🛌 <strong>Higiene del Sueño Nocturno:</strong> Habitación a oscuras, fría (18°C) y pantallas apagadas a las 21:30h para reducir la barriga de estrés cronificada.</li>`;
-        } else {
-            html += `<li>🌿 Descanso regular continuo.</li>`;
-        }
-        html += `</ul>`;
-
-        document.getElementById('fasesContenido').innerHTML = html;
-        
-        // Renderizar Checklist Dinámico
-        let checkHtml = "";
-        diccionario[idiomaActual].habs.forEach((hab, i) => {
-            checkHtml += `<div class="check-item"><input type="checkbox" id="chk-${i}"> <span>${hab}</span></div>`;
-        });
-        document.getElementById('checklist-zona').innerHTML = checkHtml;
-
-        document.getElementById('planOutput').style.display = "block";
-    }
-
-    // LÓGICA DE HISTORIAL LOCALSTORAGE
-    function guardarCumplimiento() {
-        let total = diccionario[idiomaActual].habs.length;
-        let marcados = 0;
-        for(let i=0; i<total; i++) {
-            if(document.getElementById(`chk-${i}`).checked) marcados++;
-        }
-        let porcentajeHoy = Math.round((marcados / total) * 100);
-        
-        let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];
-        historial.push({ fecha: new Date().toISOString().slice(0,10), porc: porcentajeHoy });
-        localStorage.setItem('mtn_historial', JSON.stringify(historial));
-        
-        alert(idiomaActual === 'es' ? '¡Progreso guardado con éxito!' : 'Progresso guardado com sucesso!');
-        cargarHistorial();
-        volverHome();
-    }
-
-    function cargarHistorial() {
-        let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];
-        if(historial.length === 0) {
-            document.getElementById('stats-display').innerText = "0%";
-            return;
-        }
-        let suma = historial.reduce((acc, curr) => acc + curr.porc, 0);
-        let media = Math.round(suma / historial.length);
-        document.getElementById('stats-display').innerText = `${media}%`;
-    }
-
-    function borrarHistorial() {
-        localStorage.removeItem('mtn_historial');
-        document.getElementById('stats-display').innerText = "0%";
-    }
-
-    // TIMER EMOM JS
-    function toggleTimer() {
-        const btn = document.getElementById('btn-timer-start');
-        if (timerRunning) {
-            clearInterval(timerInterval);
-            btn.innerText = "Play";
-            btn.style.background = "var(--success)";
-        } else {
-            timerInterval = setInterval(() => {
-                if(timerSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    alert("¡Entrenamiento Completado!");
-                    resetTimer();
-                    return;
-                }
-                timerSeconds--;
-                let mins = Math.floor(timerSeconds / 60);
-                let secs = timerSeconds % 60;
-                document.getElementById('display').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-                
-                // Alerta sonora visual cada cambio de minuto (EMOM)
-                if (secs === 0 && timerSeconds > 0) {
-                    document.body.style.background = "#ecc94b";
-                    setTimeout(() => document.body.style.background = "var(--bg-color)", 500);
-                }
-            }, 1000);
-            btn.innerText = "Pause";
-            btn.style.background = "#ecc94b";
-        }
-        timerRunning = !timerRunning;
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval);
-        timerSeconds = 1200;
-        timerRunning = false;
-        document.getElementById('display').innerText = "20:00";
-        document.getElementById('btn-timer-start').innerText = "Play";
-        document.getElementById('btn-timer-start').style.background = "var(--success)";
-    }
-
-    window.onload = function() {
-        cambiarIdioma('es');
-    };
-</script>
-
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="es"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;CronoFuerza MTN&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Enlaces PWA e Iconos --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="manifest" href="manifest.json"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="icon" type="image/svg+xml" href="logo.svg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="theme-color" content="#2b6cb0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="apple-touch-icon" href="logo.svg"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>:root {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--bg-color: #f0f4f8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--card-bg: #ffffff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--text-color: #2d3748;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--primary: #2b6cb0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--accent: #dd6b20;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--kettlebell: #2c5282;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--border: #e2e8f0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--success: #38a169;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: var(--bg-color);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: var(--text-color);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.container {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 480px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: var(--card-bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 25px rgba(0,0,0,0.05);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.app-header {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 5px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.app-logo {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 40px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 40px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>h1 { text-align: center; font-size: 20px; margin: 0; color: #1a202c; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>h2 { text-align: center; font-size: 12px; color: #718096; font-weight: normal; margin-top: 0; margin-bottom: 15px; }</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.lang-selector, .nav-tabs {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.lang-btn, .tab-btn {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 6px 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #fff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 13px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.lang-btn.active, .tab-btn.active {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: var(--primary);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #fff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-color: var(--primary);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.home-btn { background: #718096; color: white; border: none; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.box-question {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #edf2f7;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>label { font-weight: bold; display: block; margin-bottom: 6px; font-size: 13px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>select {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #cbd5e1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #fff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.calc-button {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: var(--primary);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.app-section { display: none; margin-top: 15px; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.app-section.active { display: block; animation: fadeIn 0.3s ease; }</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.phase-title {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 4px 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #e2e8f0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #2d3748;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>ul { padding-left: 18px; margin: 0; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>li { margin-bottom: 8px; line-height: 1.4; font-size: 13.5px; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.check-item {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #f7fafc;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.check-item input { width: 18px; height: 18px; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.timer-box {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #1a202c;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #fff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.timer-display { font-size: 36px; font-weight: bold; font-family: monospace; color: #63b3ed; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.timer-btn {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 6px 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 5px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.btn-start { background: var(--success); color: white; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.btn-stop { background: #e53e3e; color: white; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;div class="container"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="lang-selector"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="lang-btn active" id="btn-es" onclick="cambiarIdioma('es')"&gt;🇪🇸 ES&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="lang-btn" id="btn-pt" onclick="cambiarIdioma('pt')"&gt;🇵🇹 PT&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="nav-tabs"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="tab-btn home-btn" onclick="volverHome()"&gt;🏠 Home&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="tab-btn active" id="tab-diario" onclick="cambiarPestana('diario')"&gt;📅 Diario&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="tab-btn" id="tab-kb" onclick="cambiarPestana('kb')"&gt;🏋️ Kettlebell&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="tab-btn" id="tab-stats" onclick="cambiarPestana('stats')"&gt;📊 Historial&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="app-header"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;img src="logo.svg" alt="Logo" class="app-logo"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1 id="app-title"&gt;⏱️ CronoFuerza MTN&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 id="app-subtitle"&gt;Control de Glucemia, Estrés e Hipertrofia&lt;/h2&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- PESTAÑA 1: DIARIO --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="sec-diario" class="app-section active"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="box-question"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label id="lbl-turno" for="turnoSelect"&gt;💼 ¿Qué jornada tienes hoy?&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;select id="turnoSelect"&gt;&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="box-question"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label id="lbl-familia" for="familiaSelect"&gt;🧒 ¿Situación familiar hoy?&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;select id="familiaSelect"&gt;&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button class="calc-button" id="btn-calc" onclick="generarPlanFases()"&gt;⚡ Ver Mi Día por Fases&lt;/button&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="planOutput" style="display:none; margin-top:15px;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="fasesContenido"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success);" id="lbl-check-title"&gt;✅ Marcado de Cumplimiento de Hoy&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="checklist-zona"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="calc-button" style="background:var(--success); margin-top:10px;" id="btn-save-check" onclick="guardarCumplimiento()"&gt;💾 Guardar Progreso de Hoy&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- PESTAÑA 2: KETTLEBELL &amp; TIMER --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="sec-kb" class="app-section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="timer-box"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="timer-label" style="font-size:12px; color:#a0aec0;"&gt;EMOM 20 MINUTOS (Cuerpo Completo)&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="timer-display" id="display"&gt;20:00&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="timer-routine" style="font-size:13px; font-weight:bold; margin: 8px 0; color:#ecc94b;"&gt;Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="timer-btn btn-start" id="btn-timer-start" onclick="toggleTimer()"&gt;Play&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="timer-btn btn-stop" onclick="resetTimer()"&gt;Reset&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="box-question" style="background:#fff; border:1px solid var(--border);"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h3 style="font-size:14px; margin-top:0;" id="kb-guide-title"&gt;📖 Guía de Hipertrofia y Longevidad (12kg)&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;ul style="font-size:12.5px;" id="kb-guide-list"&gt;&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- PESTAÑA 3: HISTORIAL --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="sec-stats" class="app-section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="box-question" style="text-align:center;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h3 id="hist-title"&gt;📈 Tu Consistencia Semanal&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="stats-display" style="font-size:24px; font-weight:bold; color:var(--primary); margin:10px 0;"&gt;0%&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p style="font-size:12px; color:#718096;" id="hist-desc"&gt;Porcentaje de hábitos completados guardados.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="timer-btn btn-stop" style="font-size:11px; padding:4px 10px;" id="btn-clear-hist" onclick="borrarHistorial()"&gt;Borrar Datos&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let idiomaActual = 'es';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let timerInterval = null;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let timerSeconds = 1200;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let timerRunning = false;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const diccionario = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>es: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>title: "⏱️ CronoFuerza MTN", subtitle: "Control de Glucemia, Estrés e Hipertrofia",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lblTurno: "💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lblFamilia: "🧒 ¿Cuál es la situación con tus hijos hoy?",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btnCalc: "⚡ Calcular mi Plan de Hoy", checkTitle: "✅ Marcado de Cumplimiento de Hoy",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btnSaveCheck: "💾 Guardar Progreso de Hoy", kbTitle: "EMOM 20 MINUTOS (Cuerpo Completo)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>kbRoutine: "Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>kbGuideT: "📖 Guía de Hipertrofia y Longevidad (12kg)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>histT: "📈 Tu Consistencia Semanal", histD: "Porcentaje de hábitos completados guardados.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btnClear: "Borrar Datos",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>fases: { m: "🌅 FASE MAÑANA", t: "☀️ FASE TARDE", n: "🌑 FASE NOCHE / MADRUGADA", s: "🔄 FASE SALIENTE / POST-TURNO" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>habs: ["Creatina Base (5g)", "Vitamina D3 (Con grasa)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glucemia", "Powernap (20 min) / Sueño"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>turnos: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "M", t: "Turno M (Mañana)"}, {v: "T", t: "Turno T (Tarde)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"}, {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"}, {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "LIBRE", t: "Día Libre / Descanso Puro"}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>familia: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "APOYO", t: "Tengo apoyo (Cónyuge en casa / Niños en escuela)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "SOLO_COLE", t: "Solo con peques (Van a escuela/extraescolares)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "SOLO_CASA", t: "Solo con peques atrapados en casa (Logística total)"}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>kbLista: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"&lt;strong&gt;EMOM (Cada minuto en el minuto):&lt;/strong&gt; Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats. Alterna hasta llegar a 20 minutos.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"&lt;strong&gt;Tensión Mecánica:&lt;/strong&gt; A los 46 años, controla la bajada (3 segundos) en las sentadillas para romper fibras musculares sin dañar articulaciones.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"&lt;strong&gt;Frecuencia diaria:&lt;/strong&gt; Si solo tienes 10 minutos, haz solo 10 minutos de EMOM. Mover el músculo vacía el azúcar en sangre inmediatamente."</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>pt: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>title: "⏱️ CronoForça MTN", subtitle: "Controlo de Glicémia, Stress e Hipertrofia",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lblTurno: "💼 Que jornada de trabalho tens hoje o acabaste de fazer?",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lblFamilia: "🧒 Qual é a situação com os miúdos hoje?",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btnCalc: "⚡ Calcular o meu Plano de Hoje", checkTitle: "✅ Marcar Cumprimento de Hoje",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btnSaveCheck: "💾 Guardar Progresso de Hoje", kbTitle: "EMOM 20 MINUTOS (Corpo Inteiro)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>kbRoutine: "Minuto Ímpar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>kbGuideT: "📖 Guia de Hipertrofia e Longevidade (12kg)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>histT: "📈 Tua Consistência Semanal", histD: "Percentagem de hábitos concluídos guardados.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btnClear: "Apagar Dados",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>fases: { m: "🌅 FASE MANHÃ", t: "☀️ FASE TARDE", n: "🌑 FASE NOITE / MADRUGADA", s: "🔄 FASE DE SAÍDA / PÓS-TURNO" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>habs: ["Creatina Base (5g)", "Vitamina D3 (Com gordura)", "Kettlebell (10-15m / EMOM)", "Evitar pico Glicémia", "Powernap (20 min) / Sono"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>turnos: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "M", t: "Turno M (Manhã)"}, {v: "T", t: "Turno T (Tarde)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"}, {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites seguidas)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"}, {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24h"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "LIBRE", t: "Dia de Folga / Descanso Puro"}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>familia: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "APOYO", t: "Tenho apoio (Cônjuge em casa / Miúdos na escola)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "SOLO_COLE", t: "Sozinho com miúdos (Vão à escola/atividades)"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>{v: "SOLO_CASA", t: "Sozinho com miúdos em casa (Logística total)"}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>kbLista: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"&lt;strong&gt;EMOM (Cada minuto no minuto):&lt;/strong&gt; Inicia o cronómetro acima. No Minuto 1 faz 15 Swings e descansa o resto do minuto. No Minuto 2 faz 10 Goblet Squats. Alterna até aos 20 minutos.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"&lt;strong&gt;Tensión Mecánica:&lt;/strong&gt; Aos 46 anos, controla a descida (3 segundos) nos agachamentos para ganhar massa muscular sem lesionar articulações.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"&lt;strong&gt;Frequência diária:&lt;/strong&gt; Se só tens 10 minutos livres, faz apenas 10 minutos de EMOM. Mover o músculo queima o açúcar no sangue imediatamente."</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function cambiarIdioma(lang) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>idiomaActual = lang;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-es').classList.toggle('active', lang === 'es');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('app-title').innerText = diccionario[lang].title;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('app-subtitle').innerText = diccionario[lang].subtitle;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('lbl-turno').innerText = diccionario[lang].lblTurno;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('lbl-familia').innerText = diccionario[lang].lblFamilia;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-calc').innerText = diccionario[lang].btnCalc;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('lbl-check-title').innerText = diccionario[lang].checkTitle;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-save-check').innerText = diccionario[lang].btnSaveCheck;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('timer-label').innerText = diccionario[lang].kbTitle;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('timer-routine').innerText = diccionario[lang].kbRoutine;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('kb-guide-title').innerText = diccionario[lang].kbGuideT;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('hist-title').innerText = diccionario[lang].histT;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('hist-desc').innerText = diccionario[lang].histD;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-clear-hist').innerText = diccionario[lang].btnClear;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const tSel = document.getElementById('turnoSelect'); const tVal = tSel.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>tSel.innerHTML = diccionario[lang].turnos.map(o =&gt; `&lt;option value="${o.v}"&gt;${o.t}&lt;/option&gt;`).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(tVal) tSel.value = tVal;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const fSel = document.getElementById('familiaSelect'); const fVal = fSel.value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>fSel.innerHTML = diccionario[lang].familia.map(o =&gt; `&lt;option value="${o.v}"&gt;${o.t}&lt;/option&gt;`).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(fVal) fSel.value = fVal;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('kb-guide-list').innerHTML = diccionario[lang].kbLista.map(li =&gt; `&lt;li&gt;${li}&lt;/li&gt;`).join('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>volverHome();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>cargarHistorial();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function cambiarPestana(tab) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.app-section').forEach(s =&gt; s.classList.remove('active'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.tab-btn').forEach(b =&gt; { if(!b.classList.contains('home-btn')) b.classList.remove('active'); });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById(`sec-${tab}`).classList.add('active');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById(`tab-${tab}`).classList.add('active');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function volverHome() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('planOutput').style.display = "none";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('turnoSelect').value = "";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('familiaSelect').value = "";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>cambiarPestana('diario');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function generarPlanFases() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const turno = document.getElementById('turnoSelect').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const familia = document.getElementById('familiaSelect').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(!turno || !familia) return;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const f = diccionario[idiomaActual].fases;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let html = "";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// MAÑANA</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;div class="phase-title"&gt;${f.m}&lt;/div&gt;&lt;ul&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;li&gt;🥛 &lt;strong&gt;06:00h/08:30h - Creatina (5g):&lt;/strong&gt; Toma fija matutina diaria.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html += `&lt;li&gt;🩸 &lt;strong&gt;Control de Insulina:&lt;/strong&gt; Pescados en conserva (sardinas/caballa) o tortilla. Reduce el pan a 40g y come la proteína primero. Cambia la bebida de avena por soja o almendras sin azúcar.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html += `&lt;li&gt;💊 &lt;strong&gt;Vitamina D3:&lt;/strong&gt; Tómala aquí con las grasas saludables del pescado.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(turno === "M" &amp;&amp; familia === "SOLO_CASA") html += `&lt;li&gt;☀️ &lt;strong&gt;Paseo Lumínico:&lt;/strong&gt; Lleva a los niños a pie para frenar la melatonina.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;/ul&gt;`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// TARDE</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;div class="phase-title"&gt;${f.t}&lt;/div&gt;&lt;ul&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;li&gt;💤 &lt;strong&gt;Powernap Universal (20 min):&lt;/strong&gt; Micro-siesta protectora en el sofá para reducir el cortisol y controlar la barriga de estrés.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(turno === "ENTRA_N" &amp;&amp; familia === "APOYO") html += `&lt;li&gt;🛌 &lt;strong&gt;Siesta Profiláctica Extendida:&lt;/strong&gt; Duerme 90 minutos para vaciar la presión de sueño antes del turno.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;li&gt;🏋️ &lt;strong&gt;Bloque Kettlebell:&lt;/strong&gt; Inicia tus 10-15m libres o abre el EMOM en la pestaña superior.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;/ul&gt;`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// NOCHE</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;div class="phase-title" style="background:#2d3748; color:#fff;"&gt;${f.n}&lt;/div&gt;&lt;ul&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(["ENTRA_N", "ENTRE_N"].includes(turno)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html += `&lt;li&gt;🧠 &lt;strong&gt;Cena + Escudo de Creatina:&lt;/strong&gt; Añade 3g a 5g de creatina en la cena previa (20:00h).&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html += `&lt;li&gt;💧 &lt;strong&gt;Hidratación Fría:&lt;/strong&gt; Combate la falsa alarma de hambre de azúcar de madrugada.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>} else if(turno === "M") {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html += `&lt;li&gt;🛌 &lt;strong&gt;Higiene del Sueño Nocturno:&lt;/strong&gt; Habitación fría, oscura y pantallas fuera a las 21:30h.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html += `&lt;li&gt;🌿 Descanso regular continuo.&lt;/li&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>html += `&lt;/ul&gt;`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('fasesContenido').innerHTML = html;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let checkHtml = "";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>diccionario[idiomaActual].habs.forEach((hab, i) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>checkHtml += `&lt;div class="check-item"&gt;&lt;input type="checkbox" id="chk-${i}"&gt; &lt;span&gt;${hab}&lt;/span&gt;&lt;/div&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('checklist-zona').innerHTML = checkHtml;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('planOutput').style.display = "block";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function guardarCumplimiento() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let total = diccionario[idiomaActual].habs.length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let marcados = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>for(let i=0; i&lt;total; i++) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if(document.getElementById(`chk-${i}`).checked) marcados++;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let porcentajeHoy = Math.round((marcados / total) * 100);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>historial.push({ fecha: new Date().toISOString().slice(0,10), porc: porcentajeHoy });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>localStorage.setItem('mtn_historial', JSON.stringify(historial));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>alert(idiomaActual === 'es' ? '¡Progreso guardado!' : 'Progresso guardado!');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>cargarHistorial();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>volverHome();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function cargarHistorial() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(historial.length === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stats-display').innerText = "0%";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let suma = historial.reduce((acc, curr) =&gt; acc + curr.porc, 0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let media = Math.round(suma / historial.length);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('stats-display').innerText = `${media}%`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function borrarHistorial() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>localStorage.removeItem('mtn_historial');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('stats-display').innerText = "0%";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function toggleTimer() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const btn = document.getElementById('btn-timer-start');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (timerRunning) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>clearInterval(timerInterval);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btn.innerText = "Play";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btn.style.background = "var(--success)";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>timerInterval = setInterval(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if(timerSeconds &lt;= 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>clearInterval(timerInterval);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>alert("¡Entrenamiento Completado!");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>resetTimer();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>timerSeconds--;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let mins = Math.floor(timerSeconds / 60);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let secs = timerSeconds % 60;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('display').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (secs === 0 &amp;&amp; timerSeconds &gt; 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.body.style.background = "#ecc94b";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; document.body.style.background = "var(--bg-color)", 500);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, 1000);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btn.innerText = "Pause";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btn.style.background = "#ecc94b";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>timerRunning = !timerRunning;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function resetTimer() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>clearInterval(timerInterval);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>timerSeconds = 1200;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>timerRunning = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('display').innerText = "20:00";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-timer-start').innerText = "Play";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('btn-timer-start').style.background = "var(--success)";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// REGISTRO OBLIGATORIO DE SERVICE WORKER PARA PWA</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if ('serviceWorker' in navigator) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.addEventListener('load', () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>navigator.serviceWorker.register('sw.js').then((reg) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.log('CronoFuerza PWA cargada con éxito', reg.scope);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).catch((err) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.log('Fallo al registrar Service Worker', err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
