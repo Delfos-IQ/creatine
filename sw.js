@@ -1,11 +1,9 @@
-const CACHE_NAME = 'cronofuerza-v4';
+const CACHE_NAME = 'cronofuerza-v5';
 const ASSETS = [
   'index.html',
-  'manifest.json',
-  'logo.svg'
+  'manifest.json'
 ];
 
-// Instalar y guardar en caché los archivos básicos
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -14,7 +12,6 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Activar y limpiar cachés antiguas
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -29,7 +26,6 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Servir desde la caché si no hay internet
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
