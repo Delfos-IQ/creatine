@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoFuerza MTN</title>
+    <title>CronoFuerza MTN v9</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <meta name="theme-color" content="#2b6cb0">
@@ -23,7 +23,6 @@
             --alert-bg: #fff5f5;
             --alert-border: #e53e3e;
             --water: #3182ce;
-            --macro-bg: #f7fafc;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -109,7 +108,7 @@
         }
         
         .app-section { display: none; margin-top: 15px; }
-        .app-section.active { display: block; animation: fadeIn 0.3s ease; }
+        .lang-es #sec-diario-es, .lang-pt #sec-diario-pt { display: block; }
         
         .phase-title {
             font-size: 14px;
@@ -145,7 +144,7 @@
             margin-bottom: 15px;
         }
         .water-box { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
-        .macro-box { background: var(--macro-bg); color: var(--text-color); border: 1px solid var(--border); text-align: left; }
+        .macro-box { background: #f7fafc; color: #2d3748; border: 1px solid var(--border); text-align: left; }
         .timer-display, .water-display { font-size: 36px; font-weight: bold; font-family: monospace; color: #63b3ed; }
         .water-display { color: var(--water); }
         
@@ -170,18 +169,18 @@
             margin-top: 15px;
             color: #9b2c2c;
         }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body>
+<body class="lang-es">
 
 <div class="container">
+    <!-- SELECTOR IDIOMA -->
     <div class="lang-selector">
         <button class="lang-btn active" id="btn-es" onclick="cambiarIdioma('es')">🇪🇸 ES</button>
         <button class="lang-btn" id="btn-pt" onclick="cambiarIdioma('pt')">🇵🇹 PT</button>
     </div>
 
+    <!-- PESTAÑAS PRINCIPALES -->
     <div class="nav-tabs">
         <button class="tab-btn home-btn" onclick="volverHome()">🏠 Home</button>
         <button class="tab-btn active" id="tab-diario" onclick="cambiarPestana('diario')">📅 Diario</button>
@@ -192,31 +191,90 @@
     </div>
 
     <div class="app-header">
+        <img src="logo.svg" alt="Logo" class="app-logo">
         <h1 id="app-title">⏱️ CronoFuerza MTN</h1>
     </div>
     <h2 id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</h2>
 
-    <!-- PESTAÑA 1: DIARIO -->
-    <div id="sec-diario" class="app-section active">
+    <!-- INTERFAZ EN ESPAÑOL -->
+    <div id="sec-diario-es" class="app-section">
         <div class="box-question">
-            <label id="lbl-turno" for="turnoSelect">💼 ¿Qué jornada tienes hoy?</label>
-            <select id="turnoSelect"></select>
+            <label>💼 ¿Qué jornada tienes hoy?</label>
+            <select id="turnoSelectEs">
+                <option value="">-- Selecciona --</option>
+                <option value="M">Turno M (Mañana)</option>
+                <option value="T">Turno T (Tarde)</option>
+                <option value="ENTRA_N">Día que ENTRAS de Noche (Noche 1)</option>
+                <option value="ENTRE_N">Día ENTRE Noches (Noches seguidas)</option>
+                <option value="SALIENTE_N">Saliente de Turno N (Última noche)</option>
+                <option value="SALIENTE_24H">Saliente de Guardia de 24 Horas</option>
+                <option value="LIBRE">Día Libre / Descanso Puro</option>
+            </select>
         </div>
         <div class="box-question">
-            <label id="lbl-familia" for="familiaSelect">🧒 ¿Situación familiar hoy?</label>
-            <select id="familiaSelect"></select>
+            <label>🧒 ¿Situación familiar hoy?</label>
+            <select id="familiaSelectEs">
+                <option value="">-- Selecciona --</option>
+                <option value="APOYO">Tengo apoyo (Cónyuge en casa / Niños en escuela)</option>
+                <option value="SOLO_COLE">Solo con peques (Van a escuela/extraescolares)</option>
+                <option value="SOLO_CASA">Solo con peques atrapados en casa (Logística total)</option>
+            </select>
         </div>
-        <button class="calc-button" id="btn-calc" onclick="generarPlanFases()">⚡ Ver Mi Día por Fases</button>
+        <button class="calc-button" onclick="generarPlanFasesEs()">⚡ Ver Plan por Fases</button>
 
-        <div id="planOutput" style="display:none; margin-top:15px;">
-            <div id="fasesContenido"></div>
-            <div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success);" id="lbl-check-title">✅ Marcado de Cumplimiento de Hoy</div>
-            <div id="checklist-zona"></div>
-            <button class="calc-button" style="background:var(--success); margin-top:10px;" id="btn-save-check" onclick="guardarCumplimiento()">💾 Guardar Progreso de Hoy</button>
+        <div id="planOutputEs" style="display:none; margin-top:15px;">
+            <div id="fasesContenidoEs"></div>
+            <div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success);">✅ Cumplimiento de Hoy</div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Creatina Segura (3g)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Vitamina D3 (Con pescado graso)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Kettlebell (10-15m / EMOM)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Evitar pico Glucemia (Pan 40g)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Completar 3L de Agua</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Losartán 50mg tomado</span></div>
+            <button class="calc-button" style="background:var(--success); margin-top:10px;" onclick="guardarCumplimientoEs()">💾 Guardar Progreso de Hoy</button>
         </div>
     </div>
 
-    <!-- PESTAÑA 2: KETTLEBELL & TIMER -->
+    <!-- INTERFAZ EN PORTUGUÉS -->
+    <div id="sec-diario-pt" class="app-section">
+        <div class="box-question">
+            <label>💼 Que jornada de trabalho tens hoje?</label>
+            <select id="turnoSelectPt">
+                <option value="">-- Seleciona --</option>
+                <option value="M">Turno M (Manhã)</option>
+                <option value="T">Turno T (Tarde)</option>
+                <option value="ENTRA_N">Dia em que ENTRAS de Noite (Noite 1)</option>
+                <option value="ENTRE_N">Dia ENTRE Noites (Noites seguidas)</option>
+                <option value="SALIENTE_N">Sair do Turno N (Última noite)</option>
+                <option value="SALIENTE_24H">Sair de Banco / Piquete de 24h</option>
+                <option value="LIBRE">Dia de Folga / Descanso Puro</option>
+            </select>
+        </div>
+        <div class="box-question">
+            <label>🧒 Qual é a situação com os miúdos hoje?</label>
+            <select id="familiaSelectPt">
+                <option value="">-- Seleciona --</option>
+                <option value="APOYO">Tenho apoio (Cônjuge em casa / Miúdos na escola)</option>
+                <option value="SOLO_COLE">Sozinho com miúdos (Vão à escola/atividades)</option>
+                <option value="SOLO_CASA">Sozinho com miúdos em casa (Logística total)</option>
+            </select>
+        </div>
+        <button class="calc-button" onclick="generarPlanFasesPt()">⚡ Ver Plano por Fases</button>
+
+        <div id="planOutputPt" style="display:none; margin-top:15px;">
+            <div id="fasesContenidoPt"></div>
+            <div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success);">✅ Marcar Cumprimento de Hoje</div>
+            <div class="check-item"><input type="checkbox" class="chk-pt"> <span>Creatina Segura (3g)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-pt"> <span>Vitamina D3 (Com peixe gordo)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-pt"> <span>Kettlebell (10-15m / EMOM)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-pt"> <span>Evitar pico Glicémia (Pão 40g)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-pt"> <span>Completar 3L de Água</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-pt"> <span>Losartan 50mg tomado</span></div>
+            <button class="calc-button" style="background:var(--success); margin-top:10px;" onclick="guardarCumplimientoPt()">💾 Guardar Progresso de Hoje</button>
+        </div>
+    </div>
+
+    <!-- PESTAÑA KETTLEBELL -->
     <div id="sec-kb" class="app-section">
         <div class="timer-box">
             <div id="timer-label" style="font-size:12px; color:#a0aec0;">EMOM 20 MINUTOS (Cuerpo Completo)</div>
@@ -226,40 +284,49 @@
             <button class="timer-btn btn-stop" onclick="resetTimer()">Reset</button>
         </div>
         <div class="box-question" style="background:#fff; border:1px solid var(--border);">
-            <h3 style="font-size:14px; margin-top:0;" id="kb-guide-title">📖 Guía de Hipertrofia y Longevidad (12kg)</h3>
-            <ul style="font-size:12.5px;" id="kb-guide-list"></ul>
+            <h3 style="font-size:14px; margin-top:0;">📖 Guía de Hipertrofia y Longevidad (12kg)</h3>
+            <ul style="font-size:12.5px;" id="kb-guide-list">
+                <li><strong>EMOM (Cada minuto en el minuto):</strong> Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats. Alterna hasta llegar a 20 minutos.</li>
+                <li><strong>Tensión Mecánica:</strong> A los 46 años, controla la bajada (3 segundos) en las sentadillas para romper fibras musculares sin dañar articulaciones.</li>
+                <li><strong>Frecuencia diaria:</strong> Si solo tienes 10 minutos, haz solo 10 minutos de EMOM. Mover el músculo vacía el azúcar en sangre inmediatamente.</li>
+            </ul>
         </div>
     </div>
 
-    <!-- PESTAÑA 3: CONTROL DE AGUA -->
+    <!-- PESTAÑA AGUA -->
     <div id="sec-water" class="app-section">
         <div class="water-box">
-            <div id="water-label" style="font-size:14px; font-weight:bold; margin-bottom:5px;">💧 Registro de Hidratación Renal</div>
-            <div id="water-target" style="font-size:12px; color:#4a5568;">Meta obligatoria: 3000 ml (12 vasos de 250ml)</div>
+            <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">💧 Registro de Hidratación Renal</div>
+            <div style="font-size:12px; color:#4a5568;">Meta obligatoria: 3000 ml (12 vasos de 250ml)</div>
             <div class="water-display" id="water-display-count">0 / 12</div>
-            <p style="font-size:12px; color:#718096;" id="water-desc">Control de flujo para limpiar glomérulos y equilibrar el Losartán.</p>
+            <p style="font-size:12px; color:#718096;">Control de flujo para limpiar glomérulos y equilibrar el Losartán.</p>
             <button class="water-btn btn-water" onclick="modificarAgua(1)">+ 250ml</button>
             <button class="water-btn btn-stop" style="font-size:12px; padding:6px 12px;" onclick="modificarAgua(-1)">-</button>
-            <button class="water-btn home-btn" style="font-size:11px; padding:4px 10px;" id="btn-reset-water" onclick="resetAgua()">Reset</button>
+            <button class="water-btn home-btn" style="font-size:11px; padding:4px 10px;" onclick="resetAgua()">Reset</button>
         </div>
     </div>
 
-    <!-- PESTAÑA 4: MÓDULO DE NUTRICIÓN -->
+    <!-- PESTAÑA NUTRICIÓN -->
     <div id="sec-macros" class="app-section">
         <div class="macro-box">
-            <h3 style="margin-top:0; color:var(--primary); font-size:15px; text-align:center;" id="nu-title">🥗 Plan de Reequilibrio de Macros</h3>
-            <p style="font-size:13px; font-weight:bold; text-align:center; margin-bottom:15px;" id="nu-target">Tu meta diaria: 120g Proteína | Control estricto de Almidones</p>
-            <ul style="font-size:13px; padding-left:15px;" id="nu-list"></ul>
+            <h3 style="margin-top:0; color:var(--primary); font-size:15px; text-align:center;">🥗 Plan de Reequilibrio de Macros</h3>
+            <p style="font-size:13px; font-weight:bold; text-align:center; margin-bottom:15px;">Tu meta para 75.5 kg: ~120g Proteína | Reducción de Almidón</p>
+            <ul style="font-size:13px; padding-left:15px;">
+                <li><strong>Saturación de Proteína:</strong> Como vegetariano pescetariano, duplica las claras de huevo en polvo en tus gachas y prioriza sardinas, caballa o revueltos de huevos enteros. Necesitas llegar a 120g al día para hipertrofiar con la kettlebell.</li>
+                <li><strong>La Regla de la Mitad (Almidones):</strong> Reduce a la mitad las raciones habituales de pasta, arroz y patatas. No los elimines, pero redúcelos para controlar los picos de glucemia que inflan la barriga de estrés.</li>
+                <li><strong>Peligro con los Frutos Secos:</strong> No los comas directamente del paquete. Limita el consumo a un solo puñado cerrado al día (unos 30 gramos totales). Son muy calóricos y frenan la quema de grasa visceral.</li>
+                <li><strong>Sustitución de Avena:</strong> Recuerda sustituir la bebida de avena comercial por bebida de soja o almendras sin azúcar. Esto elimina picos de insulina brutales antes de dormir.</li>
+            </ul>
         </div>
     </div>
 
-    <!-- PESTAÑA 5: HISTORIAL -->
+    <!-- PESTAÑA HISTORIAL -->
     <div id="sec-stats" class="app-section">
         <div class="box-question" style="text-align:center;">
-            <h3 id="hist-title">📈 Tu Consistencia Semanal</h3>
+            <h3>📈 Tu Consistencia Semanal</h3>
             <div id="stats-display" style="font-size:24px; font-weight:bold; color:var(--primary); margin:10px 0;">0%</div>
-            <p style="font-size:12px; color:#718096;" id="hist-desc">Porcentaje de hábitos completados guardados.</p>
-            <button class="timer-btn btn-stop" style="font-size:11px; padding:4px 10px;" id="btn-clear-hist" onclick="borrarHistorial()">Borrar Datos</button>
+            <p style="font-size:12px; color:#718096;">Porcentaje de hábitos completados guardados.</p>
+            <button class="timer-btn btn-stop" style="font-size:11px; padding:4px 10px;" onclick="borrarHistorial()">Borrar Datos</button>
         </div>
     </div>
 </div>
@@ -271,215 +338,168 @@
     let timerRunning = false;
     let vasosAgua = 0;
 
-    const diccionario = {
-        es: {
-            title: "⏱️ CronoFuerza MTN", subtitle: "Control de Glucemia, Estrés e Hipertrofia",
-            lblTurno: "💼 ¿Qué jornada laboral tienes hoy o vienes de realizar?",
-            lblFamilia: "🧒 ¿Cuál es la situación con tus hijos hoy?",
-            btnCalc: "⚡ Calcular mi Plan de Hoy", checkTitle: "✅ Marcado de Cumplimiento de Hoy",
-            btnSaveCheck: "💾 Guardar Progreso de Hoy", kbTitle: "EMOM 20 MINUTOS (Cuerpo Completo)",
-            kbRoutine: "Minuto Impar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",
-            kbGuideT: "📖 Guía de Hipertrofia y Longevidad (12kg)",
-            histT: "📈 Tu Consistencia Semanal", histD: "Porcentaje de hábitos completados guardados.",
-            btnClear: "Borrar Datos", wLabel: "💧 Registro de Hidratación Renal",
-            wTarget: "Meta obligatoria: 3000 ml (12 vasos de 250ml)", wDesc: "Control de flujo para limpiar glomérulos y equilibrar el Losartán.",
-            wReset: "Reset", nuTitle: "🥗 Plan de Reequilibrio de Macros",
-            nuTarget: "Tu meta para 75.5 kg: ~120g Proteína | Reducción de Almidón",
-            fases: { m: "🌅 FASE MAÑANA", t: "☀️ FASE TARDE", n: "🌑 FASE NOCHE / MADRUGADA", s: "🔄 FASE SALIENTE / POST-TURNO" },
-            habs: ["Creatina Segura (3g)", "Vitamina D3 (Con pescado graso)", "Kettlebell (10-15m / EMOM)", "Recortar Pan a 40g (Primero Proteína)", "Controlar puñado de Frutos Secos", "Completar 3L de Agua", "Losartán 50mg tomado"],
-            turnos: [
-                {v: "", t: "-- Selecciona una jornada --"},
-                {v: "M", t: "Turno M (Mañana)"}, {v: "T", t: "Turno T (Tarde)"},
-                {v: "ENTRA_N", t: "Día que ENTRAS de Noche (Noche 1)"}, {v: "ENTRE_N", t: "Día ENTRE Noches (Noches seguidas)"},
-                {v: "SALIENTE_N", t: "Saliente de Turno N (Última noche)"}, {v: "SALIENTE_24H", t: "Saliente de Guardia de 24 Horas"},
-                {v: "LIBRE", t: "Día Libre / Descanso Puro"}
-            ],
-            familia: [
-                {v: "", t: "-- Selecciona situación familiar --"},
-                {v: "APOYO", t: "Tengo apoyo (Cónyuge en casa / Niños en escuela)"},
-                {v: "SOLO_COLE", t: "Solo con peques (Van a escuela/extraescolares)"},
-                {v: "SOLO_CASA", t: "Solo con peques atrapados en casa (Logística total)"}
-            ],
-            kbLista: [
-                "<strong>EMOM (Cada minuto en el minuto):</strong> Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats. Alterna hasta llegar a 20 minutos.",
-                "<strong>Tensión Mecánica:</strong> A los 46 años, controla la bajada (3 segundos) en las sentadillas para romper fibras musculares sin dañar articulaciones.",
-                "<strong>Frecuencia diaria:</strong> Si solo tienes 10 minutos, haz solo 10 minutos de EMOM. Mover el músculo vacía el azúcar en sangre inmediatamente."
-            ],
-            nuLista: [
-                "<strong>Saturación de Proteína:</strong> Como vegetariano pescetariano, duplica las claras de huevo en polvo en tus gachas y prioriza sardinas, caballa o revueltos de huevos enteros. Necesitas llegar a 120g al día para hipertrofiar con la kettlebell.",
-                "<strong>La Regla de la Mitad (Almidones):</strong> Reduce a la mitad las raciones habituales de pasta, arroz y patatas. No los elimines, pero redúcelos para controlar los picos de glucemia que inflan la barriga de estrés.",
-                "<strong>Peligro con los Frutos Secos:</strong> No los comas directamente del paquete. Limita el consumo a un solo puñado cerrado al día (unos 30 gramos totales). Son muy calóricos y frenan la quema de grasa visceral.",
-                "<strong>Sustitución de Avena:</strong> Recuerda sustituir la bebida de avena comercial por bebida de soja o almendras sin azúcar. Esto elimina picos de insulina brutales antes de dormir."
-            ]
-        },
-        pt: {
-            title: "⏱️ CronoForça MTN", subtitle: "Controlo de Glicémia, Stress e Hipertrofia",
-            lblTurno: "💼 Que jornada de trabalho tens hoje o acabaste de fazer?",
-            lblFamilia: "🧒 Qual é a situação com os miúdos hoje?",
-            btnCalc: "⚡ Calcular o meu Plano de Hoje", checkTitle: "✅ Marcar Cumprimento de Hoje",
-            btnSaveCheck: "💾 Guardar Progresso de Hoje", kbTitle: "EMOM 20 MINUTOS (Corpo Inteiro)",
-            kbRoutine: "Minuto Ímpar: 15 Swings | Minuto Par: 10 Goblet Squats / 8 Remos",
-            kbGuideT: "📖 Guia de Hipertrofia e Longevidade (12kg)",
-            histT: "📈 Tua Consistência Semanal", histD: "Percentagem de hábitos concluídos guardados.",
-            btnClear: "Apagar Dados", wLabel: "💧 Registo de Hidratação Renal",
-            wTarget: "Meta obrigatória: 3000 ml (12 copos de 250ml)", wDesc: "Controlo de fluxo para limpar os glomérulos e equilibrar o Losartan.",
-            wReset: "Reset", nuTitle: "🥗 Plano de Reequilíbrio de Macros",
-            nuTarget: "Tua meta para 75.5 kg: ~120g Proteína | Redução de Amido",
-            fases: { m: "🌅 FASE MANHÃ", t: "☀️ FASE TARDE", n: "🌑 FASE NOCHE / MADRUGADA", s: "🔄 FASE DE SAÍDA / PÓS-TURNO" },
-            habs: ["Creatina Segura (3g)", "Vitamina D3 (Com peixe gordo)", "Kettlebell (10-15m / EMOM)", "Cortar Pão para 40g (Primeiro Proteína)", "Controlar punhado de Frutos Secos", "Completar 3L de Água", "Losartan 50mg tomado"],
-            turnos: [
-                {v: "", t: "-- Seleciona uma jornada --"},
-                {v: "M", t: "Turno M (Manhã)"}, {v: "T", t: "Turno T (Tarde)"},
-                {v: "ENTRA_N", t: "Dia em que ENTRAS de Noite (Noite 1)"}, {v: "ENTRE_N", t: "Dia ENTRE Noites (Noites seguidas)"},
-                {v: "SALIENTE_N", t: "Sair do Turno N (Última noite)"}, {v: "SALIENTE_24H", t: "Sair de Banco / Piquete de 24h"},
-                {v: "LIBRE", t: "Dia de Folga / Descanso Puro"}
-            ],
-            familia: [
-                {v: "", t: "-- Seleciona situação familiar --"},
-                {v: "APOYO", t: "Tenho apoio (Cônjuge em casa / Miúdos na escola)"},
-                {v: "SOLO_COLE", t: "Sozinho com miúdos (Vão à escola/atividades)"},
-                {v: "SOLO_CASA", t: "Sozinho com miúdos em casa (Logística total)"}
-            ],
-            kbLista: [
-                "<strong>EMOM (Cada minuto no minuto):</strong> Inicia o cronómetro acima. No Minuto 1 faz 15 Swings e descansa o resto do minuto. No Minuto 2 faz 10 Goblet Squats. Alterna até aos 20 minutos.",
-                "<strong>Tensión Mecánica:</strong> Aos 46 anos, controla a descida (3 segundos) nos agachamentos para ganhar massa muscular sem lesionar articulações.",
-                "<strong>Frequência diária:</strong> Se só tens 10 minutos livres, faz apenas 10 minutos de EMOM. Mover o músculo queima o açúcar no sangue imediatamente."
-            ],
-            nuLista: [
-                "<strong>Saturação de Proteína:</strong> Como vegetariano pescetariano, duplica as claras de ovo em pó nas papas e prioriza sardinhas, cavala ou omeletes. Precisas de chegar a 120g por dia para hipertrofia.",
-                "<strong>A Regra da Metade (Amidos):</strong> Reduz para metade as porções habituais de massa, arroz e batatas para controlar a insulina que alarga a barriga de stress.",
-                "<strong>Perigo com Frutos Secos:</strong> Não comas diretamente do pacote. Limita o consumo a um único punhado fechado por dia (cerca de 30g). São muito calóricos.",
-                "<strong>Substituição de Aveia:</strong> Lembra-te de substituir a bebida de aveia comercial por bebida de soja ou amêndoa sem açúcar para eliminar picos de insulina antes de dormir."
-            ]
-        }
-    };
-
     function cambiarIdioma(lang) {
         idiomaActual = lang;
+        document.body.className = 'lang-' + lang;
         document.getElementById('btn-es').classList.toggle('active', lang === 'es');
         document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
-        
-        document.getElementById('app-title').innerText = diccionario[lang].title;
-        document.getElementById('app-subtitle').innerText = diccionario[lang].subtitle;
-        document.getElementById('lbl-turno').innerText = diccionario[lang].lblTurno;
-        document.getElementById('lbl-familia').innerText = diccionario[lang].lblFamilia;
-        document.getElementById('btn-calc').innerText = diccionario[lang].btnCalc;
-        document.getElementById('lbl-check-title').innerText = diccionario[lang].checkTitle;
-        document.getElementById('btn-save-check').innerText = diccionario[lang].btnSaveCheck;
-        document.getElementById('timer-label').innerText = diccionario[lang].kbTitle;
-        document.getElementById('timer-routine').innerText = diccionario[lang].kbRoutine;
-        document.getElementById('kb-guide-title').innerText = diccionario[lang].kbGuideT;
-        document.getElementById('hist-title').innerText = diccionario[lang].histT;
-        document.getElementById('hist-desc').innerText = diccionario[lang].histD;
-        document.getElementById('btn-clear-hist').innerText = diccionario[lang].btnClear;
-        
-        document.getElementById('water-label').innerText = diccionario[lang].wLabel;
-        document.getElementById('water-target').innerText = diccionario[lang].wTarget;
-        document.getElementById('water-desc').innerText = diccionario[lang].wDesc;
-        document.getElementById('btn-reset-water').innerText = diccionario[lang].wReset;
-
-        document.getElementById('nu-title').innerText = diccionario[lang].nuTitle;
-        document.getElementById('nu-target').innerText = diccionario[lang].nuTarget;
-
-        const tSel = document.getElementById('turnoSelect');
-        tSel.innerHTML = diccionario[lang].turnos.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
-
-        const fSel = document.getElementById('familiaSelect');
-        fSel.innerHTML = diccionario[lang].familia.map(o => `<option value="${o.v}">${o.t}</option>`).join('');
-
-        document.getElementById('kb-guide-list').innerHTML = diccionario[lang].kbLista.map(li => `<li>${li}</li>`).join('');
-        document.getElementById('nu-list').innerHTML = diccionario[lang].nuLista.map(li => `<li>${li}</li>`).join('');
-        document.getElementById('planOutput').style.display = "none";
-        
-        cargarAgua();
-        cargarHistorial();
+        volverHome();
     }
 
     function cambiarPestana(tab) {
-        document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => { if(!b.classList.contains('home-btn')) b.classList.remove('active'); });
-        document.getElementById(`sec-${tab}`).classList.add('active');
-        document.getElementById(`tab-${tab}`).classList.add('active');
+        document.querySelectorAll('.app-section').forEach(s => s.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        if (tab === 'diario') {
+            document.getElementById('sec-diario-' + idiomaActual).style.display = 'block';
+        } else {
+            document.getElementById('sec-' + tab).style.display = 'block';
+        }
+        document.getElementById('tab-' + tab).classList.add('active');
     }
 
     function volverHome() {
-        document.getElementById('planOutput').style.display = "none";
-        document.getElementById('turnoSelect').value = "";
-        document.getElementById('familiaSelect').value = "";
+        document.getElementById('planOutputEs').style.display = "none";
+        document.getElementById('planOutputPt').style.display = "none";
+        document.getElementById('turnoSelectEs').value = "";
+        document.getElementById('familiaSelectEs').value = "";
+        document.getElementById('turnoSelectPt').value = "";
+        document.getElementById('familiaSelectPt').value = "";
         cambiarPestana('diario');
     }
 
-    function generarPlanFases() {
-        const turno = document.getElementById('turnoSelect').value;
-        const familia = document.getElementById('familiaSelect').value;
+    function generarPlanFasesEs() {
+        const turno = document.getElementById('turnoSelectEs').value;
+        const familia = document.getElementById('familiaSelectEs').value;
         if(!turno || !familia) return;
 
-        const f = diccionario[idiomaActual].fases;
-        let html = "";
-
-        html += `<div class="phase-title">${f.m}</div><ul>`;
-        html += `<li>💊 <strong>Losartán 50mg:</strong> Tomar en ayunas con un gran vaso de agua. Control renal crítico.</li>`;
-        html += `<li>🥛 <strong>Creatina Segura (3g):</strong> Imprescindible en tu dieta sin carne para rellenar tus reservas musculares y darte el boost cerebral nocturno.</li>`;
+        let html = `<div class="phase-title">🌅 FASE MAÑANA</div><ul>`;
+        html += `<li> Miramar Losartán 50mg tomado en ayunas.</li>`;
+        html += `<li>🥛 Creatina Segura (3g): Adaptado a tu riñón.</li>`;
         if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
-            html += `<li>🩸 <strong>Control de Glucemia Estricto:</strong> Pescados en conserva (sardinas/caballa) o tortilla. Recorta el pan a solo 40g (la mitad). Muerde primero el pescado antes del pan para amortiguar el azúcar en sangre. Prohibida la bebida de avena industrial (pásate a soja o almendras sin azúcar).</li>`;
-            html += `<li>💊 <strong>Vitamina D3:</strong> Tómala en este desayuno. Al ser liposoluble, se absorbe un 40% más gracias a las grasas saludables de las sardinas o caballa.</li>`;
+            html += `<li>🩸 Desayuno: Pescado en conserva o tortilla, pan reducido a 40g. Bebida de soja o almendras sin azúcar.</li>`;
+            html += `<li>💊 Vitamina D3: Tomar aquí con las grasas del pescado.</li>`;
         }
-        html += `</ul>`;
-
-        html += `<div class="phase-title">${f.t}</div><ul>`;
-        html += `<li>💤 <strong>Powernap Protectora (20 min):</strong> Siesta corta obligatoria en el sofá para bajar el cortisol de la tarde y desinflamar la barriga.</li>`;
-        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 <strong>Siesta Profiláctica Extendida:</strong> 90 minutos de sueño profundo antes de la noche.</li>`;
-        html += `<li>🏋️ <strong>Bloque Kettlebell Emom:</strong> Usa tu pesa de 12kg en tu ventana de 15m. Mover las piernas vacía el azúcar acumulada de los hidratos directamente en el músculo.</li>`;
-        html += `<li>🥜 <strong>Control de Frutos Secos:</strong> Si meriendas frutos secos, saca un puñado cerrado y guarda el paquete. No abuses para permitir el déficit calórico abdominal.</li>`;
-        html += `</ul>`;
-
-        html += `<div class="phase-title" style="background:#2d3748; color:#fff;">${f.n}</div><ul>`;
+        html += `</ul><div class="phase-title">☀️ FASE TARDE</div><ul>`;
+        html += `<li>💤 Powernap Universal (20 min) obligatoria en el sofá para bajar cortisol.</li>`;
+        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 Siesta Profiláctica Extendida: 90 minutos de sueño profundo.</li>`;
+        html += `<li>🏋️ Bloque Kettlebell: Rutina corta EMOM.</li>`;
+        html += `</ul><div class="phase-title">🌑 FASE NOCHE / MADRUGADA</div><ul>`;
         if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
-            html += `<li>🧠 <strong>Cena Saciante Proteica (20:00h):</strong> Enfoque pescetariano (legumbres, huevos o pescado). Limita el arroz y la pasta blanca por la noche, sustitúyelos por verduras.</li>`;
-            html += `<li>💧 <strong>Hidratación de Guardia (Mínimo 1.5L de agua):</strong> Mantén tus filtros glomerulares limpios debido al uso de Losartán.</li>`;
+            html += `<li>🧠 Cena Proteica Veggie/Pescado a las 20:00h.</li>`;
+            html += `<li>💧 Hidratación de Guardia: Mínimo 1.5L de agua durante el turno.</li>`;
         } else if(turno === "M") {
-            html += `<li>🛌 <strong>Higiene del Sueño Nocturno:</strong> Habitación fría, oscura y pantallas fuera a las 21:30h.</li>`;
-        } else {
-            html += `<li>🌿 Descanso regular continuo.</li>`;
+            html += `<li>🛌 Dormir a las 21:30h en espacio frío y oscuro.</li>`;
+        } else { html += `<li>🌿 Descanso regular continuo.</li>`; }
+        html += `</ul><div class="renal-warning">⚠️ Aviso: Protocolo fijado a 3g de creatina. Asegura 3L de agua. Evita sales de potasio e Ibuprofeno.</div>`;
+
+        document.getElementById('fasesContenidoEs').innerHTML = html;
+        document.getElementById('planOutputEs').style.display = "block";
+    }
+
+    function generarPlanFasesPt() {
+        const turno = document.getElementById('turnoSelectPt').value;
+        const familia = document.getElementById('familiaSelectPt').value;
+        if(!turno || !familia) return;
+
+        let html = `<div class="phase-title">🌅 FASE MANHÃ</div><ul>`;
+        html += `<li> Tomar Losartan 50mg em jejum.</li>`;
+        html += `<li>🥛 Creatina Segura (3g): Adaptado ao teu rim.</li>`;
+        if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
+            html += `<li>🩸 Pequeno-almoço: Peixe em conserva ou omelete, pão reduzido para 40g. Bebida de soja ou amêndoa sem açúcar.</li>`;
+            html += `<li>💊 Vitamina D3: Tomar aqui com as gorduras do peixe.</li>`;
         }
-        html += `</ul>`;
+        html += `</ul><div class="phase-title">☀️ FASE TARDE</div><ul>`;
+        html += `<li>💤 Powernap Universal (20 min) obrigatória no sofá para reduzir cortisol.</li>`;
+        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 Sesta Profilática Completa: 90 minutos de sono profundo.</li>`;
+        html += `<li>🏋️ Bloco Kettlebell: Rotina curta EMOM.</li>`;
+        html += `</ul><div class="phase-title">🌑 FASE NOITE / MADRUGADA</div><ul>`;
+        if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
+            html += `<li>🧠 Jantar Proteico Veggie/Peixe às 20:00h.</li>`;
+            html += `<li>💧 Hidratação de Banco: Mínimo 1.5L de água durante o turno.</li>`;
+        } else if(turno === "M") {
+            html += `<li>🛌 Deitar às 21:30h em quarto frio e escuro.</li>`;
+        } else { html += `<li>🌿 Descanso regular contínuo.</li>`; }
+        html += `</ul><div class="renal-warning">⚠️ Aviso: Protocolo fixado em 3g de creatina. Garanta 3L de água. Evite sais de potássio e Ibuprofeno.</div>`;
 
-        html += `<div class="renal-warning">⚠️ <strong>Aviso Nefropatía IgA + Losartán:</strong> Asegura tus 3L de agua en la pestaña superior. Evita sales dietéticas de potasio y analgésicos de tipo AINEs (Ibuprofeno).</div>`;
-
-        document.getElementById('fasesContenido').innerHTML = html;
-        
-        let checkHtml = "";
-        diccionario[idiomaActual].habs.forEach((hab, i) => {
-            checkHtml += `<div class="check-item"><input type="checkbox" id="chk-${i}"> <span>${hab}</span></div>`;
-        });
-        document.getElementById('checklist-zona').innerHTML = checkHtml;
-        document.getElementById('planOutput').style.display = "block";
+        document.getElementById('fasesContenidoPt').innerHTML = html;
+        document.getElementById('planOutputPt').style.display = "block";
     }
 
     function modificarAgua(cambio) {
         vasosAgua = Math.max(0, vasosAgua + cambio);
         localStorage.setItem('mtn_agua_vasos', vasosAgua);
-        renderAguaInterfaz();
+        document.getElementById('water-display-count').innerText = vasosAgua + " / 12";
     }
     function resetAgua() {
         vasosAgua = 0;
         localStorage.setItem('mtn_agua_vasos', 0);
-        renderAguaInterfaz();
+        document.getElementById('water-display-count').innerText = "0 / 12";
     }
     function cargarAgua() {
         vasosAgua = parseInt(localStorage.getItem('mtn_agua_vasos')) || 0;
-        renderAguaInterfaz();
-    }
-    function renderAguaInterfaz() {
-        document.getElementById('water-display-count').innerText = `${vasosAgua} / 12`;
+        document.getElementById('water-display-count').innerText = vasosAgua + " / 12";
     }
 
-    function guardarCumplimiento() {
-        let total = diccionario[idiomaActual].habs.length;
-        let marcados = 0;
-        for(let i=0; i<total; i++) {
-            if(document.getElementById(`chk-${i}`).checked) marcados++;
+    function guardarCumplimientoEs() {
+        let el = document.querySelectorAll('.chk-es');
+        let marcados = 0; el.forEach(c => { if(c.checked) marcados++; });
+        let porc = Math.round((marcados / el.length) * 100);
+        let h = JSON.parse(localStorage.getItem('mtn_historial')) || [];
+        h.push({ porc: porc }); localStorage.setItem('mtn_historial', JSON.stringify(h));
+        alert('¡Progreso guardado!'); cargarHistorial(); volverHome();
+    }
+
+    function guardarCumplimientoPt() {
+        let el = document.querySelectorAll('.chk-pt');
+        let marcados = 0; el.forEach(c => { if(c.checked) marcados++; });
+        let porc = Math.round((marcados / el.length) * 100);
+        let h = JSON.parse(localStorage.getItem('mtn_historial')) || [];
+        h.push({ porc: porc }); localStorage.setItem('mtn_historial', JSON.stringify(h));
+        alert('Progresso guardado!'); cargarHistorial(); volverHome();
+    }
+
+    function cargarHistorial() {
+        let h = JSON.parse(localStorage.getItem('mtn_historial')) || [];
+        if(h.length === 0) { document.getElementById('stats-display').innerText = "0%"; return; }
+        let suma = h.reduce((acc, curr) => acc + curr.porc, 0);
+        document.getElementById('stats-display').innerText = Math.round(suma / h.length) + "%";
+    }
+
+    function borrarHistorial() {
+        localStorage.removeItem('mtn_historial');
+        document.getElementById('stats-display').innerText = "0%";
+    }
+
+    function toggleTimer() {
+        const btn = document.getElementById('btn-timer-start');
+        if (timerRunning) {
+            clearInterval(timerInterval); btn.innerText = "Play"; btn.style.background = "var(--success)";
+        } else {
+            timerInterval = setInterval(() => {
+                if(timerSeconds <= 0) { clearInterval(timerInterval); alert("¡Entrenamiento Completado!"); resetTimer(); return; }
+                timerSeconds--;
+                let mins = Math.floor(timerSeconds / 60); let secs = timerSeconds % 60;
+                document.getElementById('display').innerText = mins.toString().padStart(2,'0') + ":" + secs.toString().padStart(2,'0');
+                if (secs === 0 && timerSeconds > 0) {
+                    document.body.style.background = "#ecc94b"; setTimeout(() => document.body.style.background = "var(--bg-color)", 500);
+                }
+            }, 1000);
+            btn.innerText = "Pause"; btn.style.background = "#ecc94b";
         }
-        let porcentajeHoy = Math.round((marcados / total) * 100);
-        let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];
-        historial.push({ fecha: new Date().toISOString().slice(0,
+        timerRunning = !timerRunning;
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval); timerSeconds = 1200; timerRunning = false;
+        document.getElementById('display').innerText = "20:00";
+        document.getElementById('btn-timer-start').innerText = "Play"; document.getElementById('btn-timer-start').style.background = "var(--success)";
+    }
+
+    window.onload = function() {
+        cargarAgua();
+        cargarHistorial();
+    };
+</script>
+</body>
+</html>
