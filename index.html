@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoFuerza MTN v9</title>
+    <title>CronoFuerza MTN v10</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <meta name="theme-color" content="#2b6cb0">
@@ -23,6 +23,7 @@
             --alert-bg: #fff5f5;
             --alert-border: #e53e3e;
             --water: #3182ce;
+            --macro-bg: #f7fafc;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -199,7 +200,7 @@
     <!-- INTERFAZ EN ESPAÑOL -->
     <div id="sec-diario-es" class="app-section">
         <div class="box-question">
-            <label>💼 ¿Qué jornada tienes hoy?</label>
+            <label>💼 ¿Qué jornada tienes hoy o vienes de realizar?</label>
             <select id="turnoSelectEs">
                 <option value="">-- Selecciona --</option>
                 <option value="M">Turno M (Mañana)</option>
@@ -212,12 +213,11 @@
             </select>
         </div>
         <div class="box-question">
-            <label>🧒 ¿Situación familiar hoy?</label>
+            <label>🧒 ¿Situación familiar hoy con tu esposa?</label>
             <select id="familiaSelectEs">
                 <option value="">-- Selecciona --</option>
-                <option value="APOYO">Tengo apoyo (Cónyuge en casa / Niños en escuela)</option>
-                <option value="SOLO_COLE">Solo con peques (Van a escuela/extraescolares)</option>
-                <option value="SOLO_CASA">Solo con peques atrapados en casa (Logística total)</option>
+                <option value="APOYO">Esposa en casa conmigo por la mañana (Apoyo total)</option>
+                <option value="SOLO_COLE">Solo con peques (Ellos van al cole de 8:15 a 15:30h)</option>
             </select>
         </div>
         <button class="calc-button" onclick="generarPlanFasesEs()">⚡ Ver Plan por Fases</button>
@@ -228,7 +228,7 @@
             <div class="check-item"><input type="checkbox" class="chk-es"> <span>Creatina Segura (3g)</span></div>
             <div class="check-item"><input type="checkbox" class="chk-es"> <span>Vitamina D3 (Con pescado graso)</span></div>
             <div class="check-item"><input type="checkbox" class="chk-es"> <span>Kettlebell (10-15m / EMOM)</span></div>
-            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Evitar pico Glucemia (Pan 40g)</span></div>
+            <div class="check-item"><input type="checkbox" class="chk-es"> <span>Recortar Pan a 40g (Primero Proteína)</span></div>
             <div class="check-item"><input type="checkbox" class="chk-es"> <span>Completar 3L de Agua</span></div>
             <div class="check-item"><input type="checkbox" class="chk-es"> <span>Losartán 50mg tomado</span></div>
             <button class="calc-button" style="background:var(--success); margin-top:10px;" onclick="guardarCumplimientoEs()">💾 Guardar Progreso de Hoy</button>
@@ -238,7 +238,7 @@
     <!-- INTERFAZ EN PORTUGUÉS -->
     <div id="sec-diario-pt" class="app-section">
         <div class="box-question">
-            <label>💼 Que jornada de trabalho tens hoje?</label>
+            <label>💼 Que jornada de trabalho tens hoje ou fizeste?</label>
             <select id="turnoSelectPt">
                 <option value="">-- Seleciona --</option>
                 <option value="M">Turno M (Manhã)</option>
@@ -251,12 +251,11 @@
             </select>
         </div>
         <div class="box-question">
-            <label>🧒 Qual é a situação com os miúdos hoje?</label>
+            <label>🧒 Situação familiar hoje com a esposa?</label>
             <select id="familiaSelectPt">
                 <option value="">-- Seleciona --</option>
-                <option value="APOYO">Tenho apoio (Cônjuge em casa / Miúdos na escola)</option>
-                <option value="SOLO_COLE">Sozinho com miúdos (Vão à escola/atividades)</option>
-                <option value="SOLO_CASA">Sozinho com miúdos em casa (Logística total)</option>
+                <option value="APOYO">Esposa em casa comigo de manhã (Apoio total)</option>
+                <option value="SOLO_COLE">Sozinho com os miúdos (Vão à escola das 8:15 às 15:30h)</option>
             </select>
         </div>
         <button class="calc-button" onclick="generarPlanFasesPt()">⚡ Ver Plano por Fases</button>
@@ -285,8 +284,8 @@
         </div>
         <div class="box-question" style="background:#fff; border:1px solid var(--border);">
             <h3 style="font-size:14px; margin-top:0;">📖 Guía de Hipertrofia y Longevidad (12kg)</h3>
-            <ul style="font-size:12.5px;" id="kb-guide-list">
-                <li><strong>EMOM (Cada minuto en el minuto):</strong> Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats. Alterna hasta llegar a 20 minutos.</li>
+            <ul style="font-size:12.5px;">
+                <li><strong>EMOM (Cada minuto en el minuto):</strong> Pon en marcha el cronómetro de arriba. Al empezar el Minuto 1 haz 15 Swings y descansa lo que sobre del minuto. Al empezar el Minuto 2 haz 10 Goblet Squats o Remos. Alterna hasta llegar a 20 minutos.</li>
                 <li><strong>Tensión Mecánica:</strong> A los 46 años, controla la bajada (3 segundos) en las sentadillas para romper fibras musculares sin dañar articulaciones.</li>
                 <li><strong>Frecuencia diaria:</strong> Si solo tienes 10 minutos, haz solo 10 minutos de EMOM. Mover el músculo vacía el azúcar en sangre inmediatamente.</li>
             </ul>
@@ -373,25 +372,48 @@
         const familia = document.getElementById('familiaSelectEs').value;
         if(!turno || !familia) return;
 
-        let html = `<div class="phase-title">🌅 FASE MAÑANA</div><ul>`;
-        html += `<li> Miramar Losartán 50mg tomado en ayunas.</li>`;
-        html += `<li>🥛 Creatina Segura (3g): Adaptado a tu riñón.</li>`;
-        if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
-            html += `<li>🩸 Desayuno: Pescado en conserva o tortilla, pan reducido a 40g. Bebida de soja o almendras sin azúcar.</li>`;
-            html += `<li>💊 Vitamina D3: Tomar aquí con las grasas del pescado.</li>`;
+        let html = `<div class="phase-title">🌅 FASE MAÑANA (06:40h - 12:00h)</div><ul>`;
+        html += `<li>💊 <strong>06:40h - Losartán 50mg:</strong> Tomar estrictamente al levantarse con un gran vaso de agua.</li>`;
+        html += `<li>🥛 <strong>Creatina Segura (3g):</strong> Toma fija matutina diaria junto a la primera comida.</li>`;
+        
+        if(["SALIENTE_N", "SALIENTE_24H"].includes(turno)) {
+            html += `<li>🛌 <strong>09:00h a 10:00h - Transición Consciente:</strong> Llegas a las 9h, desayunas hasta las 9:30h. Usa este tramo para bajar la luz. Es completamente normal tardar hasta las 10h en acostarte debido a la inercia del cortisol nocturno. No te estreses, relaja la vista.</li>`;
+            html += `<li>🩸 <strong>09:15h - Desayuno de Rescate:</strong> Tu bocadillo de tortilla/pescado es vital porque tienes hambre real. Reduce el pan a 40g (la mitad) y muerde primero el pescado antes del pan. Sustituye la bebida de avena por bebida de soja o almendras sin azúcar.</li>`;
+            html += `<li>💊 <strong>09:30h - Vitamina D3:</strong> Consúmela en este desayuno para que se absorba gracias a las grasas del pescado azul.</li>`;
+            
+            if(familia === "APOYO") {
+                html += `<li>🛌 <strong>10:00h a 15:00h - Bloque Sagrado de Sueño:</strong> Aprovecha que tu esposa te apoya por la mañana. Duerme un bloque largo continuo en oscuridad total.</li>`;
+            } else {
+                html += `<li>🏠 <strong>10:00h a 14:00h - Logística de la Casa:</strong> Los niños están en el colegio (8:15h a 15:30h). Aprovecha este tramo tranquilo para hacer tareas del hogar, cocinar y adelantar pendientes.</li>`;
+            }
+        } else {
+            html += `<li>🏠 <strong>08:15h - Colegio:</strong> Los niños ya están en la escuela. Tiempo libre para la casa o cocina.</li>`;
         }
-        html += `</ul><div class="phase-title">☀️ FASE TARDE</div><ul>`;
-        html += `<li>💤 Powernap Universal (20 min) obligatoria en el sofá para bajar cortisol.</li>`;
-        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 Siesta Profiláctica Extendida: 90 minutos de sueño profundo.</li>`;
-        html += `<li>🏋️ Bloque Kettlebell: Rutina corta EMOM.</li>`;
-        html += `</ul><div class="phase-title">🌑 FASE NOCHE / MADRUGADA</div><ul>`;
+        html += `</ul>`;
+
+        html += `<div class="phase-title">☀️ FASE TARDE (12:00h - 18:30h)</div><ul>`;
+        html += `<li>💤 <strong>Powernap Protectora (20 min):</strong> Cabezada obligatoria en el sofá para bajar el cortisol de la tarde.</li>`;
+        
+        if(["SALIENTE_N", "SALIENTE_24H"].includes(turno) && familia === "SOLO_COLE") {
+            html += `<li>🛌 <strong>14:00h a 15:00h - Siesta de Emergencia Obligatoria:</strong> Al haber estado solo por la mañana limpiando/cocinando, debes dormir este bloque de 1 hora antes de ir a buscar a los niños a las 15:30h.</li>`;
+        } else if (turno === "ENTRA_N" && familia === "SOLO_COLE") {
+            html += `<li>🛌 <strong>14:00h a 15:00h - Siesta Profiláctica de Protección:</strong> Duerme una hora entera antes de la salida escolar para amortiguar el desvelo de la madrugada.</li>`;
+        }
+        
+        html += `<li>🚗 <strong>15:30h - Salida Escolar y Extraescolares:</strong> Fin del tiempo libre. Logística familiar activa con los peques de 15, 12 y 9 años.</li>`;
+        html += `<li>🏋️ <strong>Bloque Kettlebell (10-15m libres):</strong> Haz tu EMOM rápido en el salón aprovechando un rato de deberes o extraescolares. Mover las piernas absorbe el azúcar en sangre acumulado del arroz/pasta.</li>`;
+        html += `</ul>`;
+
+        html += `<div class="phase-title">🌑 FASE NOCHE / MADRUGADA (18:30h - 06:40h)</div><ul>`;
         if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
-            html += `<li>🧠 Cena Proteica Veggie/Pescado a las 20:00h.</li>`;
-            html += `<li>💧 Hidratación de Guardia: Mínimo 1.5L de agua durante el turno.</li>`;
-        } else if(turno === "M") {
-            html += `<li>🛌 Dormir a las 21:30h en espacio frío y oscuro.</li>`;
-        } else { html += `<li>🌿 Descanso regular continuo.</li>`; }
-        html += `</ul><div class="renal-warning">⚠️ Aviso: Protocolo fijado a 3g de creatina. Asegura 3L de agua. Evita sales de potasio e Ibuprofeno.</div>`;
+            html += `<li>🧠 <strong>20:00h - Cena Proteica Pescetariana:</strong> Enfoque limpio en legumbres, huevos o pescado azul. Recorta el arroz y la pasta por la noche.</li>`;
+            html += `<li>💧 <strong>Hidratación de Guardia:</strong> Bebe agua fría de forma constante de madrugada para mantener tus filtros glomerulares limpios por el Losartán.</li>`;
+        } else {
+            html += `<li>🛌 <strong>23:30h - Ventana de Sueño Nocturno Profundo:</strong> Acostarse a las 23:30h de forma rigurosa en los días normales para equilibrar los ritmos circadianos y deshacer la barriga de estrés.</li>`;
+        }
+        html += `</ul>`;
+
+        html += `<div class="renal-warning">⚠️ <strong>Aviso Clínico (Nefropatía IgA):</strong> Dosis fijada en 3g de creatina al día. Asegura los 3 litros de agua (Pestaña Agua). El Losartán retiene potasio; evita sales dietéticas sustitutivas y no uses jamás Ibuprofeno.</div>`;
 
         document.getElementById('fasesContenidoEs').innerHTML = html;
         document.getElementById('planOutputEs').style.display = "block";
@@ -402,104 +424,52 @@
         const familia = document.getElementById('familiaSelectPt').value;
         if(!turno || !familia) return;
 
-        let html = `<div class="phase-title">🌅 FASE MANHÃ</div><ul>`;
-        html += `<li> Tomar Losartan 50mg em jejum.</li>`;
-        html += `<li>🥛 Creatina Segura (3g): Adaptado ao teu rim.</li>`;
-        if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
-            html += `<li>🩸 Pequeno-almoço: Peixe em conserva ou omelete, pão reduzido para 40g. Bebida de soja ou amêndoa sem açúcar.</li>`;
-            html += `<li>💊 Vitamina D3: Tomar aqui com as gorduras do peixe.</li>`;
+        let html = `<div class="phase-title">🌅 FASE MANHÃ (06:40h - 12:00h)</div><ul>`;
+        html += `<li>💊 <strong>06:40h - Losartan 50mg:</strong> Tomar estritamente ao levantar com um grande copo de água.</li>`;
+        html += `<li>🥛 <strong>Creatina Segura (3g):</strong> Toma fixa matinal diária junto da primeira refeição.</li>`;
+        
+        if(["SALIENTE_N", "SALIENTE_24H"].includes(turno)) {
+            html += `<li>🛌 <strong>09:00h às 10:00h - Transição Consciente:</strong> Chegas às 9h, pequeno-almoço até às 9:30h. É normal demorar até às 10h para adormecer devido ao cortisol da noite. Relaxa a vista.</li>`;
+            html += `<li>🩸 <strong>09:15h - Pequeno-almoço de Resgate:</strong> Sandes de omelete/peixe. Reduz o pão para 40g (metade) e trinca primeiro a proteína. Troca a bebida de aveia por soja ou amêndoa sem açúcar.</li>`;
+            html += `<li>💊 <strong>09:30h - Vitamina D3:</strong> Tomar aqui com as gorduras do peixe gordo em conserva.</li>`;
+            
+            if(familia === "APOYO") {
+                html += `<li>🛌 <strong>10:00h às 15:00h - Bloco Sagrado de Sono:</strong> Aproveita que a tua esposa te apoia de manhã para dormir um bloco longo contínuo.</li>`;
+            } else {
+                html += `<li>🏠 <strong>10:00h às 14:00h - Logística da Casa:</strong> Os miúdos estão na escola (8:15h às 15:30h). Aproveita este tempo para as tarefas domésticas e cozinhar.</li>`;
+            }
+        } else {
+            html += `<li>🏠 <strong>08:15h - Escola:</strong> Os miúdos já estão na escola. Tempo livre para organizar a casa.</li>`;
         }
-        html += `</ul><div class="phase-title">☀️ FASE TARDE</div><ul>`;
-        html += `<li>💤 Powernap Universal (20 min) obrigatória no sofá para reduzir cortisol.</li>`;
-        if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 Sesta Profilática Completa: 90 minutos de sono profundo.</li>`;
-        html += `<li>🏋️ Bloco Kettlebell: Rotina curta EMOM.</li>`;
-        html += `</ul><div class="phase-title">🌑 FASE NOITE / MADRUGADA</div><ul>`;
+        html += `</ul>`;
+
+        html += `<div class="phase-title">☀️ FASE TARDE (12:00h - 18:30h)</div><ul>`;
+        html += `<li>💤 <strong>Powernap Universal (20 min):</strong> Sesta curta obrigatória no sofá para reduzir o stress.</li>`;
+        
+        if(["SALIENTE_N", "SALIENTE_24H"].includes(turno) && familia === "SOLO_COLE") {
+            html += `<li>🛌 <strong>14:00h às 15:00h - Sesta de Emergência Obrigatória:</strong> Como estiveste sozinho de manhã nas lides da casa, deves dormir este bloco de 1 hora antes de ir buscar os miúdos às 15:30h.</li>`;
+        } else if (turno === "ENTRA_N" && familia === "SOLO_COLE") {
+            html += `<li>🛌 <strong>14:00h às 15:00h - Sesta Profilática:</strong> Dorme uma hora antes da saída escolar para aguentar o turno da noite.</li>`;
+        }
+        
+        html += `<li>🚗 <strong>15:30h - Saída Escolar e Atividades:</strong> Fim do tempo livre. Logística ativa com os miúdos de 15, 12 e 9 anos.</li>`;
+        html += `<li>🏋️ <strong>Bloco Kettlebell:</strong> Faz o teu EMOM rápido na sala. Mover as pernas queima o açúcar acumulado do arroz/massa.</li>`;
+        html += `</ul>`;
+
+        html += `<div class="phase-title">🌑 FASE NOITE / MADRUGADA (18:30h - 06:40h)</div><ul>`;
         if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
-            html += `<li>🧠 Jantar Proteico Veggie/Peixe às 20:00h.</li>`;
-            html += `<li>💧 Hidratação de Banco: Mínimo 1.5L de água durante o turno.</li>`;
-        } else if(turno === "M") {
-            html += `<li>🛌 Deitar às 21:30h em quarto frio e escuro.</li>`;
-        } else { html += `<li>🌿 Descanso regular contínuo.</li>`; }
-        html += `</ul><div class="renal-warning">⚠️ Aviso: Protocolo fixado em 3g de creatina. Garanta 3L de água. Evite sais de potássio e Ibuprofeno.</div>`;
+            html += `<li>🧠 <strong>20:00h - Jantar Proteico Pescetariano:</strong> Foco em ovos, leguminosas ou peixe gordo. Limita o arroz e a massa branca à noite.</li>`;
+            html += `<li>💧 <strong>Hidratação de Banco:</strong> Bebe água fria constante de madrugada para proteger os rins devido ao Losartan.</li>`;
+        } else {
+            html += `<li>🛌 <strong>23:30h - Janela de Sono Noturno Profundo:</strong> Deitar às 23:30h de forma rigorosa nos dias normais para reduzir a barriga de stress.</li>`;
+        }
+        html += `</ul>`;
+
+        html += `<div class="renal-warning">⚠️ <strong>Aviso Clínico (Nefropatia IgA):</strong> Dose fixada em 3g de creatina diária. Garanta os 3 litros de água. O Losartan retém potássio; evite substitutos de sal e nunca uses Ibuprofeno.</div>`;
 
         document.getElementById('fasesContenidoPt').innerHTML = html;
         document.getElementById('planOutputPt').style.display = "block";
     }
 
     function modificarAgua(cambio) {
-        vasosAgua = Math.max(0, vasosAgua + cambio);
-        localStorage.setItem('mtn_agua_vasos', vasosAgua);
-        document.getElementById('water-display-count').innerText = vasosAgua + " / 12";
-    }
-    function resetAgua() {
-        vasosAgua = 0;
-        localStorage.setItem('mtn_agua_vasos', 0);
-        document.getElementById('water-display-count').innerText = "0 / 12";
-    }
-    function cargarAgua() {
-        vasosAgua = parseInt(localStorage.getItem('mtn_agua_vasos')) || 0;
-        document.getElementById('water-display-count').innerText = vasosAgua + " / 12";
-    }
-
-    function guardarCumplimientoEs() {
-        let el = document.querySelectorAll('.chk-es');
-        let marcados = 0; el.forEach(c => { if(c.checked) marcados++; });
-        let porc = Math.round((marcados / el.length) * 100);
-        let h = JSON.parse(localStorage.getItem('mtn_historial')) || [];
-        h.push({ porc: porc }); localStorage.setItem('mtn_historial', JSON.stringify(h));
-        alert('¡Progreso guardado!'); cargarHistorial(); volverHome();
-    }
-
-    function guardarCumplimientoPt() {
-        let el = document.querySelectorAll('.chk-pt');
-        let marcados = 0; el.forEach(c => { if(c.checked) marcados++; });
-        let porc = Math.round((marcados / el.length) * 100);
-        let h = JSON.parse(localStorage.getItem('mtn_historial')) || [];
-        h.push({ porc: porc }); localStorage.setItem('mtn_historial', JSON.stringify(h));
-        alert('Progresso guardado!'); cargarHistorial(); volverHome();
-    }
-
-    function cargarHistorial() {
-        let h = JSON.parse(localStorage.getItem('mtn_historial')) || [];
-        if(h.length === 0) { document.getElementById('stats-display').innerText = "0%"; return; }
-        let suma = h.reduce((acc, curr) => acc + curr.porc, 0);
-        document.getElementById('stats-display').innerText = Math.round(suma / h.length) + "%";
-    }
-
-    function borrarHistorial() {
-        localStorage.removeItem('mtn_historial');
-        document.getElementById('stats-display').innerText = "0%";
-    }
-
-    function toggleTimer() {
-        const btn = document.getElementById('btn-timer-start');
-        if (timerRunning) {
-            clearInterval(timerInterval); btn.innerText = "Play"; btn.style.background = "var(--success)";
-        } else {
-            timerInterval = setInterval(() => {
-                if(timerSeconds <= 0) { clearInterval(timerInterval); alert("¡Entrenamiento Completado!"); resetTimer(); return; }
-                timerSeconds--;
-                let mins = Math.floor(timerSeconds / 60); let secs = timerSeconds % 60;
-                document.getElementById('display').innerText = mins.toString().padStart(2,'0') + ":" + secs.toString().padStart(2,'0');
-                if (secs === 0 && timerSeconds > 0) {
-                    document.body.style.background = "#ecc94b"; setTimeout(() => document.body.style.background = "var(--bg-color)", 500);
-                }
-            }, 1000);
-            btn.innerText = "Pause"; btn.style.background = "#ecc94b";
-        }
-        timerRunning = !timerRunning;
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval); timerSeconds = 1200; timerRunning = false;
-        document.getElementById('display').innerText = "20:00";
-        document.getElementById('btn-timer-start').innerText = "Play"; document.getElementById('btn-timer-start').style.background = "var(--success)";
-    }
-
-    window.onload = function() {
-        cargarAgua();
-        cargarHistorial();
-    };
-</script>
-</body>
-</html>
+        vasosAgua = Math.max(0
