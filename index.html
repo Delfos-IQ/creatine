@@ -2,40 +2,120 @@
 <html lang="es" data-lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#2b6cb0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>CronoFuerza MTN</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="logo.svg" />
+  <link rel="apple-touch-icon" href="logo.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="lang-es">
   <main class="container">
     <header class="app-header">
       <img src="logo.svg" alt="Logo" class="app-logo" />
       <div>
         <h1 id="app-title">CronoFuerza MTN</h1>
-        <p id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</p>
+        <h2 id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</h2>
       </div>
     </header>
 
-    <section class="toolbar" aria-label="Idioma">
-      <button class="lang-btn active" data-lang="es">ES</button>
-      <button class="lang-btn" data-lang="pt">PT</button>
+    <section class="lang-selector">
+      <button class="lang-btn active" id="btn-es" data-lang="es">Compartir ES</button>
+      <button class="lang-btn" id="btn-pt" data-lang="pt">Compartir PT</button>
     </section>
 
-    <nav class="nav-tabs" aria-label="Secciones">
-      <button class="tab-btn active" data-tab="diario">Diario</button>
-      <button class="tab-btn" data-tab="kb">Kettlebell</button>
-      <button class="tab-btn" data-tab="water">Agua</button>
-      <button class="tab-btn" data-tab="macros">Nutrición</button>
-      <button class="tab-btn" data-tab="stats">Historial</button>
-    </nav>
+    <section class="nav-tabs">
+      <button class="tab-btn home-btn" id="btn-home">Home</button>
+      <button class="tab-btn active" data-tab="diario" id="tab-diario">Diario</button>
+      <button class="tab-btn" data-tab="kb" id="tab-kb">Kettlebell</button>
+      <button class="tab-btn" data-tab="water" id="tab-water">Agua</button>
+      <button class="tab-btn" data-tab="macros" id="tab-macros">Nutrición</button>
+      <button class="tab-btn" data-tab="stats" id="tab-stats">Historial</button>
+    </section>
 
-    <section id="sec-diario" class="app-section"></section>
-    <section id="sec-kb" class="app-section hidden"></section>
-    <section id="sec-water" class="app-section hidden"></section>
-    <section id="sec-macros" class="app-section hidden"></section>
-    <section id="sec-stats" class="app-section hidden"></section>
-  </main>
-  <script src="app.js" type="module"></script>
-</body>
-</html>
+    <section id="sec-diario" class="app-section" style="display:block">
+      <div class="box-question">
+        <label class="es">¿Qué jornada tienes hoy o hoy terminas?</label>
+        <label class="pt">Que jornada tens hoje ou terminas hoje?</label>
+        <select id="turnoSelect">
+          <option value="">-- Selecciona --</option>
+          <option value="M">Turno M Mañana / Manhã</option>
+          <option value="T">Turno T Tarde</option>
+          <option value="ENTRAN">Día que ENTRAS de Noche / Dia que ENTRAS de Noite</option>
+          <option value="ENTREN">Día ENTRE Noches Seguidas / Dia ENTRE Noites</option>
+          <option value="SALIENTE">Saliente de Turno Noche / Última noche</option>
+          <option value="SALIENTE24H">Saliente de Guardia 24 Horas / Sair de Piquete 24h</option>
+          <option value="LIBRE">Día Libre / Dia de Folga</option>
+        </select>
+      </div>
+
+      <div class="box-question">
+        <label class="es">Situación familiar hoy?</label>
+        <label class="pt">Situação familiar hoje?</label>
+        <select id="familiaSelect">
+          <option value="">-- Selecciona --</option>
+          <option value="APOYO">Tengo apoyo / Tenho apoio</option>
+          <option value="SOLOCOLE">Solo con peques / Sozinho com os miúdos</option>
+        </select>
+      </div>
+
+      <button class="calc-button" id="calcBtn">Calcular mi Día por Fases</button>
+
+      <div id="planOutput" style="display:none; margin-top:15px;">
+        <div id="fasesContenido"></div>
+
+        <div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success); margin-top:14px;">
+          <span class="es">Cumplimiento y Checklist de Hoy</span>
+          <span class="pt">Marcar Cumprimento de Hoje</span>
+        </div>
+
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-creatina"><span>Creatina Segura 3g</span></div>
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-d3"><span>Vitamina D3 / Con pescado graso / Peixe gordo</span></div>
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-kb"><span>Kettlebell 10-15m EMOM</span></div>
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-pan"><span>Recortar Pan a 40g / Primero Proteína / Cortar Pão</span></div>
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-frutos"><span>Controlar Puñado de Frutos Secos / Punhados</span></div>
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-agua"><span>Completar 3L de Agua / Copos de agua</span></div>
+        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-losartan"><span>Losartán 50mg tomado / Tomados</span></div>
+
+        <button class="calc-button" id="saveBtn" style="background:var(--success); margin-top:10px;">Guardar Progreso</button>
+      </div>
+    </section>
+
+    <section id="sec-kb" class="app-section" style="display:none;">
+      <div class="timer-box">
+        <div style="font-size:12px; color:#a0aec0;">EMOM 20 MINUTOS</div>
+        <div class="timer-display" id="display">20:00</div>
+        <div style="font-size:13px; font-weight:bold; margin:8px 0; color:#ecc94b;">
+          <span class="es">Minuto Impar 15 Swings / Minuto Par 10 Goblet Squats</span>
+          <span class="pt">Minuto Ímpar 15 Swings / Minuto Par 10 Goblet Squats</span>
+        </div>
+        <button class="timer-btn btn-start" id="btn-timer-start">Play</button>
+        <button class="timer-btn btn-stop" id="btn-timer-reset">Reset</button>
+      </div>
+
+      <div class="box-question">
+        <p class="es"><strong>EMOM: Cada minuto en el minuto</strong>. Haz 15 Swings en el Minuto 1, descansa lo que sobre. Haz 10 Sentadillas Goblet en el Minuto 2. Alterna hasta el minuto 20.</p>
+        <p class="pt"><strong>EMOM: Cada minuto no minuto</strong>. Faz 15 Swings no Minuto 1, descansa o resto. Faz 10 Agachamentos Goblet no Minuto 2. Alterna até aos 20 minutos.</p>
+      </div>
+    </section>
+
+    <section id="sec-water" class="app-section" style="display:none;">
+      <div class="water-box">
+        <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">
+          <span class="es">Registro de Hidratación Renal</span>
+          <span class="pt">Registo de Hidratação Renal</span>
+        </div>
+        <div style="font-size:12px; color:#4a5568;">Meta 3000 ml · 12 vasos de 250ml / 12 copos</div>
+        <div class="water-display" id="water-count">0 / 12</div>
+        <button class="water-btn btn-water" id="btn-water-plus">+ 250ml</button>
+        <button class="water-btn btn-stop" id="btn-water-minus">- 250ml</button>
+        <button class="water-btn home-btn" id="btn-water-reset">Reset</button>
+      </div>
+    </section>
+
+    <section id="sec-macros" class="app-section" style="display:none;">
+      <div class="macro-box">
+        <p class="es"><strong>Meta Proteica (75.5 kg)</strong>: Necesitas llegar a 120g 
