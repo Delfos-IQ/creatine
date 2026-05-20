@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CronoFuerza MTN v8</title>
+    <title>CronoFuerza MTN</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <meta name="theme-color" content="#2b6cb0">
@@ -192,7 +192,6 @@
     </div>
 
     <div class="app-header">
-        <img src="logo.svg" alt="Logo" class="app-logo">
         <h1 id="app-title">⏱️ CronoFuerza MTN</h1>
     </div>
     <h2 id="app-subtitle">Control de Glucemia, Estrés e Hipertrofia</h2>
@@ -245,14 +244,12 @@
         </div>
     </div>
 
-    <!-- PESTAÑA 4: MÓDULO DE NUTRICIÓN (NUEVA v8) -->
+    <!-- PESTAÑA 4: MÓDULO DE NUTRICIÓN -->
     <div id="sec-macros" class="app-section">
         <div class="macro-box">
             <h3 style="margin-top:0; color:var(--primary); font-size:15px; text-align:center;" id="nu-title">🥗 Plan de Reequilibrio de Macros</h3>
             <p style="font-size:13px; font-weight:bold; text-align:center; margin-bottom:15px;" id="nu-target">Tu meta diaria: 120g Proteína | Control estricto de Almidones</p>
-            <ul style="font-size:13px; padding-left:15px;" id="nu-list">
-                <!-- Traducido dinámicamente -->
-            </ul>
+            <ul style="font-size:13px; padding-left:15px;" id="nu-list"></ul>
         </div>
     </div>
 
@@ -420,17 +417,15 @@
         const f = diccionario[idiomaActual].fases;
         let html = "";
 
-        // MAÑANA
         html += `<div class="phase-title">${f.m}</div><ul>`;
         html += `<li>💊 <strong>Losartán 50mg:</strong> Tomar en ayunas con un gran vaso de agua. Control renal crítico.</li>`;
         html += `<li>🥛 <strong>Creatina Segura (3g):</strong> Imprescindible en tu dieta sin carne para rellenar tus reservas musculares y darte el boost cerebral nocturno.</li>`;
         if(["SALIENTE_N", "SALIENTE_24H", "ENTRE_N"].includes(turno)) {
-            html += `<li>🩸 <strong>Control de Glucemia Estrícto:</strong> Pescados en conserva (sardinas/caballa) o tortilla. Recorta el pan a solo 40g (la mitad). Muerde primero el pescado antes del pan para amortiguar el azúcar en sangre. Prohibida la bebida de avena industrial (pásate a soja o almendras sin azúcar).</li>`;
+            html += `<li>🩸 <strong>Control de Glucemia Estricto:</strong> Pescados en conserva (sardinas/caballa) o tortilla. Recorta el pan a solo 40g (la mitad). Muerde primero el pescado antes del pan para amortiguar el azúcar en sangre. Prohibida la bebida de avena industrial (pásate a soja o almendras sin azúcar).</li>`;
             html += `<li>💊 <strong>Vitamina D3:</strong> Tómala en este desayuno. Al ser liposoluble, se absorbe un 40% más gracias a las grasas saludables de las sardinas o caballa.</li>`;
         }
         html += `</ul>`;
 
-        // TARDE
         html += `<div class="phase-title">${f.t}</div><ul>`;
         html += `<li>💤 <strong>Powernap Protectora (20 min):</strong> Siesta corta obligatoria en el sofá para bajar el cortisol de la tarde y desinflamar la barriga.</li>`;
         if(turno === "ENTRA_N" && familia === "APOYO") html += `<li>🛌 <strong>Siesta Profiláctica Extendida:</strong> 90 minutos de sueño profundo antes de la noche.</li>`;
@@ -438,7 +433,6 @@
         html += `<li>🥜 <strong>Control de Frutos Secos:</strong> Si meriendas frutos secos, saca un puñado cerrado y guarda el paquete. No abuses para permitir el déficit calórico abdominal.</li>`;
         html += `</ul>`;
 
-        // NOCHE
         html += `<div class="phase-title" style="background:#2d3748; color:#fff;">${f.n}</div><ul>`;
         if(["ENTRA_N", "ENTRE_N"].includes(turno)) {
             html += `<li>🧠 <strong>Cena Saciante Proteica (20:00h):</strong> Enfoque pescetariano (legumbres, huevos o pescado). Limita el arroz y la pasta blanca por la noche, sustitúyelos por verduras.</li>`;
@@ -455,4 +449,37 @@
         document.getElementById('fasesContenido').innerHTML = html;
         
         let checkHtml = "";
-        diccionario[idiomaActual].habs.
+        diccionario[idiomaActual].habs.forEach((hab, i) => {
+            checkHtml += `<div class="check-item"><input type="checkbox" id="chk-${i}"> <span>${hab}</span></div>`;
+        });
+        document.getElementById('checklist-zona').innerHTML = checkHtml;
+        document.getElementById('planOutput').style.display = "block";
+    }
+
+    function modificarAgua(cambio) {
+        vasosAgua = Math.max(0, vasosAgua + cambio);
+        localStorage.setItem('mtn_agua_vasos', vasosAgua);
+        renderAguaInterfaz();
+    }
+    function resetAgua() {
+        vasosAgua = 0;
+        localStorage.setItem('mtn_agua_vasos', 0);
+        renderAguaInterfaz();
+    }
+    function cargarAgua() {
+        vasosAgua = parseInt(localStorage.getItem('mtn_agua_vasos')) || 0;
+        renderAguaInterfaz();
+    }
+    function renderAguaInterfaz() {
+        document.getElementById('water-display-count').innerText = `${vasosAgua} / 12`;
+    }
+
+    function guardarCumplimiento() {
+        let total = diccionario[idiomaActual].habs.length;
+        let marcados = 0;
+        for(let i=0; i<total; i++) {
+            if(document.getElementById(`chk-${i}`).checked) marcados++;
+        }
+        let porcentajeHoy = Math.round((marcados / total) * 100);
+        let historial = JSON.parse(localStorage.getItem('mtn_historial')) || [];
+        historial.push({ fecha: new Date().toISOString().slice(0,
