@@ -7,8 +7,7 @@ let history = Storage.getHistory();
 
 const state = {
   turno: '',
-  familia: '',
-  activeTab: 'diario'
+  familia: ''
 };
 
 function $(id) {
@@ -19,17 +18,17 @@ function setBodyLang(lang) {
   document.body.className = `lang-${lang}`;
 }
 
-function setText(id, value) {
-  const el = $(id);
-  if (el) el.innerText = value;
-}
-
-function clearActiveTabs() {
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+function updateStaticLabels() {
+  $('app-title').innerText = APP_DATA[currentLang].title;
+  $('app-subtitle').innerText = APP_DATA[currentLang].subtitle;
+  $('btn-home').innerText = 'Home';
+  $('btn-timer-start').innerText = tRunning ? 'Pause' : 'Play';
 }
 
 function showSection(sectionId) {
-  document.querySelectorAll('.app-section').forEach(sec => (sec.style.display = 'none'));
+  document.querySelectorAll('.app-section').forEach(sec => {
+    sec.style.display = 'none';
+  });
   const sec = $(sectionId);
   if (sec) sec.style.display = 'block';
 }
@@ -38,82 +37,58 @@ function cambiarIdioma(lang) {
   currentLang = lang;
   setBodyLang(lang);
 
-  document.getElementById('btn-es').classList.toggle('active', lang === 'es');
-  document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+  $('btn-es').classList.toggle('active', lang === 'es');
+  $('btn-pt').classList.toggle('active', lang === 'pt');
 
-  setText('app-title', APP_DATA[lang].title);
-  setText('app-subtitle', APP_DATA[lang].subtitle);
-
-  renderPlanIfExists();
+  updateStaticLabels();
   renderChecklist();
-  cargarHistorial();
+  renderPlanIfSelected();
   renderWater();
-  renderStatsTitle();
+  cargarHistorial();
 }
 
 function cambiarPestana(tab) {
-  state.activeTab = tab;
-  clearActiveTabs();
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
     if (btn.dataset.tab === tab) btn.classList.add('active');
   });
 
-  const map = {
-    diario: 'sec-diario',
-    kb: 'sec-kb',
-    water: 'sec-water',
-    macros: 'sec-macros',
-    stats: 'sec-stats'
-  };
-
-  Object.values(map).forEach(showId => {
-    const sec = $(showId);
-    if (sec) sec.style.display = 'none';
-  });
-
-  if (tab === 'diario') {
-    showSection('sec-diario');
-  } else if (tab === 'kb') {
-    showSection('sec-kb');
-  } else if (tab === 'water') {
-    showSection('sec-water');
-  } else if (tab === 'macros') {
-    showSection('sec-macros');
-  } else if (tab === 'stats') {
+  if (tab === 'diario') showSection('sec-diario');
+  if (tab === 'kb') showSection('sec-kb');
+  if (tab === 'water') showSection('sec-water');
+  if (tab === 'macros') showSection('sec-macros');
+  if (tab === 'stats') {
     showSection('sec-stats');
     cargarHistorial();
   }
 }
 
 function volverHome() {
-  document.getElementById('planOutput').style.display = 'none';
-  document.getElementById('turnoSelect').value = '';
-  document.getElementById('familiaSelect').value = '';
+  $('planOutput').style.display = 'none';
+  $('turnoSelect').value = '';
+  $('familiaSelect').value = '';
   state.turno = '';
   state.familia = '';
   cambiarPestana('diario');
 }
 
-function buildPhaseHtml(lang, key) {
-  const phase = APP_DATA[lang].phases[key];
+function phaseHtml(phaseKey) {
+  const phase = APP_DATA[currentLang].phases[phaseKey];
   let html = `<div class="phase-title">${phase.title}</div><ul>`;
-
   phase.items.forEach(item => {
     html += `<li>${item}</li>`;
   });
-
-  html += `</ul>`;
+  html += '</ul>';
   return html;
 }
 
 function buildPlan(turno, familia) {
-  const lang = currentLang;
-  const turnoData = APP_DATA[lang].turnos[turno];
-  const familiaText = APP_DATA[lang].familia[familia];
+  const turnoData = APP_DATA[currentLang].turnos[turno];
+  const familiaText = APP_DATA[currentLang].familia[familia];
+
   let html = `<div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--primary);">${turnoData.title}</div>`;
 
-  if (turnoData.extra && turnoData.extra.length) {
+  if (turnoData.extra.length) {
     html += '<ul>';
     turnoData.extra.forEach(item => {
       html += `<li>${item}</li>`;
@@ -121,56 +96,42 @@ function buildPlan(turno, familia) {
     html += '</ul>';
   }
 
-  turnoData.phases.forEach(phaseKey => {
-    html += buildPhaseHtml(lang, phaseKey);
+  turnoData.phases.forEach(key => {
+    html += phaseHtml(key);
   });
 
   html += `<div class="phase-title" style="background:#edf2f7; border-left:4px solid var(--success); margin-top:14px;">`;
-  html += lang === 'es' ? 'Situación familiar / enfoque del día' : 'Situação familiar / foco do dia';
+  html += currentLang === 'es' ? 'Situación familiar y foco del día' : 'Situação familiar e foco do dia';
   html += `</div><ul><li>${familiaText}</li></ul>`;
 
-  html += `<div class="renal-warning"><strong>${lang === 'es' ? 'Aviso Médico Nefropatía IgA' : 'Aviso Médico Nefropatia IgA'}</strong><br>`;
-  html += lang === 'es'
-    ? 'Asegura 3L de agua totales. Prohibido usar analgésicos AINEs / Ibuprofeno para las agujetas de la kettlebell.'
-    : 'Garante 3L de água diários. Proibido tomar anti-inflamatórios / Ibuprofeno devido ao treino com kettlebell.';
+  html += `<div class="renal-warning"><strong>${currentLang === 'es' ? 'Aviso Médico Nefropatía IgA' : 'Aviso Médico Nefropatia IgA'}</strong><br>`;
+  html += currentLang === 'es'
+    ? 'Asegura 3L de agua totales. Prohibido usar AINEs / Ibuprofeno para las agujetas de la kettlebell.'
+    : 'Garante 3L de água diários. Proibido usar anti-inflamatórios / Ibuprofeno devido ao treino com kettlebell.';
   html += `</div>`;
 
   return html;
 }
 
-function renderPlanIfExists() {
+function renderPlanIfSelected() {
   if (!state.turno || !state.familia) return;
-  const html = buildPlan(state.turno, state.familia);
-  $('fasesContenido').innerHTML = html;
+  $('fasesContenido').innerHTML = buildPlan(state.turno, state.familia);
   $('planOutput').style.display = 'block';
 }
 
 function renderChecklist() {
-  const lang = currentLang;
-  const container = document.createElement('div');
+  const container = $('checklistContainer');
+  if (!container) return;
+
   container.innerHTML = '';
-  const items = APP_DATA[lang].checklist;
-
-  const checklistHolder = document.querySelector('#planOutput');
-  if (!checklistHolder) return;
-
-  const existing = document.getElementById('checklist-dynamic');
-  if (existing) existing.remove();
-
-  const wrap = document.createElement('div');
-  wrap.id = 'checklist-dynamic';
-
-  items.forEach((item, idx) => {
-    const id = `hab-${idx}`;
-    wrap.innerHTML += `
+  APP_DATA[currentLang].checklist.forEach((item, idx) => {
+    container.innerHTML += `
       <div class="check-item">
-        <input type="checkbox" class="chk-hab" id="${id}">
+        <input type="checkbox" class="chk-hab" id="chk-${idx}">
         <span>${item}</span>
       </div>
     `;
   });
-
-  checklistHolder.appendChild(wrap);
 }
 
 function calcularPlanV10() {
@@ -185,26 +146,30 @@ function calcularPlanV10() {
     return;
   }
 
-  const html = buildPlan(turno, familia);
-  $('fasesContenido').innerHTML = html;
+  $('fasesContenido').innerHTML = buildPlan(turno, familia);
   $('planOutput').style.display = 'block';
   renderChecklist();
+  $('planOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function guardarProgresoV10() {
   const checks = document.querySelectorAll('.chk-hab');
-  let completed = 0;
+  let done = 0;
   checks.forEach(chk => {
-    if (chk.checked) completed++;
+    if (chk.checked) done++;
   });
 
-  const pct = checks.length ? Math.round((completed / checks.length) * 100) : 0;
-  history.push({ p: pct, d: new Date().toISOString(), turno: state.turno, familia: state.familia });
+  const pct = checks.length ? Math.round((done / checks.length) * 100) : 0;
+  history.push({
+    p: pct,
+    d: new Date().toISOString(),
+    turno: state.turno,
+    familia: state.familia
+  });
   Storage.setHistory(history);
 
   alert(APP_DATA[currentLang].saveOk);
   cargarHistorial();
-  volverHome();
 }
 
 function cargarHistorial() {
@@ -214,24 +179,14 @@ function cargarHistorial() {
     return;
   }
 
-  const sum = history.reduce((acc, curr) => acc + (curr.p || 0), 0);
-  $('stats-display').innerText = `${Math.round(sum / history.length)}%`;
+  const avg = history.reduce((sum, item) => sum + (item.p || 0), 0) / history.length;
+  $('stats-display').innerText = `${Math.round(avg)}%`;
 }
 
 function clearStats() {
   Storage.clearHistory();
   history = [];
   $('stats-display').innerText = '0%';
-}
-
-function renderStatsTitle() {
-  const title = APP_DATA[currentLang].statsLabel;
-  const h3es = document.querySelector('#sec-stats h3.es');
-  const h3pt = document.querySelector('#sec-stats h3.pt');
-  if (h3es && h3pt) {
-    h3es.innerText = currentLang === 'es' ? title : h3es.innerText;
-    h3pt.innerText = currentLang === 'pt' ? title : h3pt.innerText;
-  }
 }
 
 function renderWater() {
@@ -269,7 +224,7 @@ function toggleTimer() {
     if (tSeconds <= 0) {
       clearInterval(tInterval);
       tRunning = false;
-      alert(currentLang === 'es' ? 'Entrenamiento Completado!' : 'Treino Concluído!');
+      alert(currentLang === 'es' ? 'Entrenamiento completado!' : 'Treino concluído!');
       resetTimer();
       return;
     }
@@ -297,7 +252,7 @@ function resetTimer() {
   $('btn-timer-start').style.background = 'var(--success)';
 }
 
-function initEvents() {
+function bindEvents() {
   $('btn-es').addEventListener('click', () => cambiarIdioma('es'));
   $('btn-pt').addEventListener('click', () => cambiarIdioma('pt'));
   $('btn-home').addEventListener('click', volverHome);
@@ -317,17 +272,23 @@ function initEvents() {
   $('btn-timer-start').addEventListener('click', toggleTimer);
   $('btn-timer-reset').addEventListener('click', resetTimer);
 
-  $('turnoSelect').addEventListener('change', e => (state.turno = e.target.value));
-  $('familiaSelect').addEventListener('change', e => (state.familia = e.target.value));
+  $('turnoSelect').addEventListener('change', e => {
+    state.turno = e.target.value;
+  });
+
+  $('familiaSelect').addEventListener('change', e => {
+    state.familia = e.target.value;
+  });
 }
 
-function bootstrap() {
+function init() {
   setBodyLang(currentLang);
+  updateStaticLabels();
   renderChecklist();
   renderWater();
   cargarHistorial();
-  initEvents();
+  bindEvents();
   showSection('sec-diario');
 }
 
-window.addEventListener('load', bootstrap);
+window.addEventListener('load', init);

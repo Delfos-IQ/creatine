@@ -6,8 +6,7 @@
   <meta name="theme-color" content="#2b6cb0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>CronoFuerza MTN</title>
-  <link rel="manifest" href="manifest.json" />
+  <title>CronoFuerza MTN v2.1</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link rel="apple-touch-icon" href="logo.svg" />
   <link rel="stylesheet" href="styles.css" />
@@ -22,21 +21,21 @@
       </div>
     </header>
 
-    <section class="lang-selector">
-      <button class="lang-btn active" id="btn-es" data-lang="es">Compartir ES</button>
-      <button class="lang-btn" id="btn-pt" data-lang="pt">Compartir PT</button>
-    </section>
+    <div class="lang-selector">
+      <button class="lang-btn active" id="btn-es" data-lang="es">ES</button>
+      <button class="lang-btn" id="btn-pt" data-lang="pt">PT</button>
+    </div>
 
-    <section class="nav-tabs">
+    <div class="nav-tabs">
       <button class="tab-btn home-btn" id="btn-home">Home</button>
       <button class="tab-btn active" data-tab="diario" id="tab-diario">Diario</button>
       <button class="tab-btn" data-tab="kb" id="tab-kb">Kettlebell</button>
       <button class="tab-btn" data-tab="water" id="tab-water">Agua</button>
       <button class="tab-btn" data-tab="macros" id="tab-macros">Nutrición</button>
       <button class="tab-btn" data-tab="stats" id="tab-stats">Historial</button>
-    </section>
+    </div>
 
-    <section id="sec-diario" class="app-section" style="display:block">
+    <section id="sec-diario" class="app-section" style="display:block;">
       <div class="box-question">
         <label class="es">¿Qué jornada tienes hoy o hoy terminas?</label>
         <label class="pt">Que jornada tens hoje ou terminas hoje?</label>
@@ -72,15 +71,12 @@
           <span class="pt">Marcar Cumprimento de Hoje</span>
         </div>
 
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-creatina"><span>Creatina Segura 3g</span></div>
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-d3"><span>Vitamina D3 / Con pescado graso / Peixe gordo</span></div>
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-kb"><span>Kettlebell 10-15m EMOM</span></div>
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-pan"><span>Recortar Pan a 40g / Primero Proteína / Cortar Pão</span></div>
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-frutos"><span>Controlar Puñado de Frutos Secos / Punhados</span></div>
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-agua"><span>Completar 3L de Agua / Copos de agua</span></div>
-        <div class="check-item"><input type="checkbox" class="chk-hab" id="hab-losartan"><span>Losartán 50mg tomado / Tomados</span></div>
+        <div id="checklistContainer"></div>
 
-        <button class="calc-button" id="saveBtn" style="background:var(--success); margin-top:10px;">Guardar Progreso</button>
+        <button class="calc-button" id="saveBtn" style="background:var(--success); margin-top:10px;">
+          <span class="es">Guardar Progreso</span>
+          <span class="pt">Guardar Progresso</span>
+        </button>
       </div>
     </section>
 
@@ -118,4 +114,35 @@
 
     <section id="sec-macros" class="app-section" style="display:none;">
       <div class="macro-box">
-        <p class="es"><strong>Meta Proteica (75.5 kg)</strong>: Necesitas llegar a 120g 
+        <p class="es"><strong>Meta Proteica (75.5 kg)</strong>: Necesitas llegar a 120g de proteína diarios sin carne ni lácteos. Utiliza tus desayunos de tortilla, caballa y sardinas en conserva. Duplica la clara de huevo en polvo en tus gachas.</p>
+        <p class="es"><strong>Freno a los Almidones</strong>: Reduce a la mitad el arroz, la pasta y las patatas. No los elimines, pero contrólalos para evitar picos de insulina.</p>
+        <p class="es"><strong>Frutos Secos</strong>: Limítalos a un solo puñado cerrado al día para desbloquear la pérdida de grasa visceral abdominal.</p>
+
+        <p class="pt"><strong>Meta Proteica (75.5 kg)</strong>: Precisas de chegar a 120g de proteína diários sem carne nem laticínios. Usa as tuas sandes de omelete, cavala e sardinhas. Duplica a clara de ovo em pó nas tuas papas.</p>
+        <p class="pt"><strong>Controlo de Amidos</strong>: Reduz para metade as porções de arroz, massa e batatas para travar picos de insulina.</p>
+        <p class="pt"><strong>Frutos Secos</strong>: Limita a um único punhado fechado por dia para queimar a gordura da barriga.</p>
+      </div>
+    </section>
+
+    <section id="sec-stats" class="app-section" style="display:none;">
+      <div class="box-question" style="text-align:center;">
+        <h3 class="es">Tu Consistencia Semanal</h3>
+        <h3 class="pt">Tua Consistência Semanal</h3>
+        <div id="stats-display" style="font-size:24px; font-weight:bold; color:var(--primary); margin:10px 0 0;">0%</div>
+        <button class="timer-btn btn-stop" id="btn-clear-stats">Borrar Datos / Apagar Dados</button>
+      </div>
+    </section>
+
+    <div class="renal-warning">
+      <strong class="es">Aviso Médico Nefropatía IgA</strong>
+      <strong class="pt">Aviso Médico Nefropatia IgA</strong>
+      <div class="es">Asegura 3L de agua totales. Prohibido usar analgésicos AINEs / Ibuprofeno para las agujetas de la kettlebell.</div>
+      <div class="pt">Garante 3L de água diários. Proibido tomar anti-inflamatórios / Ibuprofeno devido ao treino com kettlebell.</div>
+    </div>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
